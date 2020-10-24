@@ -134,7 +134,6 @@ if ($action == 'edit') {
     }
 }
 
-
 // Page end
 dol_fiche_end();
 
