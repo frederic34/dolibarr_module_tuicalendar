@@ -59,9 +59,7 @@ $arrayofparameters = array(
  * Actions
  */
 
-if ((float) DOL_VERSION >= 6) {
-    include DOL_DOCUMENT_ROOT . '/core/actions_setmoduleoptions.inc.php';
-}
+include DOL_DOCUMENT_ROOT . '/core/actions_setmoduleoptions.inc.php';
 
 
 /*
