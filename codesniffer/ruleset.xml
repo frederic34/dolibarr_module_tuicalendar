@@ -1,15 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE ruleset SYSTEM "ruleset.dtd">
-<ruleset name="Dolibarr">
-	<description>Dolibarr coding standard.</description>
+<ruleset name="Net Logic">
+	<description>Net Logic coding standard.</description>
 	<arg name="tab-width" value="4"/>
 
-	<exclude-pattern type="relative">build/html</exclude-pattern>
-	<exclude-pattern type="relative">build/aps</exclude-pattern>
-	<exclude-pattern type="relative">dev/namespacemig</exclude-pattern>
-	<exclude-pattern type="relative">dev/initdata/dbf/includes</exclude-pattern>
-	<exclude-pattern type="relative">documents</exclude-pattern>
-	<exclude-pattern type="relative">htdocs/conf.php</exclude-pattern>
+	<exclude-pattern type="relative">build</exclude-pattern>
 
 	<exclude-pattern type="relative">vendor</exclude-pattern>
 	<exclude-pattern type="relative">node_modules</exclude-pattern>
@@ -182,6 +177,7 @@
  	<!-- Rules from Squiz Standard -->
 
     <rule ref="Squiz.WhiteSpace.ScopeClosingBrace.Indent" />
+   	<rule ref="Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore" />
 
     <!-- There MUST NOT be trailing whitespace at the end of non-blank lines. -->
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">

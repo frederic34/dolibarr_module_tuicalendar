@@ -37,7 +37,9 @@ $action = GETPOST('action', 'alpha');
 
 
 // Securite acces client
-if (! $user->rights->tuicalendar->read) accessforbidden();
+if (! $user->rights->tuicalendar->read) {
+    accessforbidden();
+}
 $socid = GETPOST('socid', 'int');
 if (isset($user->societe_id) && $user->societe_id > 0) {
     $action = '';

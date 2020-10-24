@@ -255,7 +255,6 @@ class ActionsTuiCalendar
             });
             </script>";
 
-
             dol_fiche_end();
             // End of page
             llxFooter();
@@ -350,7 +349,6 @@ class ActionsTuiCalendar
                 $conf->global->AGENDA_EXT_NB = 6;
             }
             $MAXAGENDA = $conf->global->AGENDA_EXT_NB;
-
 
             // Define list of external calendars (global admin setup)
             if (empty($conf->global->AGENDA_DISABLE_EXT)) {
