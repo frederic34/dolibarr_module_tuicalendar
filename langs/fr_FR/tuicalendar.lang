@@ -1,0 +1,66 @@
+# Copyright (C) 2019        Frédéric FRANCE         <frederic.france.@netlogic.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#
+# Générique
+#
+
+# Module label 'ModuleTuiCalendarName'
+ModuleTuiCalendarName = TuiCalendar
+# Module description 'ModuleTuiCalendarDesc'
+ModuleTuiCalendarDesc = Description de TuiCalendar
+
+#
+# Page d'administration
+#
+TuiCalendarSetup = Configuration du module TuiCalendar
+TuiCalendarSettings = Réglages
+TuiCalendarSetupPage = Page de configuration du module TuiCalendar
+
+#
+# Page À propos
+#
+About = À propos
+TuiCalendarAbout = À propos de TuiCalendar
+TuiCalendarAboutPage = Page à propos de TuiCalendar
+
+
+#
+# Box d'exemple
+#
+MyWidget = Mon widget
+MyWidgetDescription = Description de mon widget
+TuiCalendarUser=Utilisateur
+TuiCalendarViewAgenda=Agenda
+TuiCalendarFree=Disponible
+TuiCalendarBusy=Occupé
+TuiCalendarUpdate=Mettre à jour
+TuiCalendarEdit=Editer
+TuiCalendarDelete=Supprimer
+TuiCalendarSave=Enregistrer
+TuiCalendarSubject=Sujet
+TuiCalendarLocation=Emplacement :
+TuiCalendarBody=Contenu :
+TuiCalendarAllDay=Journée
+TuiCalendarDaily=Jour
+TuiCalendarWeekly=Semaine
+TuiCalendar2weeks=2 Semaines
+TuiCalendar3weeks=3 Semaines
+TuiCalendarMonthly=Mois
+TuiCalendarShowweekends=Voir les weekends
+TuiCalendarStartWeekOnMonday=La semaine commence le lundi
+TuiCalendarNarrowerThanWeekdays=Réduire la largeur des weekends
+TuiCalendarViewAll=Tous
+TuiCalendarBirthdayEvents=Anniversaires

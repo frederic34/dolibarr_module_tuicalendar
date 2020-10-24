@@ -1,0 +1,53 @@
+# Copyright (C) 2019 Frédéric FRANCE <frederic@fredericfrance.onmicrosoft.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleTuiCalendarName'
+ModuleTuiCalendarName = TuiCalendar
+# Module description 'ModuleTuiCalendarDesc'
+ModuleTuiCalendarDesc = TuiCalendar description
+
+#
+# Admin page
+#
+TuiCalendarSetup = TuiCalendar setup
+Settings = Settings
+TuiCalendarSetupPage = TuiCalendar setup page
+TUICALENDAR_MYPARAM1 = My param 1
+TUICALENDAR_MYPARAM1Tooltip = My param 1 tooltip
+TUICALENDAR_MYPARAM2=My param 2
+TUICALENDAR_MYPARAM2Tooltip=My param 2 tooltip
+
+
+#
+# About page
+#
+About = About
+TuiCalendarAbout = About TuiCalendar
+TuiCalendarAboutPage = TuiCalendar about page
+
+#
+# Sample page
+#
+MyPageName = My page name
+
+#
+# Sample widget
+#
+MyWidget = My widget
+MyWidgetDescription = My widget description
