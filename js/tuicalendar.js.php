@@ -1,5 +1,5 @@
 <?php
-/* Copyright © 2019       Frédéric FRANCE         <frederic.france@netlogic.fr>
+/* Copyright © 2019-2020  Frédéric FRANCE         <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,12 @@
  * Library javascript to enable Browser notifications
  */
 
+/**
+ * \file    tuicalendar/js/tuicalendar.js.php
+ * \ingroup tuicalendar
+ * \brief   JavaScript file for module TuiCalendar.
+ */
+
 $defines = array(
     'NOREQUIREUSER',
     'NOREQUIREDB',
@@ -29,13 +35,6 @@ $defines = array(
     'NOREQUIREHTML',
     'NOREQUIREAJAX',
 );
-
-
-/**
- * \file    tuicalendar/js/tuicalendar.js.php
- * \ingroup tuicalendar
- * \brief   JavaScript file for module TuiCalendar.
- */
 
 // Load Dolibarr environment
 include '../config.php';
