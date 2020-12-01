@@ -560,7 +560,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
             //     $event->fetch_optionals();
             // }
             $event->fetch_userassigned();
-            $event->color = $obj->color;
+            $event->color = $obj->color ? '#'.$obj->color : '';
             $event->type_color = $obj->type_color;
 
             $raw = new stdClass();
@@ -604,11 +604,11 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
                 // color : The schedule text color
                 //'color' => '#'.$obj->color,
                 // bgColor : The schedule background color
-                'bgColor' => '#' . $obj->color,
+                'bgColor' => $event->color,
                 // borderColor : The schedule border color
-                'borderColor' => '#' . $obj->color,
+                'borderColor' => $event->color,
                 // dragBgColor : The schedule drag background color
-                'dragBgColor' => '#' . $obj->color,
+                'dragBgColor' => $event->color,
                 'category' => ($isallday ? 'allday' : 'time'),
                 'dueDateClass' => '',
                 'attendees' => $assignedUsers,
