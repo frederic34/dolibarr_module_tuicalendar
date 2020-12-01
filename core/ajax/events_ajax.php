@@ -356,6 +356,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 
     $events = [];
     $now = dol_now();
+    $tz = ini_get('date.timezone');
 
     // $events = array(
     //     'events' => array(
@@ -569,10 +570,10 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 
             $dtstart = new DateTime();
             $dtstart->setTimestamp($event->datep);
-            $dtstart->setTimezone(new DateTimeZone('Europe/Paris'));
+            $dtstart->setTimezone(new DateTimeZone($tz));
             $dtend = new DateTime();
             $dtend->setTimestamp((empty($event->datef) ? $event->datep + 10 : $event->datef));
-            $dtend->setTimezone(new DateTimeZone('Europe/Paris'));
+            $dtend->setTimezone(new DateTimeZone($tz));
             $assignedUsers = array();
             foreach ($event->userassigned as $key => $value) {
                 if (! isset($CacheUser[$value['id']])) {
