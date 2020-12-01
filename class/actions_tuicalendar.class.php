@@ -43,7 +43,6 @@ class ActionsTuiCalendar
      */
     public $errors = array();
 
-
     /**
      * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
      */
