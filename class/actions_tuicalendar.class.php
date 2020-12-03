@@ -1145,6 +1145,7 @@ class ActionsTuiCalendar
                     var schedule = event.schedule;
                     var startTime = event.start;
                     var endTime = event.end;
+                    var offset = new Date();
                     $.ajax({
                         url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=putevent',
                         dataType: 'json',
@@ -1153,7 +1154,8 @@ class ActionsTuiCalendar
                         data: {
                             schedule: JSON.stringify(schedule),
                             start: JSON.stringify(startTime),
-                            end: JSON.stringify(endTime)
+                            end: JSON.stringify(endTime),
+                            offset: offset.getTimezoneOffset()
                         },
                         success: function(response, status) {
                             console.log('success');
