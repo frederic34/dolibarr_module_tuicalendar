@@ -75,9 +75,11 @@ switch ($action) {
             //var_dump($updatedevent);
             $datestart = json_decode(GETPOST('start', 'none'));
             $dateend = json_decode(GETPOST('end', 'none'));
-            dol_syslog('updated events ajax REQUEST ' . print_r($updatedevent, true), LOG_NOTICE);
-            //dol_syslog('updated events ajax REQUEST '.print_r($datestart, true), LOG_NOTICE);
-            //dol_syslog('updated events ajax REQUEST '.print_r($dateend, true), LOG_NOTICE);
+            $offset = json_decode(GETPOST('offset', 'none'));
+            dol_syslog('updated events ajax REQUEST event ' . print_r($updatedevent, true), LOG_NOTICE);
+            dol_syslog('updated events ajax REQUEST datestart '.print_r($datestart, true), LOG_NOTICE);
+            dol_syslog('updated events ajax REQUEST dateend '.print_r($dateend, true), LOG_NOTICE);
+            dol_syslog('updated events ajax REQUEST offset '.print_r($offset, true), LOG_NOTICE);
             $action = new ActionComm($db);
             $action->fetch($updatedevent->id);
             $action->fetch_optionals();
@@ -85,8 +87,9 @@ switch ($action) {
             $action->oldcopy = clone $action;
             $action->location = $updatedevent->location;
             $action->fulldayevent = $updatedevent->isAllDay ? 1 : 0;
-            $action->datep = strtotime($datestart->_date);
-            $action->datef = strtotime($dateend->_date);
+            $action->datep = strtotime($datestart->_date) - $offset * 60;
+            dol_syslog('updated events ajax REQUEST datep '.print_r($action->datep, true), LOG_NOTICE);
+            $action->datef = strtotime($dateend->_date) - $offset * 60;
             $res = $action->update($user);
             if ($res < 0) {
                 print json_encode([]);
@@ -357,6 +360,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
     $events = [];
     $now = dol_now();
     $tz = ini_get('date.timezone');
+    //$tz = ini_get('UTC');
 
     // $events = array(
     //     'events' => array(
