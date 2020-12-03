@@ -87,9 +87,9 @@ switch ($action) {
             $action->oldcopy = clone $action;
             $action->location = $updatedevent->location;
             $action->fulldayevent = $updatedevent->isAllDay ? 1 : 0;
-            $action->datep = strtotime($datestart->_date) - $offset * 60;
+            $action->datep = strtotime($datestart->_date) + $offset * 60;
             dol_syslog('updated events ajax REQUEST datep '.print_r($action->datep, true), LOG_NOTICE);
-            $action->datef = strtotime($dateend->_date) - $offset * 60;
+            $action->datef = strtotime($dateend->_date) + $offset * 60;
             $res = $action->update($user);
             if ($res < 0) {
                 print json_encode([]);
