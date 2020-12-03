@@ -87,9 +87,9 @@ switch ($action) {
             $action->oldcopy = clone $action;
             $action->location = $updatedevent->location;
             $action->fulldayevent = $updatedevent->isAllDay ? 1 : 0;
-            $action->datep = strtotime($datestart->_date) + $offset * 60;
+            $action->datep = strtotime($datestart->_date);
             dol_syslog('updated events ajax REQUEST datep '.print_r($action->datep, true), LOG_NOTICE);
-            $action->datef = strtotime($dateend->_date) + $offset * 60;
+            $action->datef = strtotime($dateend->_date);
             $res = $action->update($user);
             if ($res < 0) {
                 print json_encode([]);
@@ -360,7 +360,6 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
     $events = [];
     $now = dol_now();
     $tz = ini_get('date.timezone');
-    //$tz = ini_get('UTC');
 
     // $events = array(
     //     'events' => array(
@@ -574,10 +573,10 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 
             $dtstart = new DateTime();
             $dtstart->setTimestamp($event->datep);
-            $dtstart->setTimezone(new DateTimeZone($tz));
+            $dtstart->setTimezone(new DateTimeZone('UTC'));
             $dtend = new DateTime();
             $dtend->setTimestamp((empty($event->datef) ? $event->datep + 10 : $event->datef));
-            $dtend->setTimezone(new DateTimeZone($tz));
+            $dtend->setTimezone(new DateTimeZone('UTC'));
             $assignedUsers = array();
             foreach ($event->userassigned as $key => $value) {
                 if (! isset($CacheUser[$value['id']])) {
