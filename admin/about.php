@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2004-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
- * Copyright (C) 2019       Frédéric FRANCE         <frederic.france@netlogic.fr>
+ * Copyright (C) 2019-2020  Frédéric FRANCE         <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,18 +23,7 @@
  */
 
 // Load Dolibarr environment
-$res=0;
-// Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
-// Try main.inc.php into web root detected using web root calculated from SCRIPT_FILENAME
-$tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
-// Try main.inc.php using relative path
-if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
-if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
-if (! $res) die("Include of main fails");
+include '../config.php';
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
@@ -45,7 +34,9 @@ require_once '../lib/tuicalendar.lib.php';
 $langs->loadLangs(array("errors","admin","tuicalendar@tuicalendar"));
 
 // Access control
-if (! $user->admin) accessforbidden();
+if (! $user->admin) {
+    accessforbidden();
+}
 
 // Parameters
 $action = GETPOST('action', 'alpha');

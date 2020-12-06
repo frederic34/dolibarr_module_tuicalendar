@@ -41,11 +41,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/triggers/dolibarrtriggers.class.php';
 class InterfaceTuiCalendarTriggers extends DolibarrTriggers
 {
     /**
-     * @var DoliDB Database handler
-     */
-    protected $db;
-
-    /**
      * Constructor
      *
      * @param DoliDB $db Database handler
@@ -61,27 +56,6 @@ class InterfaceTuiCalendarTriggers extends DolibarrTriggers
         $this->version = 'development';
         $this->picto = 'tuicalendar@tuicalendar';
     }
-
-    /**
-     * Trigger name
-     *
-     * @return string Name of trigger file
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Trigger description
-     *
-     * @return string Description of trigger file
-     */
-    public function getDesc()
-    {
-        return $this->description;
-    }
-
 
     /**
      * Function called when a Dolibarrr business event is done.

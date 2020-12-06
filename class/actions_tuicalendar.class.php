@@ -1,5 +1,5 @@
 <?php
-/* Copyright © 2019       Frédéric FRANCE   <frederic.france@netlogic.fr>
+/* Copyright © 2019-2020  Frédéric FRANCE   <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,6 @@ class ActionsTuiCalendar
      * @var array Errors
      */
     public $errors = array();
-
 
     /**
      * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
@@ -255,7 +254,6 @@ class ActionsTuiCalendar
             });
             </script>";
 
-
             dol_fiche_end();
             // End of page
             llxFooter();
@@ -350,7 +348,6 @@ class ActionsTuiCalendar
                 $conf->global->AGENDA_EXT_NB = 6;
             }
             $MAXAGENDA = $conf->global->AGENDA_EXT_NB;
-
 
             // Define list of external calendars (global admin setup)
             if (empty($conf->global->AGENDA_DISABLE_EXT)) {
@@ -1148,6 +1145,7 @@ class ActionsTuiCalendar
                     var schedule = event.schedule;
                     var startTime = event.start;
                     var endTime = event.end;
+                    var offset = new Date();
                     $.ajax({
                         url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=putevent',
                         dataType: 'json',
@@ -1156,7 +1154,8 @@ class ActionsTuiCalendar
                         data: {
                             schedule: JSON.stringify(schedule),
                             start: JSON.stringify(startTime),
-                            end: JSON.stringify(endTime)
+                            end: JSON.stringify(endTime),
+                            offset: offset.getTimezoneOffset()
                         },
                         success: function(response, status) {
                             console.log('success');

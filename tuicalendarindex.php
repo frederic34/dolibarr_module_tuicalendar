@@ -37,7 +37,9 @@ $action = GETPOST('action', 'alpha');
 
 
 // Securite acces client
-if (! $user->rights->tuicalendar->read) accessforbidden();
+if (! $user->rights->tuicalendar->read) {
+    accessforbidden();
+}
 $socid = GETPOST('socid', 'int');
 if (isset($user->societe_id) && $user->societe_id > 0) {
     $action = '';
@@ -71,8 +73,7 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 
 /* BEGIN MODULEBUILDER DRAFT MYOBJECT
 // Draft MyObject
-if (! empty($conf->tuicalendar->enabled) && $user->rights->tuicalendar->read)
-{
+if (! empty($conf->tuicalendar->enabled) && $user->rights->tuicalendar->read) {
     $langs->load("orders");
 
     $sql = "SELECT c.rowid, c.ref, c.ref_client, c.total_ht, c.tva as total_tva, c.total_ttc, s.rowid as socid, s.nom as name, s.client, s.canvas";
@@ -87,8 +88,7 @@ if (! empty($conf->tuicalendar->enabled) && $user->rights->tuicalendar->read)
     if ($socid) $sql.= " AND c.fk_soc = ".$socid;
 
     $resql = $db->query($sql);
-    if ($resql)
-    {
+    if ($resql) {
         $total = 0;
         $num = $db->num_rows($resql);
 
@@ -97,12 +97,9 @@ if (! empty($conf->tuicalendar->enabled) && $user->rights->tuicalendar->read)
         print '<th colspan="3">'.$langs->trans("DraftOrders").($num?' <span class="badge">'.$num.'</span>':'').'</th></tr>';
 
         $var = true;
-        if ($num > 0)
-        {
+        if ($num > 0) {
             $i = 0;
-            while ($i < $num)
-            {
-
+            while ($i < $num) {
                 $obj = $db->fetch_object($resql);
                 print '<tr class="oddeven"><td class="nowrap">';
                 $orderstatic->id=$obj->rowid;
@@ -126,23 +123,16 @@ if (! empty($conf->tuicalendar->enabled) && $user->rights->tuicalendar->read)
                 $i++;
                 $total += $obj->total_ttc;
             }
-            if ($total>0)
-            {
-
+            if ($total>0) {
                 print '<tr class="liste_total"><td>'.$langs->trans("Total").'</td><td colspan="2" class="right">'.price($total)."</td></tr>";
             }
-        }
-        else
-        {
-
+        } else {
             print '<tr class="oddeven"><td colspan="3" class="opacitymedium">'.$langs->trans("NoOrder").'</td></tr>';
         }
         print "</table><br>";
 
         $db->free($resql);
-    }
-    else
-    {
+    } else {
         dol_print_error($db);
     }
 }
