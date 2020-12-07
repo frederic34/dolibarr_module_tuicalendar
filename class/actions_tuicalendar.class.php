@@ -702,6 +702,7 @@ class ActionsTuiCalendar
                 print '    <input class="form-control projectsAutoComplete" type="text" placeholder="' . $langs->trans("Project") . '" autocomplete="off">';
                 print '</span>';
             }
+            // TODO récupérer les types d'évènements en ajax
             print '<span id="search-actioncode" class="search-actioncode">';
             print '    <select class="form-control actioncodeAutoComplete" multiple type="text" placeholder="' . $langs->trans('Actioncode') . '">';
             print '    <option>Mustard</option>';
@@ -710,6 +711,25 @@ class ActionsTuiCalendar
             print '<select>';
             print '</span>';
             print '    <span id="renderRange" class="render-range"></span>
+            </div>
+            <div id="createSchedule" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">'.$langs->trans('NewAction').'</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Modal body text goes here.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">'.$langs->trans('Save').'</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">'.$langs->trans('Cancel').'</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="calendar" style="height: 800px;"></div>';
             // réactivation dropdown utilisateur
@@ -1020,7 +1040,7 @@ class ActionsTuiCalendar
         (function(window, Calendar) {
             //var Calendar = tui.Calendar;
 
-            var useCreationPopup = true;
+            var useCreationPopup = false;
             var useDetailPopup = true;
             var useNarrowWeekEnd = false;
             var useStartDayOfWeek = 1;
@@ -1123,22 +1143,28 @@ class ActionsTuiCalendar
                 },
                 'beforeCreateSchedule': function(event) {
                     console.log('beforeCreateSchedule', event);
-                    $.ajax({
-                        url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
-                        dataType: 'json',
-                        //contentType: 'application/json',
-                        type:'post',
-                        data: {
-                            event: JSON.stringify(event),
-                        },
-                        success: function(response, status) {
-                            event.id = response.id;
-                            saveNewSchedule(event);
-                        },
-                        error: function(response, status, e) {
-                            console.log('error beforeCreateSchedule');
-                        }
-                    });
+                    // $.ajax({
+                    //     url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
+                    //     dataType: 'json',
+                    //     //contentType: 'application/json',
+                    //     type:'post',
+                    //     data: {
+                    //         event: JSON.stringify(event),
+                    //     },
+                    //     success: function(response, status) {
+                    //         event.id = response.id;
+                    //         saveNewSchedule(event);
+                    //     },
+                    //     error: function(response, status, e) {
+                    //         console.log('error beforeCreateSchedule');
+                    //     }
+                    // });
+
+                    // open modal
+                    $('#createSchedule').modal('show');
+
+                    // clear guide element
+                    event.guide.clearGuideElement();
                 },
                 'beforeUpdateSchedule': function(event) {
                     console.log('beforeUpdateSchedule', event);
@@ -1212,6 +1238,27 @@ class ActionsTuiCalendar
                     }
                     return true;
                 }
+            });
+
+            // modal events
+            $('#createSchedule').on('show.bs.modal', function (e) {
+                console.log('modal opened');
+                // possibilité ici d'initialiser des champs dans la modal
+            });
+            $('#createSchedule').on('hidden.bs.modal', function (e) {
+                console.log('modal was closed');
+                console.log(e);
+                var schedule = {
+                    id: +new Date(),
+                    title: 'test',
+                    isAllDay: true,
+                    start: e.start,
+                    end: e.end,
+                    category:  'allday'
+                };
+                console.log(schedule);
+                // save schedule
+                cal.createSchedules([schedule]);
             });
 
             /**
