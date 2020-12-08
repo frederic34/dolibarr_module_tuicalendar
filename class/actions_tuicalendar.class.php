@@ -713,42 +713,136 @@ class ActionsTuiCalendar
             print '    <span id="renderRange" class="render-range"></span>
             </div>
             <div id="createSchedule" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+                <div class="modal-lg" style="text-align:center;" role="document">
+                    <div class="modal-content" >
                         <div class="modal-header">
-                            <h5 class="modal-title">'.$langs->trans('NewAction').'</h5>
+                            <h5 class="modal-title">'.$langs->trans('NewAction'). '</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+
+                        <div class="form-group">
+                            <label for="type" class="col-sm-2 control-label" >Type</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="type" >
+                                <option value="1">Rendez-Vous</option>
+                                <option value="2">Appel téléphonique</option>
+                                <option value="3">Envoi fax</option>
+                                <option value="4">Envoi email</option>
+                                <option value="5">Intervention sur site</option>
+                                <option value="6">Autre</option>
+                            </select>
+                            <div id="type" style="margin-top: 10px;"></div>       
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <label for="libelle" class="col-sm-2 control-label">Libelle</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="libelle" placeholder="Libelle" />
+                                <div id="libelle" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="startDate" class="col-sm-2 control-label">Start date</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="startDate" placeholder="Start date" />
-                                <div id="startpickerContainer" style="margin-top: -1px;"></div>
+                                <div id="startpickerContainer" style="margin-top: 10px;"></div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="endDate" class="col-sm-2 control-label">End date</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="endDate" placeholder="End date" />
-                                <div id="endpickerContainer" style="margin-top: -1px;"></div>
+                                <div id="endpickerContainer" style="margin-top: 10px;"></div>
                             </div>
                         </div>
+
                         <div class="form-group">
-                            <label for="location" class="col-sm-2 control-label">'.$langs->trans('Location').'</label>
+                            <label for="etat" class="col-sm-2 control-label" >État</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="location" placeholder="'.$langs->trans('Location').'" />
-                            </div>
+                            <select  class="custom-select form-control" id="etat" >
+                                <option value="1">Non applicable</option>
+                                <option value="2">A faire</option>
+                                <option value="3">En cours</option>
+                                <option value="4">Terminé</option>
+                            </select>       
+                            <div id="etat" style="margin-top: 10px;"></div>  
+                            </div> 
                         </div>
+
+                        <div class="form-group">
+                            <label for="userAssigned" class="col-sm-2 control-label" >Événement assigné à</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="userAssigned" >
+                                <option value="1">ToDo</option>
+                            </select>       
+                            <div id="userAssigned" style="margin-top: 10px;"></div>  
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <label for="thirdPartyAssigned" class="col-sm-2 control-label" >Tiers concerné</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="thirdPartyAssigned" >
+                                <option value="1">ToDo</option>
+                            </select>       
+                            <div id="thirdPartyAssigned" style="margin-top: 10px;"></div>  
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactAssigned" class="col-sm-2 control-label" >Contact concerné</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="contactAssigned" >
+                                <option value="1">ToDo</option>
+                            </select>    
+                            <div id="contactAssigned" style="margin-top: 10px;"></div>     
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project" class="col-sm-2 control-label" >Projet</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="project" >
+                                <option value="1">ToDo</option>
+                            </select>       
+                            <div id="project" style="margin-top: 10px;"></div>  
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <label for="task" class="col-sm-2 control-label" >Tâche</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="task" >
+                                <option value="1">ToDo</option>
+                            </select>      
+                            <div id="task" style="margin-top: 10px;"></div>   
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description" class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="description" placeholder="description"></textarea>
+                                <div id="description" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>  
+
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">'.$langs->trans('Save').'</button>
+                            <button id="buttonSubmitModal" type="button" class="btn btn-primary">'.$langs->trans('Save').'</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">'.$langs->trans('Cancel').'</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div id="calendar" style="height: 800px;"></div>';
+            ?><script>
+                var test = document.getElementById("buttonSubmitModal");
+                test.onclick = function(){alert("TEST !")};
+            </script><?php
             // réactivation dropdown utilisateur
             print '<script>
                 $( document ).ready(function() {
