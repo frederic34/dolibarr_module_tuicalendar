@@ -115,11 +115,11 @@ switch ($action) {
             $action->label = $postevent->title;
             $action->location = $postevent->location;
             $action->fulldayevent = $postevent->isAllDay ? 1 : 0;
-            $action->datep = strtotime($postevent->start->_date);
-            $action->datef = strtotime($postevent->end->_date);
+            $action->datep = strtotime($postevent->start);
+            $action->datef = strtotime($postevent->end);
             $action->percentage = -1;
             $res = $action->create($user);
-            if ($res < 0) {
+            if ($res <= 0) {
                 dol_syslog('created action error ' . print_r($action->error, true), LOG_ERR);
                 dol_syslog('created action errors ' . print_r($action->errors, true), LOG_ERR);
                 print json_encode([]);

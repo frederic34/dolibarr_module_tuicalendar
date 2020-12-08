@@ -721,6 +721,7 @@ class ActionsTuiCalendar
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        <form id="actionForm" name="action" role="form">
                         <div class="form-group">
                             <label for="type" class="col-sm-2 control-label" >Type</label>
                             <div class="col-sm-10">
@@ -737,10 +738,10 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="libelle" class="col-sm-2 control-label">Libelle</label>
+                            <label for="title" class="col-sm-2 control-label">Libelle</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="libelle" placeholder="Libelle" />
-                                <div id="libelle" style="margin-top: 10px;"></div>
+                                <input type="text" class="form-control" id="title" placeholder="Libelle" />
+                                <div id="title" style="margin-top: 10px;"></div>
                             </div>
                         </div>
 
@@ -832,17 +833,14 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="modal-footer">
-                            <button id="buttonSubmitModal" type="button" class="btn btn-primary">'.$langs->trans('Save').'</button>
+                            <button id="buttonSubmitModal" type="submit" class="btn btn-primary">'.$langs->trans('Save').'</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">'.$langs->trans('Cancel').'</button>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
             <div id="calendar" style="height: 800px;"></div>';
-            ?><script>
-                var test = document.getElementById("buttonSubmitModal");
-                test.onclick = function(){alert("TEST !")};
-            </script><?php
             // réactivation dropdown utilisateur
             print '<script>
                 $( document ).ready(function() {
@@ -1382,18 +1380,49 @@ class ActionsTuiCalendar
             });
             $('#createSchedule').on('hidden.bs.modal', function (e) {
                 console.log('modal was closed');
+                // effacer les champs
                 console.log(e);
-                var schedule = {
-                    id: +new Date(),
-                    title: 'test',
-                    isAllDay: true,
-                    start: e.start,
-                    end: e.end,
-                    category:  'allday'
-                };
+            });
+
+            $('#actionForm').submit(function(e) {
+                e.preventDefault();
+                // Coding
+                console.log($('form#actionForm'));
+                console.log('create schedule');
+                var schedule = new ScheduleInfo();
+
+                //schedule.id = +new Date();
+                // dolibarr calendar id 1
+                // récupérer les infos du formulaire
+                schedule.calendarId = 1;
+                schedule.title = 'test';
+                schedule.isAllDay = false;
+                schedule.start = new Date();
+                schedule.end = moment().add(1, 'hours').toDate();
+                schedule.category =  'time';
                 console.log(schedule);
                 // save schedule
-                cal.createSchedules([schedule]);
+                //cal.createSchedules([schedule]);
+                $.ajax({
+                    url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
+                    dataType: 'json',
+                    //contentType: 'application/json',
+                    type:'post',
+                    data: {
+                        event: JSON.stringify(schedule),
+                    },
+                    success: function(response, status) {
+                        schedule.id = response.id;
+                        //saveNewSchedule(schedule);
+                    },
+                    error: function(response, status, e) {
+                        console.log('error submitting schedule');
+                    }
+                });
+                //saveNewSchedule(schedule);
+                // closing modal
+                $('#createSchedule').modal('toggle'); //or  $('#createSchedule').modal('hide');
+                return false;
             });
 
             /**
@@ -1578,6 +1607,30 @@ class ActionsTuiCalendar
                     });
                 } else {
                     // open modal
+                    $('#createSchedule').modal('show');
+                    console.log(event);
+                    var start = new tui.DatePicker('#startpickerContainer', {
+                        date: event.start._date,
+                        input: {
+                            element: '#startDate',
+                            format: 'yyyy-MM-dd HH:mm'
+                        },
+                        timePicker: {
+                          layoutType: 'tab',
+                          inputType: 'spinbox'
+                        }
+                    });
+                    var end = new tui.DatePicker('#endpickerContainer', {
+                        date: event.end._date,
+                        input: {
+                            element: '#endDate',
+                            format: 'yyyy-MM-dd HH:mm'
+                        },
+                        timePicker: {
+                          layoutType: 'tab',
+                          inputType: 'spinbox'
+                        }
+                    });
                 }
             }
 
@@ -1599,7 +1652,7 @@ class ActionsTuiCalendar
                     borderColor: calendar.borderColor,
                     location: scheduleData.location,
                     raw: {
-                        class: scheduleData.raw['class']
+                    //    class: scheduleData.raw['class']
                     },
                     state: scheduleData.state
                 };
@@ -1610,7 +1663,7 @@ class ActionsTuiCalendar
                     schedule.dragBgColor = calendar.dragBgColor;
                     schedule.borderColor = calendar.borderColor;
                 }
-                cal.createSchedules([schedule]);
+                //cal.createSchedules([schedule]);
 
                 refreshScheduleVisibility();
             }
