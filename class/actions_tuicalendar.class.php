@@ -713,7 +713,7 @@ class ActionsTuiCalendar
             print '    <span id="renderRange" class="render-range"></span>
             </div>
             <div id="createSchedule" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-lg" style="text-align:center;" role="document">
+                <div class="modal-dialog" style="text-align:center;" role="document">
                     <div class="modal-content" >
                         <div class="modal-header">
                             <h5 class="modal-title">'.$langs->trans('NewAction'). '</h5>
@@ -721,7 +721,6 @@ class ActionsTuiCalendar
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-
                         <div class="form-group">
                             <label for="type" class="col-sm-2 control-label" >Type</label>
                             <div class="col-sm-10">
@@ -733,8 +732,8 @@ class ActionsTuiCalendar
                                 <option value="5">Intervention sur site</option>
                                 <option value="6">Autre</option>
                             </select>
-                            <div id="type" style="margin-top: 10px;"></div>       
-                            </div> 
+                            <div id="type" style="margin-top: 10px;"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -752,6 +751,7 @@ class ActionsTuiCalendar
                                 <div id="startpickerContainer" style="margin-top: 10px;"></div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="endDate" class="col-sm-2 control-label">End date</label>
                             <div class="col-sm-10">
@@ -768,9 +768,9 @@ class ActionsTuiCalendar
                                 <option value="2">A faire</option>
                                 <option value="3">En cours</option>
                                 <option value="4">Terminé</option>
-                            </select>       
-                            <div id="etat" style="margin-top: 10px;"></div>  
-                            </div> 
+                            </select>
+                            <div id="etat" style="margin-top: 10px;"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -778,9 +778,9 @@ class ActionsTuiCalendar
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="userAssigned" >
                                 <option value="1">ToDo</option>
-                            </select>       
-                            <div id="userAssigned" style="margin-top: 10px;"></div>  
-                            </div> 
+                            </select>
+                            <div id="userAssigned" style="margin-top: 10px;"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -788,9 +788,9 @@ class ActionsTuiCalendar
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="thirdPartyAssigned" >
                                 <option value="1">ToDo</option>
-                            </select>       
-                            <div id="thirdPartyAssigned" style="margin-top: 10px;"></div>  
-                            </div> 
+                            </select>
+                            <div id="thirdPartyAssigned" style="margin-top: 10px;"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -798,9 +798,9 @@ class ActionsTuiCalendar
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="contactAssigned" >
                                 <option value="1">ToDo</option>
-                            </select>    
-                            <div id="contactAssigned" style="margin-top: 10px;"></div>     
-                            </div> 
+                            </select>
+                            <div id="contactAssigned" style="margin-top: 10px;"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -808,9 +808,9 @@ class ActionsTuiCalendar
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="project" >
                                 <option value="1">ToDo</option>
-                            </select>       
-                            <div id="project" style="margin-top: 10px;"></div>  
-                            </div> 
+                            </select>
+                            <div id="project" style="margin-top: 10px;"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -818,9 +818,9 @@ class ActionsTuiCalendar
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="task" >
                                 <option value="1">ToDo</option>
-                            </select>      
-                            <div id="task" style="margin-top: 10px;"></div>   
-                            </div> 
+                            </select>
+                            <div id="task" style="margin-top: 10px;"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -829,7 +829,7 @@ class ActionsTuiCalendar
                                 <textarea class="form-control" id="description" placeholder="description"></textarea>
                                 <div id="description" style="margin-top: 10px;"></div>
                             </div>
-                        </div>  
+                        </div>
 
                         <div class="modal-footer">
                             <button id="buttonSubmitModal" type="button" class="btn btn-primary">'.$langs->trans('Save').'</button>
@@ -1272,9 +1272,29 @@ class ActionsTuiCalendar
                     // });
 
                     // open modal
-                    $('#createSchedule').modal('show', function(event) {
-                        console.log(event);
-                        // initialiser start et event ici
+                    $('#createSchedule').modal('show');
+                    console.log(event);
+                    var start = new tui.DatePicker('#startpickerContainer', {
+                        date: event.start._date,
+                        input: {
+                            element: '#startDate',
+                            format: 'yyyy-MM-dd HH:mm'
+                        },
+                        timePicker: {
+                          layoutType: 'tab',
+                          inputType: 'spinbox'
+                        }
+                    });
+                    var end = new tui.DatePicker('#endpickerContainer', {
+                        date: event.end._date,
+                        input: {
+                            element: '#endDate',
+                            format: 'yyyy-MM-dd HH:mm'
+                        },
+                        timePicker: {
+                          layoutType: 'tab',
+                          inputType: 'spinbox'
+                        }
                     });
 
                     // clear guide element
@@ -1357,18 +1377,7 @@ class ActionsTuiCalendar
             // modal events
             $('#createSchedule').on('show.bs.modal', function (e) {
                 console.log('modal opened');
-                var start = new tui.DatePicker('#startpickerContainer', {
-                    input: {
-                        element: '#startDate',
-                        format: 'yyyy-MM-dd HH:mm'
-                    }
-                });
-                var end = new tui.DatePicker('#endpickerContainer', {
-                    input: {
-                        element: '#endDate',
-                        format: 'yyyy-MM-dd HH:mm'
-                    }
-                });
+                console.log(e);
                 // possibilité ici d'initialiser des champs dans la modal
             });
             $('#createSchedule').on('hidden.bs.modal', function (e) {
@@ -1567,6 +1576,8 @@ class ActionsTuiCalendar
                         start: start,
                         end: end
                     });
+                } else {
+                    // open modal
                 }
             }
 
