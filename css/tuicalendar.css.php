@@ -79,9 +79,13 @@ if (empty($dolibarr_nocache)) {
   border-color: #ddd;
 }
 
-.btn:hover {
+.btn-primary:hover {
   border: solid 1px #bbb;
-  background-color: #fff;
+  background-color: blue;
+}
+.btn-secondary:hover {
+  border: solid 1px #bbb;
+  background-color: grey;
 }
 
 .btn:active {
