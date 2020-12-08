@@ -713,8 +713,8 @@ class ActionsTuiCalendar
             print '    <span id="renderRange" class="render-range"></span>
             </div>
             <div id="createSchedule" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-xl" role="document">
-                    <div class="modal-content">
+                <div class="modal-lg" style="text-align:center;" role="document">
+                    <div class="modal-content" >
                         <div class="modal-header">
                             <h5 class="modal-title">'.$langs->trans('NewAction'). '</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -740,8 +740,8 @@ class ActionsTuiCalendar
                         <div class="form-group">
                             <label for="libelle" class="col-sm-2 control-label">Libelle</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="Libelle" placeholder="Libelle" />
-                                <div id="Libelle" style="margin-top: 10px;"></div>
+                                <input type="text" class="form-control" id="libelle" placeholder="Libelle" />
+                                <div id="libelle" style="margin-top: 10px;"></div>
                             </div>
                         </div>
 
@@ -832,13 +832,17 @@ class ActionsTuiCalendar
                         </div>  
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">'.$langs->trans('Save').'</button>
+                            <button id="buttonSubmitModal" type="button" class="btn btn-primary">'.$langs->trans('Save').'</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">'.$langs->trans('Cancel').'</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div id="calendar" style="height: 800px;"></div>';
+            ?><script>
+                var test = document.getElementById("buttonSubmitModal");
+                test.onclick = function(){alert("TEST !")};
+            </script><?php
             // réactivation dropdown utilisateur
             print '<script>
                 $( document ).ready(function() {
