@@ -43,7 +43,6 @@ class ActionsTuiCalendar
      */
     public $errors = array();
 
-
     /**
      * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
      */
@@ -703,6 +702,7 @@ class ActionsTuiCalendar
                 print '    <input class="form-control projectsAutoComplete" type="text" placeholder="' . $langs->trans("Project") . '" autocomplete="off">';
                 print '</span>';
             }
+            // TODO récupérer les types d'évènements en ajax
             print '<span id="search-actioncode" class="search-actioncode">';
             print '    <select class="form-control actioncodeAutoComplete" multiple type="text" placeholder="' . $langs->trans('Actioncode') . '">';
             print '    <option>Mustard</option>';
@@ -711,6 +711,42 @@ class ActionsTuiCalendar
             print '<select>';
             print '</span>';
             print '    <span id="renderRange" class="render-range"></span>
+            </div>
+            <div id="createSchedule" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">'.$langs->trans('NewAction').'</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label for="startDate" class="col-sm-2 control-label">Start date</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="startDate" placeholder="Start date" />
+                                <div id="startpickerContainer" style="margin-top: -1px;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate" class="col-sm-2 control-label">End date</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="endDate" placeholder="End date" />
+                                <div id="endpickerContainer" style="margin-top: -1px;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="location" class="col-sm-2 control-label">'.$langs->trans('Location').'</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="location" placeholder="'.$langs->trans('Location').'" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">'.$langs->trans('Save').'</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">'.$langs->trans('Cancel').'</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="calendar" style="height: 800px;"></div>';
             // réactivation dropdown utilisateur
@@ -1022,7 +1058,7 @@ class ActionsTuiCalendar
             //var Calendar = tui.Calendar;
 
             var useCreationPopup = false;
-            var useDetailPopup = false;
+            var useDetailPopup = true;
             var useNarrowWeekEnd = false;
             var useStartDayOfWeek = 1;
             var datePicker, selectedCalendar;
@@ -1124,28 +1160,38 @@ class ActionsTuiCalendar
                 },
                 'beforeCreateSchedule': function(event) {
                     console.log('beforeCreateSchedule', event);
-                    $.ajax({
-                        url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
-                        dataType: 'json',
-                        //contentType: 'application/json',
-                        type:'post',
-                        data: {
-                            event: JSON.stringify(event),
-                        },
-                        success: function(response, status) {
-                            event.id = response.id;
-                            saveNewSchedule(event);
-                        },
-                        error: function(response, status, e) {
-                            console.log('error beforeCreateSchedule');
-                        }
+                    // $.ajax({
+                    //     url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
+                    //     dataType: 'json',
+                    //     //contentType: 'application/json',
+                    //     type:'post',
+                    //     data: {
+                    //         event: JSON.stringify(event),
+                    //     },
+                    //     success: function(response, status) {
+                    //         event.id = response.id;
+                    //         saveNewSchedule(event);
+                    //     },
+                    //     error: function(response, status, e) {
+                    //         console.log('error beforeCreateSchedule');
+                    //     }
+                    // });
+
+                    // open modal
+                    $('#createSchedule').modal('show', function(event) {
+                        console.log(event);
+                        // initialiser start et event ici
                     });
+
+                    // clear guide element
+                    event.guide.clearGuideElement();
                 },
                 'beforeUpdateSchedule': function(event) {
                     console.log('beforeUpdateSchedule', event);
                     var schedule = event.schedule;
                     var startTime = event.start;
                     var endTime = event.end;
+                    var offset = new Date();
                     $.ajax({
                         url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=putevent',
                         dataType: 'json',
@@ -1154,7 +1200,8 @@ class ActionsTuiCalendar
                         data: {
                             schedule: JSON.stringify(schedule),
                             start: JSON.stringify(startTime),
-                            end: JSON.stringify(endTime)
+                            end: JSON.stringify(endTime),
+                            offset: offset.getTimezoneOffset()
                         },
                         success: function(response, status) {
                             console.log('success');
@@ -1211,6 +1258,39 @@ class ActionsTuiCalendar
                     }
                     return true;
                 }
+            });
+
+            // modal events
+            $('#createSchedule').on('show.bs.modal', function (e) {
+                console.log('modal opened');
+                var start = new tui.DatePicker('#startpickerContainer', {
+                    input: {
+                        element: '#startDate',
+                        format: 'yyyy-MM-dd HH:mm'
+                    }
+                });
+                var end = new tui.DatePicker('#endpickerContainer', {
+                    input: {
+                        element: '#endDate',
+                        format: 'yyyy-MM-dd HH:mm'
+                    }
+                });
+                // possibilité ici d'initialiser des champs dans la modal
+            });
+            $('#createSchedule').on('hidden.bs.modal', function (e) {
+                console.log('modal was closed');
+                console.log(e);
+                var schedule = {
+                    id: +new Date(),
+                    title: 'test',
+                    isAllDay: true,
+                    start: e.start,
+                    end: e.end,
+                    category:  'allday'
+                };
+                console.log(schedule);
+                // save schedule
+                cal.createSchedules([schedule]);
             });
 
             /**

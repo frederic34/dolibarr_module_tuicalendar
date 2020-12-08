@@ -75,9 +75,11 @@ switch ($action) {
             //var_dump($updatedevent);
             $datestart = json_decode(GETPOST('start', 'none'));
             $dateend = json_decode(GETPOST('end', 'none'));
-            dol_syslog('updated events ajax REQUEST ' . print_r($updatedevent, true), LOG_NOTICE);
-            //dol_syslog('updated events ajax REQUEST '.print_r($datestart, true), LOG_NOTICE);
-            //dol_syslog('updated events ajax REQUEST '.print_r($dateend, true), LOG_NOTICE);
+            $offset = json_decode(GETPOST('offset', 'none'));
+            dol_syslog('updated events ajax REQUEST event ' . print_r($updatedevent, true), LOG_NOTICE);
+            dol_syslog('updated events ajax REQUEST datestart '.print_r($datestart, true), LOG_NOTICE);
+            dol_syslog('updated events ajax REQUEST dateend '.print_r($dateend, true), LOG_NOTICE);
+            dol_syslog('updated events ajax REQUEST offset '.print_r($offset, true), LOG_NOTICE);
             $action = new ActionComm($db);
             $action->fetch($updatedevent->id);
             $action->fetch_optionals();
@@ -86,6 +88,7 @@ switch ($action) {
             $action->location = $updatedevent->location;
             $action->fulldayevent = $updatedevent->isAllDay ? 1 : 0;
             $action->datep = strtotime($datestart->_date);
+            dol_syslog('updated events ajax REQUEST datep '.print_r($action->datep, true), LOG_NOTICE);
             $action->datef = strtotime($dateend->_date);
             $res = $action->update($user);
             if ($res < 0) {
@@ -356,6 +359,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 
     $events = [];
     $now = dol_now();
+    $tz = ini_get('date.timezone');
 
     // $events = array(
     //     'events' => array(
@@ -426,7 +430,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
         if (empty($filtert) && empty($conf->global->AGENDA_ALL_CALENDARS)) {
             $filtert = $user->id;
         }
-        $socid = (int) GETPOST("socid", "int");
+        // $socid = (int) GETPOST("socid", "int");
         if ($user->socid) {
             $socid = $user->socid;
         }
@@ -560,7 +564,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
             //     $event->fetch_optionals();
             // }
             $event->fetch_userassigned();
-            $event->color = $obj->color;
+            $event->color = $obj->color ? '#'.$obj->color : '';
             $event->type_color = $obj->type_color;
 
             $raw = new stdClass();
@@ -569,10 +573,10 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 
             $dtstart = new DateTime();
             $dtstart->setTimestamp($event->datep);
-            $dtstart->setTimezone(new DateTimeZone('Europe/Paris'));
+            $dtstart->setTimezone(new DateTimeZone('UTC'));
             $dtend = new DateTime();
             $dtend->setTimestamp((empty($event->datef) ? $event->datep + 10 : $event->datef));
-            $dtend->setTimezone(new DateTimeZone('Europe/Paris'));
+            $dtend->setTimezone(new DateTimeZone('UTC'));
             $assignedUsers = array();
             foreach ($event->userassigned as $key => $value) {
                 if (! isset($CacheUser[$value['id']])) {
@@ -582,6 +586,11 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
                 }
                 //$assignedUsers[] = dolGetFirstLastname($CacheUser[$value['id']]->firstname, $CacheUser[$value['id']]->lastname);
                 $assignedUsers[] = $CacheUser[$value['id']]->tooltip;
+            }
+            // Is Read Only
+            $isreadonly = false;
+            if (($event->type_code == 'AC_OTH_AUTO') || (($user->id != $event->userownerid) && !$user->rights->agenda->allactions->create)) {
+                $isreadonly = true;
             }
 
             $events[] = array(
@@ -599,16 +608,16 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
                 'goingDuration' => 0,
                 // Le temps de trajet: Durée retour en minutes
                 'comingDuration' => 0,
-                'isReadOnly' => ($event->type_code == 'AC_OTH_AUTO') ? true : false,
+                'isReadOnly' => $isreadonly,
                 'isAllDay' => $isallday,
                 // color : The schedule text color
                 //'color' => '#'.$obj->color,
                 // bgColor : The schedule background color
-                'bgColor' => '#' . $obj->color,
+                'bgColor' => $event->color,
                 // borderColor : The schedule border color
-                'borderColor' => '#' . $obj->color,
+                'borderColor' => $event->color,
                 // dragBgColor : The schedule drag background color
-                'dragBgColor' => '#' . $obj->color,
+                'dragBgColor' => $event->color,
                 'category' => ($isallday ? 'allday' : 'time'),
                 'dueDateClass' => '',
                 'attendees' => $assignedUsers,
@@ -685,6 +694,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
                 'end' => dol_print_date($datep, "%Y-%m-%dT%H:%M:%S") . '+04:00',
                 'goingDuration' => 0,
                 'comingDuration' => 0,
+                // birthdays are readonly
                 'isReadOnly' => true,
                 'isAllDay' => true,
                 // color : The schedule text color
@@ -702,10 +712,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
     }
     $listofextcals = [];
     if ($calendarId > 2) {
-        if (empty($conf->global->AGENDA_EXT_NB)) {
-            $conf->global->AGENDA_EXT_NB = 5;
-        }
-        $MAXAGENDA = $conf->global->AGENDA_EXT_NB;
+        $MAXAGENDA = (!empty($conf->global->AGENDA_EXT_NB) ? (int) $conf->global->AGENDA_EXT_NB : 5);
         // Define list of external calendars (global admin setup)
         if (empty($conf->global->AGENDA_DISABLE_EXT)) {
             $i = 0;
@@ -818,8 +825,8 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
                 $ical = dol_readcachefile($cachedir, $filename);
             }
             // pour faire des dumps dans la librairie ical, il faut désactiver le cache...
-            //var_dump($ical->events());
-            //print '<pre>' . print_r($ical, true)  . '</pre>';
+            // var_dump($ical->events());
+            // print '<pre>' . print_r($ical, true)  . '</pre>';
             $icalevents = $ical->events();
 
             // Loop on each entry into cal file to know if entry is qualified and add an ActionComm into $eventarray
@@ -875,6 +882,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
                         'goingDuration' => 0,
                         // Le temps de trajet: Durée retour en minutes
                         'comingDuration' => 0,
+                        // icals are readonly
                         'isReadOnly' => true,
                         'isAllDay' => $fulldayevent,
                         // color : The schedule text color
