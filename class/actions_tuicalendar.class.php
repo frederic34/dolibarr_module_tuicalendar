@@ -978,9 +978,9 @@ class ActionsTuiCalendar
                             schedule.dragBgColor = event.dragBgColor || mycalendar.dragBgColor,
                             //schedule.borderColor = event.borderColor || mycalendar.borderColor,
                             schedule.borderColor = mycalendar.borderColor,
-                            schedule.location = event.location,
-                            schedule.raw.location = event.raw.location,
-                            schedule.attendees = event.attendees
+                            schedule.location = event.location;
+                            schedule.raw.location = event.raw.location;
+                            schedule.attendees = event.attendees;
                             //console.log(schedule);
                             ScheduleList.push(schedule);
                             // var schedule = {
@@ -1062,6 +1062,7 @@ class ActionsTuiCalendar
                                 schedule.borderColor = event.borderColor,
                                 schedule.category = 'time';
                                 schedule.location = event.location;
+                                schedule.attendees = event.attendees;
                                 cal.createSchedules([schedule]);
                                 ScheduleList.push(schedule);
                             }
