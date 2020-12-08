@@ -1021,8 +1021,8 @@ class ActionsTuiCalendar
         (function(window, Calendar) {
             //var Calendar = tui.Calendar;
 
-            var useCreationPopup = true;
-            var useDetailPopup = true;
+            var useCreationPopup = false;
+            var useDetailPopup = false;
             var useNarrowWeekEnd = false;
             var useStartDayOfWeek = 1;
             var datePicker, selectedCalendar;
