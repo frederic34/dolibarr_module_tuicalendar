@@ -721,8 +721,25 @@ class ActionsTuiCalendar
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            <p>Modal body text goes here.</p>
+                        <div class="form-group">
+                            <label for="startDate" class="col-sm-2 control-label">Start date</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="startDate" placeholder="Start date" />
+                                <div id="startpickerContainer" style="margin-top: -1px;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate" class="col-sm-2 control-label">End date</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="endDate" placeholder="End date" />
+                                <div id="endpickerContainer" style="margin-top: -1px;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="location" class="col-sm-2 control-label">'.$langs->trans('Location').'</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="location" placeholder="'.$langs->trans('Location').'" />
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary">'.$langs->trans('Save').'</button>
@@ -1161,7 +1178,10 @@ class ActionsTuiCalendar
                     // });
 
                     // open modal
-                    $('#createSchedule').modal('show');
+                    $('#createSchedule').modal('show', function(event) {
+                        console.log(event);
+                        // initialiser start et event ici
+                    });
 
                     // clear guide element
                     event.guide.clearGuideElement();
@@ -1243,6 +1263,18 @@ class ActionsTuiCalendar
             // modal events
             $('#createSchedule').on('show.bs.modal', function (e) {
                 console.log('modal opened');
+                var start = new tui.DatePicker('#startpickerContainer', {
+                    input: {
+                        element: '#startDate',
+                        format: 'yyyy-MM-dd HH:mm'
+                    }
+                });
+                var end = new tui.DatePicker('#endpickerContainer', {
+                    input: {
+                        element: '#endDate',
+                        format: 'yyyy-MM-dd HH:mm'
+                    }
+                });
                 // possibilité ici d'initialiser des champs dans la modal
             });
             $('#createSchedule').on('hidden.bs.modal', function (e) {
