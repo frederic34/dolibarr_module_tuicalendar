@@ -825,10 +825,10 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="description" class="col-sm-2 control-label">Description</label>
+                            <label for="body" class="col-sm-2 control-label">Description</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" id="description" placeholder="description"></textarea>
-                                <div id="description" style="margin-top: 10px;"></div>
+                                <textarea class="form-control" id="body" placeholder="body"></textarea>
+                                <div id="body" style="margin-top: 10px;"></div>
                             </div>
                         </div>
 
@@ -1053,6 +1053,7 @@ class ActionsTuiCalendar
                                 schedule.id = event.id;
                                 schedule.calendarId = event.calendarId;
                                 schedule.title = event.title;
+                                schedule.body = event.body;
                                 schedule.start = event.start;
                                 schedule.end = event.end;
                                 schedule.isAllDay = event.isAllDay;
@@ -1386,6 +1387,7 @@ class ActionsTuiCalendar
             });
 
             $('#actionForm').submit(function(e) {
+                // stop sending form default
                 e.preventDefault();
                 // Coding
                 console.log($('form#actionForm'));
@@ -1396,10 +1398,11 @@ class ActionsTuiCalendar
                 // dolibarr calendar id 1
                 // récupérer les infos du formulaire
                 schedule.calendarId = 1;
-                schedule.title = 'test';
+                schedule.title = $('#title').val();
+                schedule.body =  $('#body').val();
                 schedule.isAllDay = false;
-                schedule.start = new Date();
-                schedule.end = moment().add(1, 'hours').toDate();
+                schedule.start = $('#startDate').val();
+                schedule.end = $('#endDate').val();
                 schedule.category =  'time';
                 console.log(schedule);
                 // save schedule
