@@ -956,31 +956,31 @@ class ActionsTuiCalendar
                             //console.log(event);
                             var schedule = new ScheduleInfo();
 
-                            schedule.id = event.id,
-                            schedule.calendarId = event.calendarId,
-                            schedule.title = event.title,
-                            schedule.body = event.body,
-                            schedule.attendees = '',
-                            schedule.start = event.start,
-                            schedule.end = event.end,
-                            schedule.isAllDay = event.isAllDay,
-                            schedule.goingDuration = event.goingDuration,
-                            schedule.comingDuration = event.comingDuration,
-                            schedule.isReadOnly = event.isReadOnly,
-                            schedule.isPrivate = false,
-                            schedule.isVisible = true,
-                            schedule.category = 'time',
-                            schedule.recurrenceRule = '',
+                            schedule.id = event.id;
+                            schedule.calendarId = event.calendarId;
+                            schedule.title = event.title;
+                            schedule.body = event.body;
+                            schedule.attendees = '';
+                            schedule.start = event.start;
+                            schedule.end = event.end;
+                            schedule.isAllDay = event.isAllDay;
+                            schedule.goingDuration = event.goingDuration;
+                            schedule.comingDuration = event.comingDuration;
+                            schedule.isReadOnly = event.isReadOnly;
+                            schedule.isPrivate = false;
+                            schedule.isVisible = true;
+                            schedule.category = 'time';
+                            schedule.recurrenceRule = '';
                             // busy or free
-                            schedule.state = event.state || '',
-                            schedule.color = event.color || mycalendar.color,
-                            schedule.bgColor = event.bgColor || mycalendar.bgColor,
-                            schedule.dragBgColor = event.dragBgColor || mycalendar.dragBgColor,
-                            //schedule.borderColor = event.borderColor || mycalendar.borderColor,
-                            schedule.borderColor = mycalendar.borderColor,
-                            schedule.location = event.location,
-                            schedule.raw.location = event.raw.location,
-                            schedule.attendees = event.attendees
+                            schedule.state = event.state || '';
+                            schedule.color = event.color || mycalendar.color;
+                            schedule.bgColor = event.bgColor || mycalendar.bgColor;
+                            schedule.dragBgColor = event.dragBgColor || mycalendar.dragBgColor;
+                            //schedule.borderColor = event.borderColor || mycalendar.borderColor;
+                            schedule.borderColor = mycalendar.borderColor;
+                            schedule.location = event.location;
+                            schedule.raw.location = event.raw.location;
+                            schedule.attendees = event.attendees;
                             //console.log(schedule);
                             ScheduleList.push(schedule);
                             // var schedule = {
@@ -1062,6 +1062,7 @@ class ActionsTuiCalendar
                                 schedule.borderColor = event.borderColor,
                                 schedule.category = 'time';
                                 schedule.location = event.location;
+                                schedule.attendees = event.attendees;
                                 cal.createSchedules([schedule]);
                                 ScheduleList.push(schedule);
                             }
