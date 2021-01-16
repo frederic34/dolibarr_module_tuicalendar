@@ -41,7 +41,7 @@ TuiCalendarAboutPage = Page à propos de TuiCalendar
 # Box d'exemple
 #
 MyWidget = Mon widget
-MyWidgetDescription = Description de mon widget
+MyWidgetDescription=Description de mon widget
 TuiCalendarUser=Utilisateur
 TuiCalendarViewAgenda=Agenda
 TuiCalendarFree=Disponible

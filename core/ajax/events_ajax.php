@@ -49,6 +49,9 @@ top_httphead('application/json', 1);
 //dol_syslog('posted events ajax REQUEST '.print_r($_REQUEST, true), LOG_NOTICE);
 $action = GETPOSTISSET('action') ? GETPOST('action', 'aZ09') : 'getevents';
 switch ($action) {
+    case 'getconfig':
+        print json_encode([]);
+        break;
     case 'getevents':
         $calendarId = GETPOST('calendarId', 'alpha');
         $calendarName = GETPOST('calendarName', 'alpha');
