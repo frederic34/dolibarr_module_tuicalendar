@@ -34,7 +34,7 @@ function tuicalendarAdminPrepareHead()
 
     $h = 0;
     $head = [];
-*
+
     $head[$h][0] = dol_buildpath("/tuicalendar/admin/setup.php", 1);
     $head[$h][1] = $langs->trans("Settings");
     $head[$h][2] = 'settings';
