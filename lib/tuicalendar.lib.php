@@ -33,8 +33,8 @@ function tuicalendarAdminPrepareHead()
     $langs->load("tuicalendar@tuicalendar");
 
     $h = 0;
-    $head = array();
-
+    $head = [];
+*
     $head[$h][0] = dol_buildpath("/tuicalendar/admin/setup.php", 1);
     $head[$h][1] = $langs->trans("Settings");
     $head[$h][2] = 'settings';
