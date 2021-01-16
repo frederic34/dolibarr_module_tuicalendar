@@ -2213,7 +2213,7 @@ class ActionsTuiCalendar
         $error = 0; // Error counter
 
         /* print_r($parameters); print_r($object); echo "action: " . $action; */
-        if (in_array($parameters['currentcontext'], array('somecontext1','somecontext2'))) {
+        if (in_array($parameters['currentcontext'], ['somecontext1', 'somecontext2'])) {
             // do something only for the context 'somecontext1' or 'somecontext2'
             foreach ($parameters['toselect'] as $objectid) {
                 // Do action on each object id
@@ -2221,7 +2221,9 @@ class ActionsTuiCalendar
         }
 
         if (! $error) {
-            $this->results = array('myreturn' => 999);
+            $this->results = [
+                'myreturn' => 999,
+            ];
             $this->resprints = 'A text to show';
             return 0; // or return 1 to replace standard code
         } else {
@@ -2244,7 +2246,7 @@ class ActionsTuiCalendar
         global $conf, $user, $langs;
 
         $error = 0; // Error counter
-        $this->results = array();
+        $this->results = [];
         $this->resprints = '';
         $langs->load('commercial');
 
@@ -2253,7 +2255,7 @@ class ActionsTuiCalendar
         //var_dump($hookmanager);
         //echo "action: " . $action;
         // calendar
-        if (in_array($parameters['currentcontext'], array('agenda')) && basename($_SERVER['PHP_SELF']) == 'index.php') {
+        if (in_array($parameters['currentcontext'], ['agenda']) && basename($_SERVER['PHP_SELF']) == 'index.php') {
             $this->resprints = '
             <div class="vmenu lnb-new-schedule">
                 <button id="btn-new-schedule" type="button" class="btn btn-default btn-block lnb-new-schedule-btn" data-toggle="modal">
