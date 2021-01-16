@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2019-2020  Frédéric France     <frederic.france@netlogic.fr>
+ * Copyright (C) 2019-2021  Frédéric France     <frederic.france@netlogic.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,13 +33,13 @@ foreach ($filename as $val) {
     $arraymain[] = implode('/', $newfile);
 }
 $arraymain = array_merge(
-    array(
+    [
         $_SERVER["CONTEXT_DOCUMENT_ROOT"] ?? '',
         '..',
         '../..',
         '../../..',
         '../../../..',
-    ),
+    ],
     array_reverse($arraymain)
 );
 foreach ($arraymain as $path) {
