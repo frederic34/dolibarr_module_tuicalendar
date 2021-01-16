@@ -702,6 +702,7 @@ class ActionsTuiCalendar
                 print '    <input class="form-control projectsAutoComplete" type="text" placeholder="' . $langs->trans("Project") . '" autocomplete="off">';
                 print '</span>';
             }
+            // TODO récupérer les types d'évènements en ajax
             print '<span id="search-actioncode" class="search-actioncode">';
             print '    <select class="form-control actioncodeAutoComplete" multiple type="text" placeholder="' . $langs->trans('Actioncode') . '">';
             print '    <option>Mustard</option>';
@@ -710,6 +711,134 @@ class ActionsTuiCalendar
             print '<select>';
             print '</span>';
             print '    <span id="renderRange" class="render-range"></span>
+            </div>
+            <div id="createSchedule" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" style="text-align:center;" role="document">
+                    <div class="modal-content" >
+                        <div class="modal-header">
+                            <h5 class="modal-title">'.$langs->trans('NewAction'). '</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="actionForm" name="action" role="form">
+                        <div class="form-group">
+                            <label for="type" class="col-sm-2 control-label" >Type</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="type" >
+                                <option value="1">Rendez-Vous</option>
+                                <option value="2">Appel téléphonique</option>
+                                <option value="3">Envoi fax</option>
+                                <option value="4">Envoi email</option>
+                                <option value="5">Intervention sur site</option>
+                                <option value="6">Autre</option>
+                            </select>
+                            <div id="type" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="title" class="col-sm-2 control-label">Libelle</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="title" placeholder="Libelle" />
+                                <div id="title" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="startDate" class="col-sm-2 control-label">Start date</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="startDate" placeholder="Start date" />
+                                <div id="startpickerContainer" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endDate" class="col-sm-2 control-label">End date</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="endDate" placeholder="End date" />
+                                <div id="endpickerContainer" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="etat" class="col-sm-2 control-label" >État</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="etat" >
+                                <option value="1">Non applicable</option>
+                                <option value="2">A faire</option>
+                                <option value="3">En cours</option>
+                                <option value="4">Terminé</option>
+                            </select>
+                            <div id="etat" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userAssigned" class="col-sm-2 control-label" >Événement assigné à</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="userAssigned" >
+                                <option value="1">ToDo</option>
+                            </select>
+                            <div id="userAssigned" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="thirdPartyAssigned" class="col-sm-2 control-label" >Tiers concerné</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="thirdPartyAssigned" >
+                                <option value="1">ToDo</option>
+                            </select>
+                            <div id="thirdPartyAssigned" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactAssigned" class="col-sm-2 control-label" >Contact concerné</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="contactAssigned" >
+                                <option value="1">ToDo</option>
+                            </select>
+                            <div id="contactAssigned" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project" class="col-sm-2 control-label" >Projet</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="project" >
+                                <option value="1">ToDo</option>
+                            </select>
+                            <div id="project" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="task" class="col-sm-2 control-label" >Tâche</label>
+                            <div class="col-sm-10">
+                            <select  class="custom-select form-control" id="task" >
+                                <option value="1">ToDo</option>
+                            </select>
+                            <div id="task" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="body" class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="body" placeholder="body"></textarea>
+                                <div id="body" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="buttonSubmitModal" type="submit" class="btn btn-primary">'.$langs->trans('Save').'</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">'.$langs->trans('Cancel').'</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div id="calendar" style="height: 800px;"></div>';
             // réactivation dropdown utilisateur
@@ -827,31 +956,31 @@ class ActionsTuiCalendar
                             //console.log(event);
                             var schedule = new ScheduleInfo();
 
-                            schedule.id = event.id,
-                            schedule.calendarId = event.calendarId,
-                            schedule.title = event.title,
-                            schedule.body = event.body,
-                            schedule.attendees = '',
-                            schedule.start = event.start,
-                            schedule.end = event.end,
-                            schedule.isAllDay = event.isAllDay,
-                            schedule.goingDuration = event.goingDuration,
-                            schedule.comingDuration = event.comingDuration,
-                            schedule.isReadOnly = event.isReadOnly,
-                            schedule.isPrivate = false,
-                            schedule.isVisible = true,
-                            schedule.category = 'time',
-                            schedule.recurrenceRule = '',
+                            schedule.id = event.id;
+                            schedule.calendarId = event.calendarId;
+                            schedule.title = event.title;
+                            schedule.body = event.body;
+                            schedule.attendees = '';
+                            schedule.start = event.start;
+                            schedule.end = event.end;
+                            schedule.isAllDay = event.isAllDay;
+                            schedule.goingDuration = event.goingDuration;
+                            schedule.comingDuration = event.comingDuration;
+                            schedule.isReadOnly = event.isReadOnly;
+                            schedule.isPrivate = false;
+                            schedule.isVisible = true;
+                            schedule.category = 'time';
+                            schedule.recurrenceRule = '';
                             // busy or free
-                            schedule.state = event.state || '',
-                            schedule.color = event.color || mycalendar.color,
-                            schedule.bgColor = event.bgColor || mycalendar.bgColor,
-                            schedule.dragBgColor = event.dragBgColor || mycalendar.dragBgColor,
-                            //schedule.borderColor = event.borderColor || mycalendar.borderColor,
-                            schedule.borderColor = mycalendar.borderColor,
-                            schedule.location = event.location,
-                            schedule.raw.location = event.raw.location,
-                            schedule.attendees = event.attendees
+                            schedule.state = event.state || '';
+                            schedule.color = event.color || mycalendar.color;
+                            schedule.bgColor = event.bgColor || mycalendar.bgColor;
+                            schedule.dragBgColor = event.dragBgColor || mycalendar.dragBgColor;
+                            //schedule.borderColor = event.borderColor || mycalendar.borderColor;
+                            schedule.borderColor = mycalendar.borderColor;
+                            schedule.location = event.location;
+                            schedule.raw.location = event.raw.location;
+                            schedule.attendees = event.attendees;
                             //console.log(schedule);
                             ScheduleList.push(schedule);
                             // var schedule = {
@@ -924,6 +1053,7 @@ class ActionsTuiCalendar
                                 schedule.id = event.id;
                                 schedule.calendarId = event.calendarId;
                                 schedule.title = event.title;
+                                schedule.body = event.body;
                                 schedule.start = event.start;
                                 schedule.end = event.end;
                                 schedule.isAllDay = event.isAllDay;
@@ -933,6 +1063,7 @@ class ActionsTuiCalendar
                                 schedule.borderColor = event.borderColor,
                                 schedule.category = 'time';
                                 schedule.location = event.location;
+                                schedule.attendees = event.attendees;
                                 cal.createSchedules([schedule]);
                                 ScheduleList.push(schedule);
                             }
@@ -1020,7 +1151,7 @@ class ActionsTuiCalendar
         (function(window, Calendar) {
             //var Calendar = tui.Calendar;
 
-            var useCreationPopup = true;
+            var useCreationPopup = false;
             var useDetailPopup = true;
             var useNarrowWeekEnd = false;
             var useStartDayOfWeek = 1;
@@ -1123,22 +1254,51 @@ class ActionsTuiCalendar
                 },
                 'beforeCreateSchedule': function(event) {
                     console.log('beforeCreateSchedule', event);
-                    $.ajax({
-                        url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
-                        dataType: 'json',
-                        //contentType: 'application/json',
-                        type:'post',
-                        data: {
-                            event: JSON.stringify(event),
+                    // $.ajax({
+                    //     url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
+                    //     dataType: 'json',
+                    //     //contentType: 'application/json',
+                    //     type:'post',
+                    //     data: {
+                    //         event: JSON.stringify(event),
+                    //     },
+                    //     success: function(response, status) {
+                    //         event.id = response.id;
+                    //         saveNewSchedule(event);
+                    //     },
+                    //     error: function(response, status, e) {
+                    //         console.log('error beforeCreateSchedule');
+                    //     }
+                    // });
+
+                    // open modal
+                    $('#createSchedule').modal('show');
+                    console.log(event);
+                    var start = new tui.DatePicker('#startpickerContainer', {
+                        date: event.start._date,
+                        input: {
+                            element: '#startDate',
+                            format: 'yyyy-MM-dd HH:mm'
                         },
-                        success: function(response, status) {
-                            event.id = response.id;
-                            saveNewSchedule(event);
-                        },
-                        error: function(response, status, e) {
-                            console.log('error beforeCreateSchedule');
+                        timePicker: {
+                          layoutType: 'tab',
+                          inputType: 'spinbox'
                         }
                     });
+                    var end = new tui.DatePicker('#endpickerContainer', {
+                        date: event.end._date,
+                        input: {
+                            element: '#endDate',
+                            format: 'yyyy-MM-dd HH:mm'
+                        },
+                        timePicker: {
+                          layoutType: 'tab',
+                          inputType: 'spinbox'
+                        }
+                    });
+
+                    // clear guide element
+                    event.guide.clearGuideElement();
                 },
                 'beforeUpdateSchedule': function(event) {
                     console.log('beforeUpdateSchedule', event);
@@ -1212,6 +1372,61 @@ class ActionsTuiCalendar
                     }
                     return true;
                 }
+            });
+
+            // modal events
+            $('#createSchedule').on('show.bs.modal', function (e) {
+                console.log('modal opened');
+                console.log(e);
+                // possibilité ici d'initialiser des champs dans la modal
+            });
+            $('#createSchedule').on('hidden.bs.modal', function (e) {
+                console.log('modal was closed');
+                // effacer les champs
+                console.log(e);
+            });
+
+            $('#actionForm').submit(function(e) {
+                // stop sending form default
+                e.preventDefault();
+                // Coding
+                console.log($('form#actionForm'));
+                console.log('create schedule');
+                var schedule = new ScheduleInfo();
+
+                //schedule.id = +new Date();
+                // dolibarr calendar id 1
+                // récupérer les infos du formulaire
+                schedule.calendarId = 1;
+                schedule.title = $('#title').val();
+                schedule.body =  $('#body').val();
+                schedule.isAllDay = false;
+                schedule.start = $('#startDate').val();
+                schedule.end = $('#endDate').val();
+                schedule.category =  'time';
+                console.log(schedule);
+                // save schedule
+                //cal.createSchedules([schedule]);
+                $.ajax({
+                    url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
+                    dataType: 'json',
+                    //contentType: 'application/json',
+                    type:'post',
+                    data: {
+                        event: JSON.stringify(schedule),
+                    },
+                    success: function(response, status) {
+                        schedule.id = response.id;
+                        //saveNewSchedule(schedule);
+                    },
+                    error: function(response, status, e) {
+                        console.log('error submitting schedule');
+                    }
+                });
+                //saveNewSchedule(schedule);
+                // closing modal
+                $('#createSchedule').modal('toggle'); //or  $('#createSchedule').modal('hide');
+                return false;
             });
 
             /**
@@ -1394,6 +1609,32 @@ class ActionsTuiCalendar
                         start: start,
                         end: end
                     });
+                } else {
+                    // open modal
+                    $('#createSchedule').modal('show');
+                    console.log(event);
+                    var start = new tui.DatePicker('#startpickerContainer', {
+                        date: event.start._date,
+                        input: {
+                            element: '#startDate',
+                            format: 'yyyy-MM-dd HH:mm'
+                        },
+                        timePicker: {
+                          layoutType: 'tab',
+                          inputType: 'spinbox'
+                        }
+                    });
+                    var end = new tui.DatePicker('#endpickerContainer', {
+                        date: event.end._date,
+                        input: {
+                            element: '#endDate',
+                            format: 'yyyy-MM-dd HH:mm'
+                        },
+                        timePicker: {
+                          layoutType: 'tab',
+                          inputType: 'spinbox'
+                        }
+                    });
                 }
             }
 
@@ -1415,7 +1656,7 @@ class ActionsTuiCalendar
                     borderColor: calendar.borderColor,
                     location: scheduleData.location,
                     raw: {
-                        class: scheduleData.raw['class']
+                    //    class: scheduleData.raw['class']
                     },
                     state: scheduleData.state
                 };
@@ -1426,7 +1667,7 @@ class ActionsTuiCalendar
                     schedule.dragBgColor = calendar.dragBgColor;
                     schedule.borderColor = calendar.borderColor;
                 }
-                cal.createSchedules([schedule]);
+                //cal.createSchedules([schedule]);
 
                 refreshScheduleVisibility();
             }
