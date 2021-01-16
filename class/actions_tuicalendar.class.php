@@ -1,5 +1,5 @@
 <?php
-/* Copyright © 2019-2020  Frédéric FRANCE   <frederic.france@netlogic.fr>
+/* Copyright © 2019-2021  Frédéric FRANCE   <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -2048,11 +2048,11 @@ class ActionsTuiCalendar
         }
 
         // Hooks
-        $parameters = array(
+        $parameters = [
             'canedit' => $canedit,
             'pid' => $pid,
             'socid' => $socid,
-        );
+        ];
         $reshook = $hookmanager->executeHooks('searchAgendaFrom', $parameters, $object, $action); // Note that $action and $object may have been
 
         $html .= '</table>';
@@ -2107,12 +2107,12 @@ class ActionsTuiCalendar
         // phpcs:enable
         global $langs,$conf;
 
-        $listofstatus = array(
+        $listofstatus = [
             '-1' => $langs->trans("ActionNotApplicable"),
             '0' => $langs->trans("ActionsToDoShort"),
             '50' => $langs->trans("ActionRunningShort"),
             '100' => $langs->trans("ActionDoneShort")
-        );
+        ];
         $out = '';
         // +ActionUncomplete
 
