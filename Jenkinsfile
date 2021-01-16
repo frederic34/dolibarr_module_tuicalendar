@@ -1,11 +1,15 @@
 pipeline {
   agent any
   stages {
-    stage('test-jenkins') {
+    stage('Prepare') {
       steps {
-        echo 'Hello world'
+        sh 'composer install'
       }
     }
-
+    stage('PHP Syntax check') {
+      steps {
+        sh 'vendor/bin/parallel-lint --exclude vendor/ .'
+      }
+    }
   }
 }

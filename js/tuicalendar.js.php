@@ -23,7 +23,7 @@
  * \brief   JavaScript file for module TuiCalendar.
  */
 
-$defines = array(
+$defines = [
     'NOREQUIREUSER',
     'NOREQUIREDB',
     'NOREQUIRESOC',
@@ -34,7 +34,7 @@ $defines = array(
     'NOREQUIREMENU',
     'NOREQUIREHTML',
     'NOREQUIREAJAX',
-);
+];
 
 // Load Dolibarr environment
 include '../config.php';
