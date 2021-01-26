@@ -18,7 +18,7 @@ pipeline {
     }
     stage('Checkstyle') {
       steps {
-        sh 'vendor/bin/phpcs --standard=codesniffer/ruleset.xml --extensions=php --ignore=autoload.php --ignore=vendor/ .'
+        sh 'vendor/bin/phpcs  -s -p --standard=codesniffer/ruleset.xml --color --extensions=php --ignore=autoload.php --ignore=vendor/ .'
       }
     }
   }
