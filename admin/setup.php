@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2004-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
- * Copyright (C) 2019-2020  Frédéric FRANCE         <frederic.france@netlogic.fr>
+ * Copyright (C) 2019-2021  Frédéric FRANCE         <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ require_once '../lib/tuicalendar.lib.php';
 //require_once "../class/myclass.class.php";
 
 // Translations
-$langs->loadLangs(array("admin", "tuicalendar@tuicalendar"));
+$langs->loadLangs(["admin", "tuicalendar@tuicalendar"]);
 
 // Access control
 if (! $user->admin) {
@@ -42,16 +42,16 @@ if (! $user->admin) {
 $action = GETPOST('action', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 
-$arrayofparameters = array(
-    'TUICALENDAR_MYPARAM1' => array(
+$arrayofparameters = [
+    'TUICALENDAR_MYPARAM1' => [
         'css' => 'minwidth200',
         'enabled' => 1,
-    ),
-    'TUICALENDAR_MYPARAM2' => array(
+    ],
+    'TUICALENDAR_MYPARAM2' => [
         'css' => 'minwidth500',
         'enabled' => 1,
-    ),
-);
+    ],
+];
 
 
 

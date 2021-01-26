@@ -33,7 +33,7 @@ function tuicalendarAdminPrepareHead()
     $langs->load("tuicalendar@tuicalendar");
 
     $h = 0;
-    $head = array();
+    $head = [];
 
     $head[$h][0] = dol_buildpath("/tuicalendar/admin/setup.php", 1);
     $head[$h][1] = $langs->trans("Settings");
@@ -52,7 +52,7 @@ function tuicalendarAdminPrepareHead()
     //$this->tabs = array(
     //    'entity:-tabname:Title:@tuicalendar:/tuicalendar/mypage.php?id=__ID__'
     //); // to remove a tab
-    complete_head_from_modules($conf, $langs, null, $head, $h, 'tuicalendar');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'admin@tuicalendar');
 
     return $head;
 }

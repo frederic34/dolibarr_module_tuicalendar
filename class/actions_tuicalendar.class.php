@@ -1,5 +1,5 @@
 <?php
-/* Copyright © 2019-2020  Frédéric FRANCE   <frederic.france@netlogic.fr>
+/* Copyright © 2019-2021  Frédéric FRANCE   <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -155,8 +155,8 @@ class ActionsTuiCalendar
             $socid = $parameters['socid'];
             $canedit = $parameters['canedit'];
             $status = $parameters['status'];
-            $year = $parameters['year'];
-            $month = $parameters['month'];
+            $year = (int) $parameters['year'];
+            $month = (int) $parameters['month'];
             $day = (int) $parameters['day'];
             $type = $parameters['type'];
             $maxprint = $parameters['maxprint'];
@@ -723,9 +723,9 @@ class ActionsTuiCalendar
                         </div>
                         <form id="actionForm" name="action" role="form">
                         <div class="form-group">
-                            <label for="type" class="col-sm-2 control-label" >Type</label>
+                            <label for="type" class="col-sm-2 control-label">Type</label>
                             <div class="col-sm-10">
-                            <select  class="custom-select form-control" id="type" >
+                            <select class="custom-select form-control" id="type">
                                 <option value="1">Rendez-Vous</option>
                                 <option value="2">Appel téléphonique</option>
                                 <option value="3">Envoi fax</option>
@@ -740,7 +740,7 @@ class ActionsTuiCalendar
                         <div class="form-group">
                             <label for="title" class="col-sm-2 control-label">Libelle</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="title" placeholder="Libelle" />
+                                <input type="text" class="form-control" id="title" placeholder="Libelle" required>
                                 <div id="title" style="margin-top: 10px;"></div>
                             </div>
                         </div>
@@ -748,7 +748,7 @@ class ActionsTuiCalendar
                         <div class="form-group">
                             <label for="startDate" class="col-sm-2 control-label">Start date</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="startDate" placeholder="Start date" />
+                                <input type="text" class="form-control" id="startDate" placeholder="Start date">
                                 <div id="startpickerContainer" style="margin-top: 10px;"></div>
                             </div>
                         </div>
@@ -756,7 +756,7 @@ class ActionsTuiCalendar
                         <div class="form-group">
                             <label for="endDate" class="col-sm-2 control-label">End date</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="endDate" placeholder="End date" />
+                                <input type="text" class="form-control" id="endDate" placeholder="End date">
                                 <div id="endpickerContainer" style="margin-top: 10px;"></div>
                             </div>
                         </div>
@@ -777,7 +777,7 @@ class ActionsTuiCalendar
                         <div class="form-group">
                             <label for="userAssigned" class="col-sm-2 control-label" >Événement assigné à</label>
                             <div class="col-sm-10">
-                            <select  class="custom-select form-control" id="userAssigned" >
+                            <select  class="custom-select form-control" id="userAssigned">
                                 <option value="1">ToDo</option>
                             </select>
                             <div id="userAssigned" style="margin-top: 10px;"></div>
@@ -787,7 +787,7 @@ class ActionsTuiCalendar
                         <div class="form-group">
                             <label for="thirdPartyAssigned" class="col-sm-2 control-label" >Tiers concerné</label>
                             <div class="col-sm-10">
-                            <select  class="custom-select form-control" id="thirdPartyAssigned" >
+                            <select  class="custom-select form-control" id="thirdPartyAssigned">
                                 <option value="1">ToDo</option>
                             </select>
                             <div id="thirdPartyAssigned" style="margin-top: 10px;"></div>
@@ -797,7 +797,7 @@ class ActionsTuiCalendar
                         <div class="form-group">
                             <label for="contactAssigned" class="col-sm-2 control-label" >Contact concerné</label>
                             <div class="col-sm-10">
-                            <select  class="custom-select form-control" id="contactAssigned" >
+                            <select  class="custom-select form-control" id="contactAssigned">
                                 <option value="1">ToDo</option>
                             </select>
                             <div id="contactAssigned" style="margin-top: 10px;"></div>
@@ -807,7 +807,7 @@ class ActionsTuiCalendar
                         <div class="form-group">
                             <label for="project" class="col-sm-2 control-label" >Projet</label>
                             <div class="col-sm-10">
-                            <select  class="custom-select form-control" id="project" >
+                            <select  class="custom-select form-control" id="project">
                                 <option value="1">ToDo</option>
                             </select>
                             <div id="project" style="margin-top: 10px;"></div>
@@ -817,7 +817,7 @@ class ActionsTuiCalendar
                         <div class="form-group">
                             <label for="task" class="col-sm-2 control-label" >Tâche</label>
                             <div class="col-sm-10">
-                            <select  class="custom-select form-control" id="task" >
+                            <select  class="custom-select form-control" id="task">
                                 <option value="1">ToDo</option>
                             </select>
                             <div id="task" style="margin-top: 10px;"></div>
@@ -2048,11 +2048,11 @@ class ActionsTuiCalendar
         }
 
         // Hooks
-        $parameters = array(
+        $parameters = [
             'canedit' => $canedit,
             'pid' => $pid,
             'socid' => $socid,
-        );
+        ];
         $reshook = $hookmanager->executeHooks('searchAgendaFrom', $parameters, $object, $action); // Note that $action and $object may have been
 
         $html .= '</table>';
@@ -2107,12 +2107,12 @@ class ActionsTuiCalendar
         // phpcs:enable
         global $langs,$conf;
 
-        $listofstatus = array(
+        $listofstatus = [
             '-1' => $langs->trans("ActionNotApplicable"),
             '0' => $langs->trans("ActionsToDoShort"),
             '50' => $langs->trans("ActionRunningShort"),
             '100' => $langs->trans("ActionDoneShort")
-        );
+        ];
         $out = '';
         // +ActionUncomplete
 
@@ -2213,7 +2213,7 @@ class ActionsTuiCalendar
         $error = 0; // Error counter
 
         /* print_r($parameters); print_r($object); echo "action: " . $action; */
-        if (in_array($parameters['currentcontext'], array('somecontext1','somecontext2'))) {
+        if (in_array($parameters['currentcontext'], ['somecontext1', 'somecontext2'])) {
             // do something only for the context 'somecontext1' or 'somecontext2'
             foreach ($parameters['toselect'] as $objectid) {
                 // Do action on each object id
@@ -2221,7 +2221,9 @@ class ActionsTuiCalendar
         }
 
         if (! $error) {
-            $this->results = array('myreturn' => 999);
+            $this->results = [
+                'myreturn' => 999,
+            ];
             $this->resprints = 'A text to show';
             return 0; // or return 1 to replace standard code
         } else {
@@ -2244,7 +2246,7 @@ class ActionsTuiCalendar
         global $conf, $user, $langs;
 
         $error = 0; // Error counter
-        $this->results = array();
+        $this->results = [];
         $this->resprints = '';
         $langs->load('commercial');
 
@@ -2253,7 +2255,7 @@ class ActionsTuiCalendar
         //var_dump($hookmanager);
         //echo "action: " . $action;
         // calendar
-        if (in_array($parameters['currentcontext'], array('agenda')) && basename($_SERVER['PHP_SELF']) == 'index.php') {
+        if (in_array($parameters['currentcontext'], ['agenda']) && basename($_SERVER['PHP_SELF']) == 'index.php') {
             $this->resprints = '
             <div class="vmenu lnb-new-schedule">
                 <button id="btn-new-schedule" type="button" class="btn btn-default btn-block lnb-new-schedule-btn" data-toggle="modal">

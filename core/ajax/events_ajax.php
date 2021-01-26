@@ -41,7 +41,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 
 
-$langs->loadLangs(array("agenda", "other", "commercial", "companies"));
+$langs->loadLangs(["agenda", "other", "commercial", "companies"]);
 
 top_httphead('application/json', 1);
 //dol_syslog('posted events ajax GET '.print_r($_GET, true), LOG_NOTICE);
@@ -49,6 +49,9 @@ top_httphead('application/json', 1);
 //dol_syslog('posted events ajax REQUEST '.print_r($_REQUEST, true), LOG_NOTICE);
 $action = GETPOSTISSET('action') ? GETPOST('action', 'aZ09') : 'getevents';
 switch ($action) {
+    case 'getconfig':
+        print json_encode([]);
+        break;
     case 'getevents':
         $calendarId = GETPOST('calendarId', 'alpha');
         $calendarName = GETPOST('calendarName', 'alpha');
@@ -96,7 +99,7 @@ switch ($action) {
                 dol_syslog('updated action error ' . print_r($action->error, true), LOG_ERR);
                 dol_syslog('updated action errors ' . print_r($action->errors, true), LOG_ERR);
             } else {
-                print json_encode(array('id' => $res));
+                print json_encode(['id' => $res]);
                 //dol_syslog('updated action datep '.print_r($action->datep, true), LOG_NOTICE);
                 //dol_syslog('updated action datef '.print_r($action->datef, true), LOG_NOTICE);
             }

@@ -1,11 +1,25 @@
 pipeline {
   agent any
   stages {
-    stage('test-jenkins') {
+    stage('Prepare') {
       steps {
-        echo 'Hello world'
+        sh 'composer install'
       }
     }
-
+    stage('PHP Syntax check') {
+      steps {
+        sh 'vendor/bin/parallel-lint --exclude vendor/ .'
+      }
+    }
+    stage('Check Debug') {
+      steps {
+        sh 'vendor/bin/var-dump-check --extensions php --tracy --exclude vendor/ .'
+      }
+    }
+    stage('Checkstyle') {
+      steps {
+        sh 'vendor/bin/phpcs  -s -p --standard=codesniffer/ruleset.xml --colors --extensions=php --ignore=autoload.php --ignore=vendor/ .'
+      }
+    }
   }
 }
