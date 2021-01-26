@@ -155,8 +155,8 @@ class ActionsTuiCalendar
             $socid = $parameters['socid'];
             $canedit = $parameters['canedit'];
             $status = $parameters['status'];
-            $year = $parameters['year'];
-            $month = $parameters['month'];
+            $year = (int) $parameters['year'];
+            $month = (int) $parameters['month'];
             $day = (int) $parameters['day'];
             $type = $parameters['type'];
             $maxprint = $parameters['maxprint'];

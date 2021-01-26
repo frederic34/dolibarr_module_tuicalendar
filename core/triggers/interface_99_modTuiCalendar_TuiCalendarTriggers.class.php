@@ -94,6 +94,7 @@ class InterfaceTuiCalendarTriggers extends DolibarrTriggers
             //case 'ACTION_CREATE':
             case 'ACTION_DELETE':
                 if ($object->oldcopy->id > 0) {
+                    // store id of deleted action to be able to find them later
                     $sql = 'INSERT INTO '.MAIN_DB_PREFIX.'actioncomm_deleted (fk_actioncomm) VALUES('.$object->oldcopy->id.')';
                     dol_syslog("tui calendar add deleted event: " . $sql, LOG_NOTICE);
                     $this->db->query($sql);

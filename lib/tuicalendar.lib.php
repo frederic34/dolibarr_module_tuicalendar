@@ -52,7 +52,7 @@ function tuicalendarAdminPrepareHead()
     //$this->tabs = array(
     //    'entity:-tabname:Title:@tuicalendar:/tuicalendar/mypage.php?id=__ID__'
     //); // to remove a tab
-    complete_head_from_modules($conf, $langs, null, $head, $h, 'tuicalendar');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'admin@tuicalendar');
 
     return $head;
 }
