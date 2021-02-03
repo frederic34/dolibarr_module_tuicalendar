@@ -1,5 +1,5 @@
 <?php
-/* Copyright © 2019       Frédéric FRANCE <frederic.france@netlogic.fr>
+/* Copyright ©  2019-2021 Frédéric FRANCE     <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,13 +79,9 @@ if (empty($dolibarr_nocache)) {
   border-color: #ddd;
 }
 
-.btn-primary:hover {
+.btn:hover {
   border: solid 1px #bbb;
-  background-color: blue;
-}
-.btn-secondary:hover {
-  border: solid 1px #bbb;
-  background-color: grey;
+  background-color: #fff;
 }
 
 .btn:active {
