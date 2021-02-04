@@ -692,6 +692,7 @@ class ActionsTuiCalendar
             if (! empty($conf->societe->enabled) && $user->rights->societe->lire) {
                 print '<span id="search-customers" class="search-customers">';
                 print '    <input class="form-control customersAutoComplete" type="text" placeholder="' . $langs->trans('ThirdParty') . '" autocomplete="off">';
+                print '    <input id="customer_id" name="customer_id" type="hidden">';
                 print '</span>';
             }
             if (! empty($conf->projet->enabled) && $user->rights->projet->lire) {
@@ -700,14 +701,15 @@ class ActionsTuiCalendar
                 //print $formproject->select_projects($socid?$socid:-1, $pid, 'search_projectid', 0, 0, 1, 0, 0, 0, 0, '', 1, 0, 'maxwidth500');
                 print '<span id="search-projects" class="search-projects">';
                 print '    <input class="form-control projectsAutoComplete" type="text" placeholder="' . $langs->trans("Project") . '" autocomplete="off">';
+                print '    <input id="project_id" name="project_id" type="hidden">';
                 print '</span>';
             }
             // TODO récupérer les types d'évènements en ajax
             print '<span id="search-actioncode" class="search-actioncode">';
             print '    <select class="form-control actioncodeAutoComplete" multiple type="text" placeholder="' . $langs->trans('Actioncode') . '">';
-            print '    <option>Mustard</option>';
-            print '    <option>Ketchup</option>';
-            print '    <option>Relish</option>';
+            print '    <option>Auto</option>';
+            print '    <option>Manual</option>';
+            print '    <option>Others</option>';
             print '<select>';
             print '</span>';
             print '    <span id="renderRange" class="render-range"></span>
@@ -1827,6 +1829,9 @@ class ActionsTuiCalendar
                 print "    },";
                 print "    minLength: 2";
                 print "});";
+                print "$('.customersAutoComplete').on('autocomplete.select', function (evt, item) {
+                           $('#customer_id').val(item.value);
+                       });";
             }
             if (! empty($conf->projet->enabled) && $user->rights->projet->lire) {
                 print "$('.projectsAutoComplete').autoComplete({";
@@ -1835,6 +1840,9 @@ class ActionsTuiCalendar
                 print "    },";
                 print "    minLength: 2";
                 print "});";
+                print "$('.projectsAutoComplete').on('autocomplete.select', function (evt, item) {
+                           $('#project_id').val(item.value);
+                       });";
             }
             print "$('.actioncodeAutoComplete').selectpicker('refresh');";
             print "$('.actioncodeAutoComplete').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {";
