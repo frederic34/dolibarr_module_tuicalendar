@@ -321,7 +321,16 @@ switch ($action) {
         print json_encode($response);
         break;
     case 'gettypeactions':
-        $response = [];
+        $response = [
+            [
+                'id' => 1,
+                'label' => 'test'
+            ],
+            [
+                'id' => 2,
+                'label' => 'test2'
+            ]
+        ];
         if ($user->rights->agenda->allactions->read) {
             // // Type
             // $html .= '<tr>';

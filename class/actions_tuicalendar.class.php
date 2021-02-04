@@ -706,11 +706,7 @@ class ActionsTuiCalendar
             }
             // TODO récupérer les types d'évènements en ajax
             print '<span id="search-actioncode" class="search-actioncode">';
-            print '    <select class="form-control actioncodeAutoComplete" multiple type="text" placeholder="' . $langs->trans('Actioncode') . '">';
-            print '    <option>Auto</option>';
-            print '    <option>Manual</option>';
-            print '    <option>Others</option>';
-            print '<select>';
+            print '    <select class="form-control actioncodeAutoComplete" multiple type="text" placeholder="' . $langs->trans('Actioncode') . '"></select>';
             print '</span>';
             print '    <span id="renderRange" class="render-range"></span>
             </div>
@@ -1844,7 +1840,25 @@ class ActionsTuiCalendar
                            $('#project_id').val(item.value);
                        });";
             }
-            print "$('.actioncodeAutoComplete').selectpicker('refresh');";
+            print "$.ajax({
+                type: 'GET',
+                url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=gettypeactions',
+                data: {},
+                success: function (response) {
+                    // $('.actioncodeAutoComplete').selectpicker({
+                    //     //style: 'btn-primary',
+                    //     //size: 2
+                    // });
+                    $('.actioncodeAutoComplete').html = '';
+                    $.each(response, function(index, value) {
+                        $('.actioncodeAutoComplete').append('<option id=\"' + value.id + '\">' + value.label + '</option>');
+                    });
+                    $('.actioncodeAutoComplete').selectpicker('refresh');
+                },
+                error: function () {
+                    //console.log('There was an error!');
+                }
+            });";
             print "$('.actioncodeAutoComplete').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {";
             print "    // do something...\n";
             print "    console.log(clickedIndex, isSelected, previousValue);";
