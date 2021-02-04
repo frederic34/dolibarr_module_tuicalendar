@@ -321,7 +321,10 @@ switch ($action) {
         print json_encode($response);
         break;
     case 'gettypeactions':
-        $response = [];
+        require_once DOL_DOCUMENT_ROOT.'/comm/action/class/cactioncomm.class.php';
+        $caction = new CActionComm($db);
+        // $html .=  $formactions->select_type_actions($actioncode, "search_actioncode", $excludetype, (empty($conf->global->AGENDA_USE_EVENT_TYPE)?1:-1), 0, $multiselect, 1);
+        $response = $caction->liste_array(1, 'code');
         if ($user->rights->agenda->allactions->read) {
             // // Type
             // $html .= '<tr>';
@@ -333,7 +336,6 @@ switch ($action) {
             //     // We use an option here because it adds bugs when used on agenda page "peruser" and "list"
             //     $multiselect=(!empty($conf->global->AGENDA_USE_EVENT_TYPE));
             // }
-            // $html .=  $formactions->select_type_actions($actioncode, "search_actioncode", $excludetype, (empty($conf->global->AGENDA_USE_EVENT_TYPE)?1:-1), 0, $multiselect, 1);
             // $html .=  '</td></tr>';
         }
         print json_encode($response);
