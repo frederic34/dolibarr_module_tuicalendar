@@ -1851,7 +1851,7 @@ class ActionsTuiCalendar
                     // });
                     $('.actioncodeAutoComplete').html = '';
                     $.each(response, function(index, value) {
-                        $('.actioncodeAutoComplete').append('<option id=\"' + value.id + '\">' + value.label + '</option>');
+                        $('.actioncodeAutoComplete').append('<option id=\"' + index + '\">' + value + '</option>');
                     });
                     $('.actioncodeAutoComplete').selectpicker('refresh');
                 },
