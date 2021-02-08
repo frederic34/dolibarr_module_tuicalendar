@@ -760,7 +760,7 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="etat" class="col-sm-2 control-label" >État</label>
+                            <label for="etat" class="col-sm-2 control-label">État</label>
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="etat" >
                                 <option value="1">Non applicable</option>
@@ -773,7 +773,7 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="userAssigned" class="col-sm-2 control-label" >Événement assigné à</label>
+                            <label for="userAssigned" class="col-sm-2 control-label">Événement assigné à</label>
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="userAssigned">
                                 <option value="1">ToDo</option>
@@ -783,7 +783,7 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="thirdPartyAssigned" class="col-sm-2 control-label" >Tiers concerné</label>
+                            <label for="thirdPartyAssigned" class="col-sm-2 control-label">Tiers concerné</label>
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="thirdPartyAssigned">
                                 <option value="1">ToDo</option>
@@ -793,7 +793,7 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="contactAssigned" class="col-sm-2 control-label" >Contact concerné</label>
+                            <label for="contactAssigned" class="col-sm-2 control-label">Contact concerné</label>
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="contactAssigned">
                                 <option value="1">ToDo</option>
@@ -803,7 +803,7 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="project" class="col-sm-2 control-label" >Projet</label>
+                            <label for="project" class="col-sm-2 control-label">' . $langs->trans("Project") . '</label>
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="project">
                                 <option value="1">ToDo</option>
@@ -813,7 +813,7 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="task" class="col-sm-2 control-label" >Tâche</label>
+                            <label for="task" class="col-sm-2 control-label">' . $langs->trans("Task") . '</label>
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="task">
                                 <option value="1">ToDo</option>
@@ -1851,7 +1851,7 @@ class ActionsTuiCalendar
                     // });
                     $('.actioncodeAutoComplete').html = '';
                     $.each(response, function(index, value) {
-                        $('.actioncodeAutoComplete').append('<option id=\"' + index + '\">' + value + '</option>');
+                        $('.actioncodeAutoComplete').append('<option id=\"' + value.id + '\">' + value.label + '</option>');
                     });
                     $('.actioncodeAutoComplete').selectpicker('refresh');
                 },
