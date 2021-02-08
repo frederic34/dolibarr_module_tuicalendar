@@ -803,22 +803,22 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="project" class="col-sm-2 control-label">' . $langs->trans("Project") . '</label>
+                            <label for="projectid" class="col-sm-2 control-label">' . $langs->trans("Project") . '</label>
                             <div class="col-sm-10">
-                            <select  class="custom-select form-control" id="project">
+                            <select  class="custom-select form-control" id="projectid">
                                 <option value="1">ToDo</option>
                             </select>
-                            <div id="project" style="margin-top: 10px;"></div>
+                            <div id="projectid" style="margin-top: 10px;"></div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="task" class="col-sm-2 control-label">' . $langs->trans("Task") . '</label>
+                            <label for="taskid" class="col-sm-2 control-label">' . $langs->trans("Task") . '</label>
                             <div class="col-sm-10">
-                            <select  class="custom-select form-control" id="task">
+                            <select  class="custom-select form-control" id="taskid">
                                 <option value="1">ToDo</option>
                             </select>
-                            <div id="task" style="margin-top: 10px;"></div>
+                            <div id="taskid" style="margin-top: 10px;"></div>
                             </div>
                         </div>
 
@@ -840,29 +840,27 @@ class ActionsTuiCalendar
             </div>
             <div id="calendar" style="height: 800px;"></div>';
             // réactivation dropdown utilisateur
-            print '<script>
+            print "<script>
                 $( document ).ready(function() {
-                    // $(document).on("click", function(event) {
-                    //     if (!$(event.target).closest("#topmenu-login-dropdown").length) {
-                    //         //console.log("close login dropdown");
+                    // $(document).on('click', function(event) {
+                    //     if (!$(event.target).closest('#topmenu-login-dropdown').length) {
+                    //         //console.log('close login dropdown');
                     //         // Hide the menus.
-                    //         $("#topmenu-login-dropdown").removeClass("open");
+                    //         $('#topmenu-login-dropdown').removeClass('open');
                     //     }
                     // });
 
-                    $("#topmenu-login-dropdown .dropdown-toggle").on("click", function(event) {
-                        //console.log("toggle login dropdown");
+                    $('#topmenu-login-dropdown .dropdown-toggle').on('click', function(event) {
+                        //console.log('toggle login dropdown');
                         event.preventDefault();
-                        $("#topmenu-login-dropdown").toggleClass("open");
+                        $('#topmenu-login-dropdown').toggleClass('open');
                     });
 
-                    // $("#topmenuloginmoreinfo-btn").on("click", function() {
-                    //     $("#topmenuloginmoreinfo").slideToggle();
+                    // $('#topmenuloginmoreinfo-btn').on('click', function() {
+                    //     $('#topmenuloginmoreinfo').slideToggle();
                     // });
             });
-            </script>';
 
-            print "<script>
             var ScheduleList = [];
             var TimerList = [];
             var CalendarList = [];
