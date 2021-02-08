@@ -706,7 +706,7 @@ class ActionsTuiCalendar
             }
             // TODO récupérer les types d'évènements en ajax
             print '<span id="search-actioncode" class="search-actioncode">';
-            print '    <select class="form-control actioncodeAutoComplete" multiple type="text" placeholder="' . $langs->trans('Actioncode') . '"></select>';
+            print '    <select class="actioncodeAutoComplete" multiple type="text" title="' . $langs->trans('ActionType') . '"></select>';
             print '</span>';
             print '    <span id="renderRange" class="render-range"></span>
             </div>
