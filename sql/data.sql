@@ -13,4 +13,4 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program. If not, see http://www.gnu.org/licenses/.
 
--- VMYSQL4.3 ALTER TABLE llx_actioncomm MODIFY COLUMN tms timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE llx_actioncomm MODIFY COLUMN tms timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
