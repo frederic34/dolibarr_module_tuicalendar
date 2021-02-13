@@ -321,21 +321,25 @@ switch ($action) {
         print json_encode($response);
         break;
     case 'gettypeactions':
+        $preselectedtypes = [];
         $response = [];
-        if ($user->rights->agenda->allactions->read) {
-            // // Type
-            // $html .= '<tr>';
-            // $html .= '<td class="nowrap" style="padding-bottom: 2px; padding-right: 4px;">';
-            // $html .= $langs->trans("Type");
-            // $html .= ' &nbsp;</td><td class="nowrap" style="padding-bottom: 2px; padding-right: 4px;">';
-            // $multiselect=0;
-            // if (! empty($conf->global->MAIN_ENABLE_MULTISELECT_TYPE)) {
-            //     // We use an option here because it adds bugs when used on agenda page "peruser" and "list"
-            //     $multiselect=(!empty($conf->global->AGENDA_USE_EVENT_TYPE));
-            // }
-            // $html .=  $formactions->select_type_actions($actioncode, "search_actioncode", $excludetype, (empty($conf->global->AGENDA_USE_EVENT_TYPE)?1:-1), 0, $multiselect, 1);
-            // $html .=  '</td></tr>';
+        if (!empty($conf->global->AGENDA_DEFAULT_FILTER_TYPE)) {
+            $preselectedtypes = explode(',', $conf->global->AGENDA_DEFAULT_FILTER_TYPE);
         }
+        $sql = "SELECT id, code, libelle as label, module, type, color, picto";
+        $sql .= " FROM ".MAIN_DB_PREFIX."c_actioncomm";
+        $sql .= " WHERE active=1";
+        $sql .= " ORDER BY module, position, type";
+        $resql = $db->query($sql);
+        while ($resql && $obj = $db->fetch_array($resql)) {
+            $obj['selected'] = in_array($obj['code'], $preselectedtypes);
+            //$keyfortrans = "Action".$obj['code'].'Short';
+            //$obj['label'] = $langs->trans($keyfortrans);
+            $obj['label'] = $langs->trans($obj['label']);
+            $response[] = $obj;
+        }
+        // if ($user->rights->agenda->allactions->read) {
+        // }
         print json_encode($response);
         break;
     default:
@@ -361,7 +365,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
     global $db, $conf, $langs, $user, $hookmanager;
 
     $events = [];
-    $now = dol_now();
+    $now = dol_now('gmt');
     $tz = ini_get('date.timezone');
 
     // $events = array(
@@ -533,7 +537,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
             $sql .= ")";
         }
         if ($onlylast) {
-            $sql .= " AND a.tms > '" . $db->idate($now - 120) . "'";
+            $sql .= " AND a.tms > '" . $db->idate($now - 180, 'gmt') . "'";
         }
         // Sort on date
         $sql .= ' ORDER BY datep';

@@ -692,6 +692,7 @@ class ActionsTuiCalendar
             if (! empty($conf->societe->enabled) && $user->rights->societe->lire) {
                 print '<span id="search-customers" class="search-customers">';
                 print '    <input class="form-control customersAutoComplete" type="text" placeholder="' . $langs->trans('ThirdParty') . '" autocomplete="off">';
+                print '    <input id="customer_id" name="customer_id" type="hidden">';
                 print '</span>';
             }
             if (! empty($conf->projet->enabled) && $user->rights->projet->lire) {
@@ -700,15 +701,12 @@ class ActionsTuiCalendar
                 //print $formproject->select_projects($socid?$socid:-1, $pid, 'search_projectid', 0, 0, 1, 0, 0, 0, 0, '', 1, 0, 'maxwidth500');
                 print '<span id="search-projects" class="search-projects">';
                 print '    <input class="form-control projectsAutoComplete" type="text" placeholder="' . $langs->trans("Project") . '" autocomplete="off">';
+                print '    <input id="project_id" name="project_id" type="hidden">';
                 print '</span>';
             }
             // TODO récupérer les types d'évènements en ajax
             print '<span id="search-actioncode" class="search-actioncode">';
-            print '    <select class="form-control actioncodeAutoComplete" multiple type="text" placeholder="' . $langs->trans('Actioncode') . '">';
-            print '    <option>Mustard</option>';
-            print '    <option>Ketchup</option>';
-            print '    <option>Relish</option>';
-            print '<select>';
+            print '    <select class="actioncodeAutoComplete" multiple type="text" title="' . $langs->trans('ActionType') . '"></select>';
             print '</span>';
             print '    <span id="renderRange" class="render-range"></span>
             </div>
@@ -762,7 +760,7 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="etat" class="col-sm-2 control-label" >État</label>
+                            <label for="etat" class="col-sm-2 control-label">État</label>
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="etat" >
                                 <option value="1">Non applicable</option>
@@ -775,7 +773,7 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="userAssigned" class="col-sm-2 control-label" >Événement assigné à</label>
+                            <label for="userAssigned" class="col-sm-2 control-label">Événement assigné à</label>
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="userAssigned">
                                 <option value="1">ToDo</option>
@@ -785,7 +783,7 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="thirdPartyAssigned" class="col-sm-2 control-label" >Tiers concerné</label>
+                            <label for="thirdPartyAssigned" class="col-sm-2 control-label">Tiers concerné</label>
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="thirdPartyAssigned">
                                 <option value="1">ToDo</option>
@@ -795,7 +793,7 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="contactAssigned" class="col-sm-2 control-label" >Contact concerné</label>
+                            <label for="contactAssigned" class="col-sm-2 control-label">Contact concerné</label>
                             <div class="col-sm-10">
                             <select  class="custom-select form-control" id="contactAssigned">
                                 <option value="1">ToDo</option>
@@ -805,22 +803,22 @@ class ActionsTuiCalendar
                         </div>
 
                         <div class="form-group">
-                            <label for="project" class="col-sm-2 control-label" >Projet</label>
+                            <label for="projectid" class="col-sm-2 control-label">' . $langs->trans("Project") . '</label>
                             <div class="col-sm-10">
-                            <select  class="custom-select form-control" id="project">
+                            <select  class="custom-select form-control" id="projectid">
                                 <option value="1">ToDo</option>
                             </select>
-                            <div id="project" style="margin-top: 10px;"></div>
+                            <div id="projectid" style="margin-top: 10px;"></div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="task" class="col-sm-2 control-label" >Tâche</label>
+                            <label for="taskid" class="col-sm-2 control-label">' . $langs->trans("Task") . '</label>
                             <div class="col-sm-10">
-                            <select  class="custom-select form-control" id="task">
+                            <select  class="custom-select form-control" id="taskid">
                                 <option value="1">ToDo</option>
                             </select>
-                            <div id="task" style="margin-top: 10px;"></div>
+                            <div id="taskid" style="margin-top: 10px;"></div>
                             </div>
                         </div>
 
@@ -842,29 +840,27 @@ class ActionsTuiCalendar
             </div>
             <div id="calendar" style="height: 800px;"></div>';
             // réactivation dropdown utilisateur
-            print '<script>
+            print "<script>
                 $( document ).ready(function() {
-                    // $(document).on("click", function(event) {
-                    //     if (!$(event.target).closest("#topmenu-login-dropdown").length) {
-                    //         //console.log("close login dropdown");
+                    // $(document).on('click', function(event) {
+                    //     if (!$(event.target).closest('#topmenu-login-dropdown').length) {
+                    //         //console.log('close login dropdown');
                     //         // Hide the menus.
-                    //         $("#topmenu-login-dropdown").removeClass("open");
+                    //         $('#topmenu-login-dropdown').removeClass('open');
                     //     }
                     // });
 
-                    $("#topmenu-login-dropdown .dropdown-toggle").on("click", function(event) {
-                        //console.log("toggle login dropdown");
+                    $('#topmenu-login-dropdown .dropdown-toggle').on('click', function(event) {
+                        //console.log('toggle login dropdown');
                         event.preventDefault();
-                        $("#topmenu-login-dropdown").toggleClass("open");
+                        $('#topmenu-login-dropdown').toggleClass('open');
                     });
 
-                    // $("#topmenuloginmoreinfo-btn").on("click", function() {
-                    //     $("#topmenuloginmoreinfo").slideToggle();
+                    // $('#topmenuloginmoreinfo-btn').on('click', function() {
+                    //     $('#topmenuloginmoreinfo').slideToggle();
                     // });
             });
-            </script>';
 
-            print "<script>
             var ScheduleList = [];
             var TimerList = [];
             var CalendarList = [];
@@ -1014,7 +1010,6 @@ class ActionsTuiCalendar
                     });
                 });
             };
-
 
             function CalendarInfo() {
                 this.id = null;
@@ -1828,6 +1823,9 @@ class ActionsTuiCalendar
                 print "    },";
                 print "    minLength: 2";
                 print "});";
+                print "$('.customersAutoComplete').on('autocomplete.select', function (evt, item) {
+                           $('#customer_id').val(item.value);
+                       });";
             }
             if (! empty($conf->projet->enabled) && $user->rights->projet->lire) {
                 print "$('.projectsAutoComplete').autoComplete({";
@@ -1836,8 +1834,29 @@ class ActionsTuiCalendar
                 print "    },";
                 print "    minLength: 2";
                 print "});";
+                print "$('.projectsAutoComplete').on('autocomplete.select', function (evt, item) {
+                           $('#project_id').val(item.value);
+                       });";
             }
-            print "$('.actioncodeAutoComplete').selectpicker('refresh');";
+            print "$.ajax({
+                type: 'GET',
+                url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=gettypeactions',
+                data: {},
+                success: function (response) {
+                    // $('.actioncodeAutoComplete').selectpicker({
+                    //     //style: 'btn-primary',
+                    //     //size: 2
+                    // });
+                    $('.actioncodeAutoComplete').html = '';
+                    $.each(response, function(index, value) {
+                        $('.actioncodeAutoComplete').append('<option id=\"' + value.id + '\">' + value.label + '</option>');
+                    });
+                    $('.actioncodeAutoComplete').selectpicker('refresh');
+                },
+                error: function () {
+                    //console.log('There was an error!');
+                }
+            });";
             print "$('.actioncodeAutoComplete').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {";
             print "    // do something...\n";
             print "    console.log(clickedIndex, isSelected, previousValue);";
@@ -2315,65 +2334,5 @@ class ActionsTuiCalendar
             $this->errors[] = 'Error message';
             return -1;
         }
-    }
-
-
-
-    /**
-     * Execute action
-     *
-     * @param   array   $parameters     Array of parameters
-     * @param   Object  $object         Object output on PDF
-     * @param   string  $action         'add', 'update', 'view'
-     * @return  int                     <0 if KO,
-     *                                  =0 if OK but we want to process standard actions too,
-     *                                  >0 if OK and we want to replace standard actions.
-     */
-    public function beforePDFCreation($parameters, &$object, &$action)
-    {
-        global $conf, $user, $langs;
-        global $hookmanager;
-
-        $outputlangs = $langs;
-
-        $ret = 0;
-        $deltemp = [];
-        dol_syslog(get_class($this) . '::executeHooks action=' . $action);
-
-        /* print_r($parameters); print_r($object); echo "action: " . $action; */
-        if (in_array($parameters['currentcontext'], array('somecontext1','somecontext2'))) {
-            // do something only for the context 'somecontext1' or 'somecontext2'
-        }
-
-        return $ret;
-    }
-
-    /**
-     * Execute action
-     *
-     * @param   array   $parameters     Array of parameters
-     * @param   Object  $pdfhandler     PDF builder handler
-     * @param   string  $action         'add', 'update', 'view'
-     * @return  int                 <0 if KO,
-     *                                  =0 if OK but we want to process standard actions too,
-     *                                  >0 if OK and we want to replace standard actions.
-     */
-    public function afterPDFCreation($parameters, &$pdfhandler, &$action)
-    {
-        global $conf, $user, $langs;
-        global $hookmanager;
-
-        $outputlangs = $langs;
-
-        $ret = 0;
-        $deltemp = array();
-        dol_syslog(get_class($this) . '::executeHooks action=' . $action);
-
-        /* print_r($parameters); print_r($object); echo "action: " . $action; */
-        if (in_array($parameters['currentcontext'], array('somecontext1','somecontext2'))) {
-            // do something only for the context 'somecontext1' or 'somecontext2'
-        }
-
-        return $ret;
     }
 }
