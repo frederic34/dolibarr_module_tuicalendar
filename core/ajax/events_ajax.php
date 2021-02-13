@@ -365,7 +365,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
     global $db, $conf, $langs, $user, $hookmanager;
 
     $events = [];
-    $now = dol_now();
+    $now = dol_now('gmt');
     $tz = ini_get('date.timezone');
 
     // $events = array(
@@ -537,7 +537,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
             $sql .= ")";
         }
         if ($onlylast) {
-            $sql .= " AND a.tms > '" . $db->idate($now - 120, 'tzserver') . "'";
+            $sql .= " AND a.tms > '" . $db->idate($now - 180, 'gmt') . "'";
         }
         // Sort on date
         $sql .= ' ORDER BY datep';
