@@ -537,7 +537,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
             $sql .= ")";
         }
         if ($onlylast) {
-            $sql .= " AND a.tms > '" . $db->idate($now - 180) . "'";
+            $sql .= " AND a.tms > '" . $db->idate($now - 180, 'gmt') . "'";
         }
         // Sort on date
         $sql .= ' ORDER BY datep';
