@@ -22,12 +22,12 @@
  */
 
 $defines = [
-    'NOREQUIRESOC',
-    'NOCSRFCHECK',
-    'NOTOKENRENEWAL',
-    'NOLOGIN',
-    'NOREQUIREHTML',
-    'NOREQUIREAJAX',
+	'NOREQUIRESOC',
+	'NOCSRFCHECK',
+	'NOTOKENRENEWAL',
+	'NOLOGIN',
+	'NOREQUIREHTML',
+	'NOREQUIREAJAX',
 ];
 
 session_cache_limiter('public');
@@ -42,8 +42,8 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
 // Load user to have $user->conf loaded (not done by default here because of NOLOGIN constant defined) and load permission if we need to use them in CSS
 /*if (empty($user->id) && ! empty($_SESSION['dol_login'])) {
-    $user->fetch('',$_SESSION['dol_login']);
-    user->getrights();
+	$user->fetch('',$_SESSION['dol_login']);
+	user->getrights();
 }*/
 
 
@@ -52,26 +52,26 @@ header('Content-type: text/css');
 // Important: Following code is to cache this file to avoid page request by browser at each Dolibarr page access.
 // You can use CTRL+F5 to refresh your browser cache.
 if (empty($dolibarr_nocache)) {
-    header('Cache-Control: max-age=10800, public, must-revalidate');
+	header('Cache-Control: max-age=10800, public, must-revalidate');
 } else {
-    header('Cache-Control: no-cache');
+	header('Cache-Control: no-cache');
 }
 
 ?>
 .tooltip-inner {
-    max-width:240px;
-    padding:3px 8px;
-    color:#000;
-    text-align:left;
-    text-decoration:none;
-    background-color:rgb(235,235,235);
-    border-radius:5px
+	max-width:240px;
+	padding:3px 8px;
+	color:#000;
+	text-align:left;
+	text-decoration:none;
+	background-color:rgb(235,235,235);
+	border-radius:5px
 }
 
 /** pour gagner un peu de place en haut */
 #id-right {
-    padding-top: 0px;
-    padding-bottom: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 /**  custom bootstrap - start */
 .btn {
@@ -274,20 +274,20 @@ if (empty($dolibarr_nocache)) {
 }
 
 .calendar-name {
-    font-size: 12px;
-    font-weight: bold;
-    vertical-align: middle;
+	font-size: 12px;
+	font-weight: bold;
+	vertical-align: middle;
 }
 
 .schedule-time {
-    color: #005aff;
+	color: #005aff;
 }
 
 /** custom fontawesome */
 .fa {
-    width: 10px;
-    height: 10px;
-    margin-right: 2px;
+	width: 10px;
+	height: 10px;
+	margin-right: 2px;
 }
 
 .weekday-grid-more-schedules {

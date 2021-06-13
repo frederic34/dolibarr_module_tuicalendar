@@ -1045,6 +1045,8 @@ class ActionsTuiCalendar
 								schedule.id = event.id;
 								schedule.calendarId = event.calendarId;
 								schedule.title = event.title;
+								schedule.isReadOnly = event.isReadOnly;
+								schedule.isPrivate = false;
 								schedule.body = event.body;
 								schedule.start = event.start;
 								schedule.end = event.end;
