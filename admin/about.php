@@ -35,7 +35,7 @@ $langs->loadLangs(array("errors","admin","tuicalendar@tuicalendar"));
 
 // Access control
 if (! $user->admin) {
-    accessforbidden();
+	accessforbidden();
 }
 
 // Parameters

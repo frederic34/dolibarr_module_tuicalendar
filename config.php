@@ -19,9 +19,9 @@
 // Defines
 $defines = (isset($defines) && is_array($defines)) ? $defines : [];
 foreach ($defines as $define) {
-    if (! defined($define)) {
-        define($define, 1);
-    }
+	if (! defined($define)) {
+		define($define, 1);
+	}
 }
 // Load Dolibarr environment
 $res = 0;
@@ -29,27 +29,27 @@ $filename = isset($_SERVER['SCRIPT_FILENAME']) ? explode('/', parse_url($_SERVER
 $newfile = [];
 $arraymain = [];
 foreach ($filename as $val) {
-    $newfile[] = $val;
-    $arraymain[] = implode('/', $newfile);
+	$newfile[] = $val;
+	$arraymain[] = implode('/', $newfile);
 }
 $arraymain = array_merge(
-    [
-        $_SERVER["CONTEXT_DOCUMENT_ROOT"] ?? '',
-        '..',
-        '../..',
-        '../../..',
-        '../../../..',
-    ],
-    array_reverse($arraymain)
+	[
+		$_SERVER["CONTEXT_DOCUMENT_ROOT"] ?? '',
+		'..',
+		'../..',
+		'../../..',
+		'../../../..',
+	],
+	array_reverse($arraymain)
 );
 foreach ($arraymain as $path) {
-    if (file_exists($path . '/main.inc.php')) {
-        $res = include $path . '/main.inc.php';
-        if ($res) {
-            break;
-        }
-    }
+	if (file_exists($path . '/main.inc.php')) {
+		$res = include $path . '/main.inc.php';
+		if ($res) {
+			break;
+		}
+	}
 }
 if (! $res) {
-    die("Include of main fails");
+	die("Include of main fails");
 }
