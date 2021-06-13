@@ -24,16 +24,16 @@
  */
 
 $defines = [
-    'NOREQUIREUSER',
-    'NOREQUIREDB',
-    'NOREQUIRESOC',
-    'NOREQUIRETRAN',
-    'NOCSRFCHECK',
-    'NOTOKENRENEWAL',
-    'NOLOGIN',
-    'NOREQUIREMENU',
-    'NOREQUIREHTML',
-    'NOREQUIREAJAX',
+	'NOREQUIREUSER',
+	'NOREQUIREDB',
+	'NOREQUIRESOC',
+	'NOREQUIRETRAN',
+	'NOCSRFCHECK',
+	'NOTOKENRENEWAL',
+	'NOLOGIN',
+	'NOREQUIREMENU',
+	'NOREQUIREHTML',
+	'NOREQUIREAJAX',
 ];
 
 // Load Dolibarr environment
@@ -44,9 +44,9 @@ header('Content-Type: application/javascript');
 // Important: Following code is to cache this file to avoid page request by browser at each Dolibarr page access.
 // You can use CTRL+F5 to refresh your browser cache.
 if (empty($dolibarr_nocache)) {
-    header('Cache-Control: max-age=3600, public, must-revalidate');
+	header('Cache-Control: max-age=3600, public, must-revalidate');
 } else {
-    header('Cache-Control: no-cache');
+	header('Cache-Control: no-cache');
 }
 ?>
 

@@ -35,7 +35,7 @@ $langs->loadLangs(["admin", "tuicalendar@tuicalendar"]);
 
 // Access control
 if (! $user->admin) {
-    accessforbidden();
+	accessforbidden();
 }
 
 // Parameters
@@ -43,14 +43,14 @@ $action = GETPOST('action', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 
 $arrayofparameters = [
-    'TUICALENDAR_MYPARAM1' => [
-        'css' => 'minwidth200',
-        'enabled' => 1,
-    ],
-    'TUICALENDAR_MYPARAM2' => [
-        'css' => 'minwidth500',
-        'enabled' => 1,
-    ],
+	'TUICALENDAR_MYPARAM1' => [
+		'css' => 'minwidth200',
+		'enabled' => 1,
+	],
+	'TUICALENDAR_MYPARAM2' => [
+		'css' => 'minwidth500',
+		'enabled' => 1,
+	],
 ];
 
 
@@ -84,52 +84,52 @@ echo '<span class="opacitymedium">' . $langs->trans("TuiCalendarSetupPage") . '<
 
 
 if ($action == 'edit') {
-    print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
-    print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
-    print '<input type="hidden" name="action" value="update">';
+	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
+	print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
+	print '<input type="hidden" name="action" value="update">';
 
-    print '<table class="noborder" width="100%">';
-    print '<tr class="liste_titre"><td class="titlefield">' . $langs->trans("Parameter") . '</td>';
-    print '<td>' . $langs->trans("Value") . '</td>';
-    print '</tr>';
+	print '<table class="noborder" width="100%">';
+	print '<tr class="liste_titre"><td class="titlefield">' . $langs->trans("Parameter") . '</td>';
+	print '<td>' . $langs->trans("Value") . '</td>';
+	print '</tr>';
 
-    foreach ($arrayofparameters as $key => $val) {
-        print '<tr class="oddeven"><td>';
-        $tooltiphelp = (($langs->trans($key . 'Tooltip') != $key.'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
-        print $form->textwithpicto($langs->trans($key), $tooltiphelp);
-        print '</td><td><input name="' . $key . '"  class="flat ' . (empty($val['css']) ? 'minwidth200' : $val['css']) . '" value="' . $conf->global->$key . '"></td></tr>';
-    }
-    print '</table>';
+	foreach ($arrayofparameters as $key => $val) {
+		print '<tr class="oddeven"><td>';
+		$tooltiphelp = (($langs->trans($key . 'Tooltip') != $key.'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
+		print $form->textwithpicto($langs->trans($key), $tooltiphelp);
+		print '</td><td><input name="' . $key . '"  class="flat ' . (empty($val['css']) ? 'minwidth200' : $val['css']) . '" value="' . $conf->global->$key . '"></td></tr>';
+	}
+	print '</table>';
 
-    print '<br><div class="center">';
-    print '<input class="button" type="submit" value="' . $langs->trans("Save") . '">';
-    print '</div>';
+	print '<br><div class="center">';
+	print '<input class="button" type="submit" value="' . $langs->trans("Save") . '">';
+	print '</div>';
 
-    print '</form>';
-    print '<br>';
+	print '</form>';
+	print '<br>';
 } else {
-    if (! empty($arrayofparameters)) {
-        print '<table class="noborder centpercent">';
-        print '<tr class="liste_titre">';
-        print '<td class="titlefield">' . $langs->trans("Parameter") . '</td>';
-        print '<td>' . $langs->trans("Value") . '</td>';
-        print '</tr>';
+	if (! empty($arrayofparameters)) {
+		print '<table class="noborder centpercent">';
+		print '<tr class="liste_titre">';
+		print '<td class="titlefield">' . $langs->trans("Parameter") . '</td>';
+		print '<td>' . $langs->trans("Value") . '</td>';
+		print '</tr>';
 
-        foreach ($arrayofparameters as $key => $val) {
-            print '<tr class="oddeven"><td>';
-            $tooltiphelp = (($langs->trans($key . 'Tooltip') != $key . 'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
-            print $form->textwithpicto($langs->trans($key), $tooltiphelp);
-            print '</td><td>' . $conf->global->$key . '</td></tr>';
-        }
+		foreach ($arrayofparameters as $key => $val) {
+			print '<tr class="oddeven"><td>';
+			$tooltiphelp = (($langs->trans($key . 'Tooltip') != $key . 'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
+			print $form->textwithpicto($langs->trans($key), $tooltiphelp);
+			print '</td><td>' . $conf->global->$key . '</td></tr>';
+		}
 
-        print '</table>';
+		print '</table>';
 
-        print '<div class="tabsAction">';
-        print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?action=edit">' . $langs->trans("Modify") . '</a>';
-        print '</div>';
-    } else {
-        print '<br>' . $langs->trans("NothingToSetup");
-    }
+		print '<div class="tabsAction">';
+		print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?action=edit">' . $langs->trans("Modify") . '</a>';
+		print '</div>';
+	} else {
+		print '<br>' . $langs->trans("NothingToSetup");
+	}
 }
 
 // Page end
