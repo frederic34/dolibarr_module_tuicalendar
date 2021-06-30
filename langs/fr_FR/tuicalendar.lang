@@ -64,3 +64,6 @@ TuiCalendarStartWeekOnMonday=La semaine commence le lundi
 TuiCalendarNarrowerThanWeekdays=Réduire la largeur des weekends
 TuiCalendarViewAll=Tous
 TuiCalendarBirthdayEvents=Anniversaires
+TuiCalendarExtSites=Calendriers Externes
+TuiCalendarCacheTime=Durée du cache (sec)
+TuiCalendarCacheTimeOnlyIfRequired=Indiquez le temps en secondes de mise en cache de la source, par défaut %s secondes si vide.
