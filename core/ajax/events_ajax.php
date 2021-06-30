@@ -79,10 +79,10 @@ switch ($action) {
 			$datestart = json_decode(GETPOST('start', 'none'));
 			$dateend = json_decode(GETPOST('end', 'none'));
 			$offset = json_decode(GETPOST('offset', 'none'));
-			dol_syslog('updated events ajax REQUEST event ' . print_r($updatedevent, true), LOG_NOTICE);
-			dol_syslog('updated events ajax REQUEST datestart '.print_r($datestart, true), LOG_NOTICE);
-			dol_syslog('updated events ajax REQUEST dateend '.print_r($dateend, true), LOG_NOTICE);
-			dol_syslog('updated events ajax REQUEST offset '.print_r($offset, true), LOG_NOTICE);
+			// dol_syslog('updated events ajax REQUEST event ' . print_r($updatedevent, true), LOG_NOTICE);
+			// dol_syslog('updated events ajax REQUEST datestart '.print_r($datestart, true), LOG_NOTICE);
+			// dol_syslog('updated events ajax REQUEST dateend '.print_r($dateend, true), LOG_NOTICE);
+			// dol_syslog('updated events ajax REQUEST offset '.print_r($offset, true), LOG_NOTICE);
 			$action = new ActionComm($db);
 			$action->fetch($updatedevent->id);
 			$action->fetch_optionals();
@@ -91,7 +91,7 @@ switch ($action) {
 			$action->location = $updatedevent->location;
 			$action->fulldayevent = $updatedevent->isAllDay ? 1 : 0;
 			$action->datep = strtotime($datestart->_date);
-			dol_syslog('updated events ajax REQUEST datep '.print_r($action->datep, true), LOG_NOTICE);
+			// dol_syslog('updated events ajax REQUEST datep '.print_r($action->datep, true), LOG_NOTICE);
 			$action->datef = strtotime($dateend->_date);
 			$res = $action->update($user);
 			if ($res < 0) {
@@ -730,6 +730,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				$name = 'AGENDA_EXT_NAME' . $i;
 				$offsettz = 'AGENDA_EXT_OFFSETTZ' . $i;
 				$color = 'AGENDA_EXT_COLOR' . $i;
+				$cachetime = 'AGENDA_EXT_CACHE' . $i;
 				//$buggedfile = 'AGENDA_EXT_BUGGEDFILE' . $i;
 				if (!empty($conf->global->$source) && !empty($conf->global->$name)) {
 					// Note: $conf->global->buggedfile can be empty
@@ -737,6 +738,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 					if ($calendarName == $conf->global->$name) {
 						$listofextcals[] = array(
 							'cachename' => 'global',
+							'cachetime' => $conf->global->$cachetime ?? -1,
 							'number' => md5($conf->global->$name),
 							'src' => $conf->global->$source,
 							'name' => $conf->global->$name,
@@ -757,6 +759,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				$name = 'AGENDA_EXT_NAME_' . $user->id . '_' . $i;
 				$offsettz = 'AGENDA_EXT_OFFSETTZ_' . $user->id . '_' . $i;
 				$color = 'AGENDA_EXT_COLOR_' . $user->id . '_' . $i;
+				$cachetime = 'AGENDA_EXT_CACHE_' . $user->id . '_' . $i;
 				//$enabled = 'AGENDA_EXT_ENABLED_' . $user->id . '_' . $i;
 				//$buggedfile = 'AGENDA_EXT_BUGGEDFILE_' . $user->id . '_' . $i;
 				if (!empty($user->conf->$source) && !empty($user->conf->$name)) {
@@ -764,6 +767,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 					if ($calendarName == $user->conf->$name) {
 						$listofextcals[] = array(
 							'cachename' => 'private',
+							'cachetime' => $user->conf->$cachetime ?? -1,
 							'number' => md5($user->conf->$name),
 							'src' => $user->conf->$source,
 							'name' => $user->conf->$name,
@@ -798,13 +802,13 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			//print "url=".$url." namecal=".$namecal." colorcal=".$colorcal." buggedfile=".$buggedfile;
 			if ($extcal['cachename'] == 'private') {
 				$fileid = 'u' . $user->id . '-' . $extcal['number'] . '.cache';
-				$cachetime = 3600;   // 3600 : 60mn
+				$cachetime = ($extcal['cachetime'] > 0 ? $extcal['cachetime'] : 3600);   // 3600 : 60mn
 			} else {
 				$fileid = $extcal['number'] . '.cache';
-				$cachetime = 1800;   // 1800 : 30mn
+				$cachetime = ($extcal['cachetime'] > 0 ? $extcal['cachetime'] : 1800);   // 1800 : 30mn
 			}
 			$filename = '/ical-e' . $conf->entity . '-' . $fileid;
-			$refresh = dol_cache_refresh($cachedir, $filename, $cachetime);
+			$refresh = dol_cache_refresh($cachedir, $filename, (int) $cachetime);
 			require_once '../../lib/ics-parser/vendor/autoload.php';
 			// on cache le fichier si besoin
 			if ($refresh) {
@@ -812,13 +816,19 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				//$ical->parse($url);
 				try {
 					$ical = new ICal(false, array(
-						'defaultSpan'                 => 2,     // Default value
-						'defaultTimeZone'             => 'UTC',
-						'defaultWeekStart'            => 'MO',  // Default value
-						'disableCharacterReplacement' => false, // Default value
-						'filterDaysAfter'             => null,  // Default value
-						'filterDaysBefore'            => null,  // Default value
-						'skipRecurrence'              => false, // Default value
+						// Default value
+						'defaultSpan' => 2,
+						'defaultTimeZone' => 'UTC',
+						// Default value
+						'defaultWeekStart' => 'MO',
+						// Default value
+						'disableCharacterReplacement' => false,
+						// Default value
+						'filterDaysAfter' => null,
+						// Default value
+						'filterDaysBefore' => null,
+						// Default value
+						'skipRecurrence' => false,
 					));
 					// $ical->initFile(DOL_DATA_ROOT . '/agenda/temp/ICal.ics');
 					$ical->initUrl($url);
@@ -829,6 +839,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				// on cache le fichier parsé
 				dol_filecache($cachedir, $filename, $ical);
 			} else {
+				dol_syslog('reading Ical from cache : '.$namecal . ' cachetime : '.$cachetime, LOG_DEBUG);
 				// on récupère le fichier déjà parsé
 				$ical = dol_readcachefile($cachedir, $filename);
 			}

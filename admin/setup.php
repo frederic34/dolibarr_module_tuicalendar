@@ -73,11 +73,11 @@ llxHeader('', $langs->trans($page_name));
 $linkback = '<a href="' . ($backtopage ? $backtopage : DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1') . '">';
 $linkback .= $langs->trans("BackToModuleList") . '</a>';
 
-print load_fiche_titre($langs->trans($page_name), $linkback, 'object_tuicalendar@tuicalendar');
+print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 // Configuration header
 $head = tuicalendarAdminPrepareHead();
-dol_fiche_head($head, 'settings', '', -1, "tuicalendar@tuicalendar");
+print dol_get_fiche_head($head, 'settings', $langs->trans("Action"), -1, "action");
 
 // Setup page goes here
 echo '<span class="opacitymedium">' . $langs->trans("TuiCalendarSetupPage") . '</span><br><br>';
@@ -97,7 +97,7 @@ if ($action == 'edit') {
 		print '<tr class="oddeven"><td>';
 		$tooltiphelp = (($langs->trans($key . 'Tooltip') != $key.'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
 		print $form->textwithpicto($langs->trans($key), $tooltiphelp);
-		print '</td><td><input name="' . $key . '"  class="flat ' . (empty($val['css']) ? 'minwidth200' : $val['css']) . '" value="' . $conf->global->$key . '"></td></tr>';
+		print '</td><td><input name="' . $key . '"  class="flat ' . (empty($val['css']) ? 'minwidth200' : $val['css']) . '" value="' . ($conf->global->$key ?? ''). '"></td></tr>';
 	}
 	print '</table>';
 
@@ -119,7 +119,7 @@ if ($action == 'edit') {
 			print '<tr class="oddeven"><td>';
 			$tooltiphelp = (($langs->trans($key . 'Tooltip') != $key . 'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
 			print $form->textwithpicto($langs->trans($key), $tooltiphelp);
-			print '</td><td>' . $conf->global->$key . '</td></tr>';
+			print '</td><td>' . ($conf->global->$key ?? ''). '</td></tr>';
 		}
 
 		print '</table>';
