@@ -810,7 +810,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			}
 			$filename = '/ical-e' . $conf->entity . '-' . $fileid;
 			$refresh = dol_cache_refresh($cachedir, $filename, (int) $cachetime);
-			require_once '../../lib/ics-parser/vendor/autoload.php';
+			dol_include_once('/prune/vendor/autoload.php');
 			// on cache le fichier si besoin
 			if ($refresh) {
 				//$ical = new ICal();

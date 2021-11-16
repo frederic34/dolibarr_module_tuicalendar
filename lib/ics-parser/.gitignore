@@ -43,7 +43,7 @@ workbench
 ####################
 auth.json
 node_modules
-vendor
+#vendor
 
 ##########
 # Custom #
