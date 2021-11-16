@@ -173,6 +173,12 @@ class modTuiCalendar extends DolibarrModules
 		$this->tabs[] = array(
 			'data' => 'agenda:+tuicalendar:TuiCalendarViewAgenda:tuicalendar@tuicalendar:$user->rights->agenda->myactions->read:/comm/action/index.php',
 		);
+		$this->tabs[] = array(
+			'data' => 'user:-extsites:NU:$conf->tuicalendar->enabled'
+		);
+		$this->tabs[] = array(
+			'data' => 'user:+extsites:TuiCalendarExtSites:tuicalendar@tuicalendar:$user->rights->agenda->myactions->read:/tuicalendar/tabs/agenda_extsites.php?id=__ID__',
+		);
 		//
 		// Where objecttype can be
 		// 'categories_x'     to add a tab in category view (replace 'x' by type of category (0=product, 1=supplier, 2=customer, 3=member)
