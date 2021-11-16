@@ -26,15 +26,15 @@
 include '../config.php';
 
 // Libraries
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once '../lib/tuicalendar.lib.php';
 
 // Translations
-$langs->loadLangs(array("errors","admin","tuicalendar@tuicalendar"));
+$langs->loadLangs(array("errors", "admin", "tuicalendar@tuicalendar"));
 
 // Access control
-if (! $user->admin) {
+if (!$user->admin) {
 	accessforbidden();
 }
 
@@ -60,7 +60,7 @@ $page_name = "TuiCalendarAbout";
 llxHeader('', $langs->trans($page_name));
 
 // Subheader
-$linkback = '<a href="'.($backtopage?$backtopage:DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1').'">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . ($backtopage ? $backtopage : DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1') . '">' . $langs->trans("BackToModuleList") . '</a>';
 
 print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 

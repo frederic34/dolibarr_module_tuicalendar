@@ -26,11 +26,13 @@
  */
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
 
+// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 /**
  *  Description and activation class for module TuiCalendar
  */
 class modTuiCalendar extends DolibarrModules
 {
+	// phpcs:enable
 	/**
 	 * Constructor. Define names, constants, directories, boxes, permissions
 	 *
@@ -120,7 +122,9 @@ class modTuiCalendar extends DolibarrModules
 		// A condition to hide module
 		$this->hidden = false;
 		// List of module class names as string that must be enabled if this module is enabled. Example: array('always1'=>'modModuleToEnable1','always2'=>'modModuleToEnable2', 'FR1'=>'modModuleToEnableFR'...)
-		$this->depends = array();
+		$this->depends = array(
+			'always1' => 'modPrune',
+		);
 		// List of module class names as string to disable if this one is disabled. Example: array('modModuleToDisable1', ...)
 		$this->requiredby = array();
 		// List of module class names as string this module is in conflict with. Example: array('modModuleToDisable1', ...)

@@ -113,7 +113,7 @@ class ActionsTuiCalendar
 			return 0;
 		}
 
-		if (! $error) {
+		if (!$error) {
 			$this->results = array('myreturn' => 999);
 			$this->resprints = 'A text to show';
 			return 0; // or return 1 to replace standard code
@@ -356,7 +356,7 @@ class ActionsTuiCalendar
 					$offsettz = 'AGENDA_EXT_OFFSETTZ' . $i;
 					$color = 'AGENDA_EXT_COLOR' . $i;
 					$buggedfile = 'AGENDA_EXT_BUGGEDFILE' . $i;
-					if (! empty($conf->global->$source) && ! empty($conf->global->$name)) {
+					if (!empty($conf->global->$source) && !empty($conf->global->$name)) {
 						// Note: $conf->global->buggedfile can be empty
 						// or 'uselocalandtznodaylight' or 'uselocalandtzdaylight'
 						$listofextcals[] = array(
@@ -380,7 +380,7 @@ class ActionsTuiCalendar
 					$color = 'AGENDA_EXT_COLOR_' . $user->id . '_' . $i;
 					$enabled = 'AGENDA_EXT_ENABLED_' . $user->id . '_' . $i;
 					$buggedfile = 'AGENDA_EXT_BUGGEDFILE_' . $user->id . '_' . $i;
-					if (! empty($user->conf->$source) && ! empty($user->conf->$name)) {
+					if (!empty($user->conf->$source) && !empty($user->conf->$name)) {
 						// Note: $conf->global->buggedfile can be empty or 'uselocalandtznodaylight' or 'uselocalandtzdaylight'
 						$listofextcals[] = array(
 							'src' => $user->conf->$source,
@@ -686,13 +686,13 @@ class ActionsTuiCalendar
 						<i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
 					</button>
 				</span>';
-			if (! empty($conf->societe->enabled) && $user->rights->societe->lire) {
+			if (!empty($conf->societe->enabled) && $user->rights->societe->lire) {
 				print '<span id="search-customers" class="search-customers">';
 				print '    <input class="form-control customersAutoComplete" type="text" placeholder="' . $langs->trans('ThirdParty') . '" autocomplete="off">';
 				print '    <input id="customer_id" name="customer_id" type="hidden">';
 				print '</span>';
 			}
-			if (! empty($conf->projet->enabled) && $user->rights->projet->lire) {
+			if (!empty($conf->projet->enabled) && $user->rights->projet->lire) {
 				//require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
 				//$formproject=new FormProjets($db);
 				//print $formproject->select_projects($socid?$socid:-1, $pid, 'search_projectid', 0, 0, 1, 0, 0, 0, 0, '', 1, 0, 'maxwidth500');
@@ -711,7 +711,7 @@ class ActionsTuiCalendar
 				<div class="modal-dialog" style="text-align:center;" role="document">
 					<div class="modal-content" >
 						<div class="modal-header">
-							<h5 class="modal-title">'.$langs->trans('NewAction'). '</h5>
+							<h5 class="modal-title">' . $langs->trans('NewAction') . '</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -828,8 +828,8 @@ class ActionsTuiCalendar
 						</div>
 
 						<div class="modal-footer">
-							<button id="buttonSubmitModal" type="submit" class="btn btn-primary">'.$langs->trans('Save').'</button>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">'.$langs->trans('Cancel').'</button>
+							<button id="buttonSubmitModal" type="submit" class="btn btn-primary">' . $langs->trans('Save') . '</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">' . $langs->trans('Cancel') . '</button>
 						</div>
 						</form>
 					</div>
@@ -1816,7 +1816,7 @@ class ActionsTuiCalendar
 
 				$('#dropdownMenu-calendars-list').on('click', onChangeNewScheduleCalendar);
 				// https://bootstrap-autocomplete.readthedocs.io/en/latest/\n";
-			if (! empty($conf->societe->enabled) && $user->rights->societe->lire) {
+			if (!empty($conf->societe->enabled) && $user->rights->societe->lire) {
 				print "$('.customersAutoComplete').autoComplete({";
 				print "    resolverSettings: {";
 				print "        url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getcustomers'";
@@ -1827,7 +1827,7 @@ class ActionsTuiCalendar
 						   $('#customer_id').val(item.value);
 					   });";
 			}
-			if (! empty($conf->projet->enabled) && $user->rights->projet->lire) {
+			if (!empty($conf->projet->enabled) && $user->rights->projet->lire) {
 				print "$('.projectsAutoComplete').autoComplete({";
 				print "    resolverSettings: {";
 				print "        url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getprojects'";
@@ -1944,7 +1944,7 @@ class ActionsTuiCalendar
 
 		// Filters
 		//print '<form name="listactionsfilter" class="listactionsfilter" action="' . $_SERVER["PHP_SELF"] . '" method="get">';
-		$html = '<input type="hidden" name="token" value="' . $_SESSION ['newtoken'] . '">';
+		$html = '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
 		$html .= '<input type="hidden" name="year" value="' . $year . '">';
 		$html .= '<input type="hidden" name="month" value="' . $month . '">';
 		$html .= '<input type="hidden" name="day" value="' . $day . '">';
@@ -1966,11 +1966,11 @@ class ActionsTuiCalendar
 			$html .= '<td class="nowrap" style="padding-bottom: 2px; padding-right: 4px;">';
 			$html .= $langs->trans("ActionsToDoBy") . ' &nbsp; ';
 			$html .= '</td><td style="padding-bottom: 2px; padding-right: 4px;">';
-			$html .= $form->select_dolusers($filtert, 'search_filtert', 1, '', ! $canedit, '', '', 0, 0, 0, '', 0, '', 'maxwidth300');
+			$html .= $form->select_dolusers($filtert, 'search_filtert', 1, '', !$canedit, '', '', 0, 0, 0, '', 0, '', 'maxwidth300');
 			if (empty($conf->dol_optimize_smallscreen)) {
 				$html .= ' &nbsp; ' . $langs->trans("or") . ' ' . $langs->trans("ToUserOfGroup") . ' &nbsp; ';
 			}
-			$html .= $form->select_dolgroups($usergroupid, 'usergroup', 1, '', ! $canedit);
+			$html .= $form->select_dolgroups($usergroupid, 'usergroup', 1, '', !$canedit);
 			$html .= '</td></tr>';
 
 			if ($conf->resource->enabled) {
@@ -1992,7 +1992,7 @@ class ActionsTuiCalendar
 			$html .= $langs->trans("Type");
 			$html .= ' &nbsp;</td><td class="nowrap" style="padding-bottom: 2px; padding-right: 4px;">';
 			$multiselect = 0;
-			if (! empty($conf->global->MAIN_ENABLE_MULTISELECT_TYPE)) {
+			if (!empty($conf->global->MAIN_ENABLE_MULTISELECT_TYPE)) {
 				// We use an option here because it adds bugs when used on agenda page "peruser" and "list"
 				$multiselect = (!empty($conf->global->AGENDA_USE_EVENT_TYPE));
 			}
@@ -2009,7 +2009,7 @@ class ActionsTuiCalendar
 		//     $html .= '</td></tr>';
 		// }
 
-		if (! empty($conf->projet->enabled) && $user->rights->projet->lire) {
+		if (!empty($conf->projet->enabled) && $user->rights->projet->lire) {
 			require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 			$formproject = new FormProjets($db);
 
@@ -2021,7 +2021,7 @@ class ActionsTuiCalendar
 			$html .= '</td></tr>';
 		}
 
-		if ($canedit && ! preg_match('/list/', $_SERVER["PHP_SELF"])) {
+		if ($canedit && !preg_match('/list/', $_SERVER["PHP_SELF"])) {
 			// Status
 			$html .= '<tr>';
 			$html .= '<td class="nowrap" style="padding-bottom: 2px; padding-right: 4px;">';
@@ -2124,7 +2124,7 @@ class ActionsTuiCalendar
 	public function formSelectStatusAction($formname, $selected, $canedit = 1, $htmlname = 'complete', $showempty = 0, $onlyselect = 0, $morecss = 'maxwidth100', $nooutput = 0)
 	{
 		// phpcs:enable
-		global $langs,$conf;
+		global $langs, $conf;
 
 		$listofstatus = [
 			'-1' => $langs->trans("ActionNotApplicable"),
@@ -2135,7 +2135,7 @@ class ActionsTuiCalendar
 		$out = '';
 		// +ActionUncomplete
 
-		if (! empty($conf->use_javascript_ajax)) {
+		if (!empty($conf->use_javascript_ajax)) {
 			$out .= "\n";
 			$out .= "<script type=\"text/javascript\">
 				var htmlname = '" . $htmlname . "';
@@ -2182,7 +2182,7 @@ class ActionsTuiCalendar
 				}
 				</script>\n";
 		}
-		if (! empty($conf->use_javascript_ajax) || $onlyselect) {
+		if (!empty($conf->use_javascript_ajax) || $onlyselect) {
 			//var_dump($selected);
 			if ($selected == 'done') {
 				$selected = '100';
@@ -2239,7 +2239,7 @@ class ActionsTuiCalendar
 			}
 		}
 
-		if (! $error) {
+		if (!$error) {
 			$this->results = [
 				'myreturn' => 999,
 			];
@@ -2298,7 +2298,7 @@ class ActionsTuiCalendar
 		if (in_array($parameters['currentcontext'], array('agenda')) && basename($_SERVER['PHP_SELF']) == 'per_user.php') {
 			// nothing for the moment
 		}
-		if (! $error) {
+		if (!$error) {
 			return 0; // or return 1 to replace standard code
 		} else {
 			$this->errors[] = 'Error message';
@@ -2328,7 +2328,7 @@ class ActionsTuiCalendar
 		//     $this->resprints = '<option value="0"'.($disabled?' disabled="disabled"':'').'>'.$langs->trans("TuiCalendarMassAction").'</option>';
 		// }
 
-		if (! $error) {
+		if (!$error) {
 			return 0; // or return 1 to replace standard code
 		} else {
 			$this->errors[] = 'Error message';
