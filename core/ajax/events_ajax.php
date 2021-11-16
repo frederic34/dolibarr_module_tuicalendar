@@ -480,10 +480,11 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			// $sql .= " AND ca.code IN ('".implode("','", $actioncode)."')";
 			$sql .= " AND a.code IN ('" . implode("','", $actioncode) . "')";
 		}
-		if (!empty($conf->global->DONT_SHOW_AUTO_EVENT) && strpos(implode(',', $actioncode), 'AC_OTH_AUTO') == false) {
+		if (!empty($conf->global->TUICALENDAR_DONT_SHOW_AUTO_EVENTS) && strpos(implode(',', $actioncode), 'AC_OTH_AUTO') === false) {
 			// a.code au lieu de ca.code
-			// $sql .= " AND ca.code != 'AC_OTH_AUTO'";
-			$sql .= " AND a.code != 'AC_OTH_AUTO'";
+			$sql .= " AND ca.code != 'AC_OTH_AUTO'";
+			// avec a.code ça ne marche pas...
+			// $sql .= " AND a.code != 'AC_OTH_AUTO'";
 		}
 		if ($pid) {
 			$sql .= " AND a.fk_project=" . $db->escape($pid);

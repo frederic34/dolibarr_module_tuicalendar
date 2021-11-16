@@ -28,6 +28,7 @@ ModuleTuiCalendarDesc = Description de TuiCalendar
 TuiCalendarSetup = Configuration du module TuiCalendar
 TuiCalendarSettings = Réglages
 TuiCalendarSetupPage = Page de configuration du module TuiCalendar
+TuiCalendarDontShowAutoEvents=Ne pas afficher les évènements insérés automatiquement
 
 #
 # Page À propos

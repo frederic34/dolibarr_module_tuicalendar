@@ -43,15 +43,16 @@ $action = GETPOST('action', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 
 $arrayofparameters = [
-	'TUICALENDAR_MYPARAM1' => [
-		'css' => 'minwidth200',
-		'enabled' => 1,
-	],
-	'TUICALENDAR_MYPARAM2' => [
-		'css' => 'minwidth500',
-		'enabled' => 1,
-	],
+	// 'TUICALENDAR_MYPARAM1' => [
+	// 	'css' => 'minwidth500',
+	// 	'enabled' => 1,
+	// ],
 ];
+
+// Paramètres ON/OFF TUICALENDAR_ est rajouté au paramètre
+$modules = array(
+	'DONT_SHOW_AUTO_EVENTS' => 'TuiCalendarDontShowAutoEvents',
+);
 
 
 
@@ -59,7 +60,35 @@ $arrayofparameters = [
  * Actions
  */
 
-include DOL_DOCUMENT_ROOT . '/core/actions_setmoduleoptions.inc.php';
+foreach ($modules as $const => $desc) {
+	if ($action == 'activate_' . strtolower($const)) {
+		dolibarr_set_const($db, "TUICALENDAR_" . $const, "1", 'chaine', 0, '', $conf->entity);
+	}
+	if ($action == 'disable_' . strtolower($const)) {
+		dolibarr_del_const($db, "TUICALENDAR_" . $const, $conf->entity);
+		//header("Location: ".$_SERVER["PHP_SELF"]);
+		//exit;
+	}
+}
+if ($action == 'update') {
+	$error = 0;
+	$db->begin();
+	foreach ($arrayofparameters as $key => $val) {
+		$result = dolibarr_set_const($db, $key, GETPOST($key, 'alpha'), 'chaine', 0, '', $conf->entity);
+		if ($result < 0) {
+			$error++;
+			break;
+		}
+	}
+	if (! $error) {
+		$db->commit();
+		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+	} else {
+		$db->rollback();
+		setEventMessages($langs->trans("SetupNotSaved"), null, 'errors');
+	}
+}
+
 
 
 /*
@@ -130,10 +159,40 @@ if ($action == 'edit') {
 	} else {
 		print '<br>' . $langs->trans("NothingToSetup");
 	}
+	print '<div class="tabsAction">';
+	print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?action=edit">' . $langs->trans("Modify") . '</a>';
+	print '</div>';
+
+	print '<table class="noborder" width="100%">';
+	print '<tr class="liste_titre">';
+	print '<td>' . $langs->trans("Paramètres Divers") . '</td>';
+	print '<td align="center" width="100">' . $langs->trans("Action") . '</td>';
+	print "</tr>\n";
+	// Modules
+	foreach ($modules as $const => $desc) {
+		print '<tr class="oddeven">';
+		print '<td>' . $langs->trans($desc) . '</td>';
+		print '<td align="center" width="100">';
+		$constante = 'TUICALENDAR_' . $const;
+		$value = $conf->global->$constante ?? 0;
+		if ($value == 0) {
+			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=activate_' . strtolower($const) . '&amp;token='.$_SESSION['newtoken'].'">';
+			print img_picto($langs->trans("Disabled"), 'switch_off');
+			print '</a>';
+		} elseif ($value == 1) {
+			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=disable_' . strtolower($const) . '&amp;token='.$_SESSION['newtoken'].'">';
+			print img_picto($langs->trans("Enabled"), 'switch_on');
+			print '</a>';
+		}
+		print "</td>";
+		print '</tr>';
+	}
+	print '</table>' . PHP_EOL;
+	print '<br>' . PHP_EOL;
 }
 
 // Page end
-dol_fiche_end();
+print dol_get_fiche_end();
 
 llxFooter();
 $db->close();
