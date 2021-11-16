@@ -34,7 +34,7 @@ require_once '../lib/tuicalendar.lib.php';
 $langs->loadLangs(["admin", "tuicalendar@tuicalendar"]);
 
 // Access control
-if (! $user->admin) {
+if (!$user->admin) {
 	accessforbidden();
 }
 
@@ -80,7 +80,7 @@ if ($action == 'update') {
 			break;
 		}
 	}
-	if (! $error) {
+	if (!$error) {
 		$db->commit();
 		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
 	} else {
@@ -124,9 +124,9 @@ if ($action == 'edit') {
 
 	foreach ($arrayofparameters as $key => $val) {
 		print '<tr class="oddeven"><td>';
-		$tooltiphelp = (($langs->trans($key . 'Tooltip') != $key.'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
+		$tooltiphelp = (($langs->trans($key . 'Tooltip') != $key . 'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
 		print $form->textwithpicto($langs->trans($key), $tooltiphelp);
-		print '</td><td><input name="' . $key . '"  class="flat ' . (empty($val['css']) ? 'minwidth200' : $val['css']) . '" value="' . ($conf->global->$key ?? ''). '"></td></tr>';
+		print '</td><td><input name="' . $key . '"  class="flat ' . (empty($val['css']) ? 'minwidth200' : $val['css']) . '" value="' . ($conf->global->$key ?? '') . '"></td></tr>';
 	}
 	print '</table>';
 
@@ -137,7 +137,7 @@ if ($action == 'edit') {
 	print '</form>';
 	print '<br>';
 } else {
-	if (! empty($arrayofparameters)) {
+	if (!empty($arrayofparameters)) {
 		print '<table class="noborder centpercent">';
 		print '<tr class="liste_titre">';
 		print '<td class="titlefield">' . $langs->trans("Parameter") . '</td>';
@@ -148,7 +148,7 @@ if ($action == 'edit') {
 			print '<tr class="oddeven"><td>';
 			$tooltiphelp = (($langs->trans($key . 'Tooltip') != $key . 'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
 			print $form->textwithpicto($langs->trans($key), $tooltiphelp);
-			print '</td><td>' . ($conf->global->$key ?? ''). '</td></tr>';
+			print '</td><td>' . ($conf->global->$key ?? '') . '</td></tr>';
 		}
 
 		print '</table>';
@@ -176,11 +176,11 @@ if ($action == 'edit') {
 		$constante = 'TUICALENDAR_' . $const;
 		$value = $conf->global->$constante ?? 0;
 		if ($value == 0) {
-			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=activate_' . strtolower($const) . '&amp;token='.$_SESSION['newtoken'].'">';
+			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=activate_' . strtolower($const) . '&amp;token=' . $_SESSION['newtoken'] . '">';
 			print img_picto($langs->trans("Disabled"), 'switch_off');
 			print '</a>';
 		} elseif ($value == 1) {
-			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=disable_' . strtolower($const) . '&amp;token='.$_SESSION['newtoken'].'">';
+			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=disable_' . strtolower($const) . '&amp;token=' . $_SESSION['newtoken'] . '">';
 			print img_picto($langs->trans("Enabled"), 'switch_on');
 			print '</a>';
 		}

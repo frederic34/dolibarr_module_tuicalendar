@@ -20,6 +20,7 @@
  *  return json events calendar
  *
  */
+
 use ICal\ICal;
 
 $defines = [
@@ -138,7 +139,7 @@ switch ($action) {
 		if (GETPOSTISSET('schedule')) {
 			//$deletedevent = json_decode(GETPOST('schedule'), 'none');
 			$deletedevent = json_decode($_POST['schedule']);
-			dol_syslog('posted events ajax REQUEST '.print_r($deletedevent, true), LOG_NOTICE);
+			dol_syslog('posted events ajax REQUEST ' . print_r($deletedevent, true), LOG_NOTICE);
 			$action = new ActionComm($db);
 			$action->fetch($deletedevent->id);
 			$action->fetch_optionals();
@@ -327,7 +328,7 @@ switch ($action) {
 			$preselectedtypes = explode(',', $conf->global->AGENDA_DEFAULT_FILTER_TYPE);
 		}
 		$sql = "SELECT id, code, libelle as label, module, type, color, picto";
-		$sql .= " FROM ".MAIN_DB_PREFIX."c_actioncomm";
+		$sql .= " FROM " . MAIN_DB_PREFIX . "c_actioncomm";
 		$sql .= " WHERE active=1";
 		$sql .= " ORDER BY module, position, type";
 		$resql = $db->query($sql);
@@ -463,7 +464,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			$sql .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'societe s ON (s.rowid = a.fk_soc)';
 			$sql .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'socpeople sp ON (sp.rowid = a.fk_contact)';
 		}
-		if (! $user->rights->societe->client->voir && ! $socid) {
+		if (!$user->rights->societe->client->voir && !$socid) {
 			$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON a.fk_soc = sc.fk_soc";
 		}
 		// We must filter on assignement table
@@ -489,7 +490,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 		if ($pid) {
 			$sql .= " AND a.fk_project=" . $db->escape($pid);
 		}
-		if (! $user->rights->societe->client->voir && ! $socid) {
+		if (!$user->rights->societe->client->voir && !$socid) {
 			$sql .= " AND (a.fk_soc IS NULL OR sc.fk_user = " . $user->id . ")";
 		}
 		if ($socid > 0) {
@@ -573,7 +574,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			//     $event->fetch_optionals();
 			// }
 			$event->fetch_userassigned();
-			$event->color = $obj->color ? '#'.$obj->color : '';
+			$event->color = $obj->color ? '#' . $obj->color : '';
 			$event->type_color = $obj->type_color;
 
 			$raw = new stdClass();
@@ -588,7 +589,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			$dtend->setTimezone(new DateTimeZone('UTC'));
 			$assignedUsers = array();
 			foreach ($event->userassigned as $key => $value) {
-				if (! isset($CacheUser[$value['id']])) {
+				if (!isset($CacheUser[$value['id']])) {
 					$CacheUser[$value['id']] = new User($db);
 					$CacheUser[$value['id']]->fetch($value['id']);
 					$CacheUser[$value['id']]->tooltip = $CacheUser[$value['id']]->getNomUrl(-3, '', 0, 0, 0, 0, '', 'paddingright valigntextbottom');
@@ -649,7 +650,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 
 		$sql .= ' AND (MONTH(birthday) = ' . date("m", dol_stringtotime($startDate) - 172800);
 		$sql .= ' OR MONTH(birthday) = "12"';
-		$sql .= ' OR MONTH(birthday) = ' . date("m", dol_stringtotime($endDate) + 172800) .')';
+		$sql .= ' OR MONTH(birthday) = ' . date("m", dol_stringtotime($endDate) + 172800) . ')';
 		//$sql.= ' AND DAY(birthday) >= '.date("d", strtotime($startDate));
 		//$sql.= ' AND DAY(birthday) <= '.date("d", strtotime($endDate));
 		$sql .= ' ORDER BY birthday';
@@ -840,7 +841,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				// on cache le fichier parsé
 				dol_filecache($cachedir, $filename, $ical);
 			} else {
-				dol_syslog('reading Ical from cache : '.$namecal . ' cachetime : '.$cachetime, LOG_DEBUG);
+				dol_syslog('reading Ical from cache : ' . $namecal . ' cachetime : ' . $cachetime, LOG_DEBUG);
 				// on récupère le fichier déjà parsé
 				$ical = dol_readcachefile($cachedir, $filename);
 			}

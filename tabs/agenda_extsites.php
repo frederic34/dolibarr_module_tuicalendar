@@ -25,15 +25,15 @@
 // Load Dolibarr environment
 include '../config.php';
 
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formadmin.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formother.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formadmin.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/user/class/user.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 
 // Load translation files required by page
 $langs->loadLangs(array('agenda', 'admin', 'other', 'tuicalendar@tuicalendar'));
@@ -41,7 +41,7 @@ $langs->loadLangs(array('agenda', 'admin', 'other', 'tuicalendar@tuicalendar'));
 $def = array();
 $actiontest = GETPOST('test', 'alpha');
 $actionsave = GETPOST('save', 'alpha');
-$contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'useragenda'; // To manage different context of search
+$contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'useragenda'; // To manage different context of search
 
 $MAXAGENDA = $conf->global->AGENDA_EXT_NB ?? 5;
 
@@ -75,7 +75,7 @@ $hookmanager->initHooks(array('usercard', 'useragenda', 'globalcard'));
  * Actions
  */
 
-$parameters = array('id'=>$socid);
+$parameters = array('id' => $socid);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
 	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -92,15 +92,15 @@ if (empty($reshook)) {
 		// Save agendas
 		$i = 1;
 		while ($i <= $MAXAGENDA) {
-			$name = trim(GETPOST('AGENDA_EXT_NAME_'.$id.'_'.$i, 'alpha'));
-			$src = trim(GETPOST('AGENDA_EXT_SRC_'.$id.'_'.$i, 'alpha'));
-			$offsettz = trim(GETPOST('AGENDA_EXT_OFFSETTZ_'.$id.'_'.$i, 'alpha'));
-			$color = trim(GETPOST('AGENDA_EXT_COLOR_'.$id.'_'.$i, 'alpha'));
+			$name = trim(GETPOST('AGENDA_EXT_NAME_' . $id . '_' . $i, 'alpha'));
+			$src = trim(GETPOST('AGENDA_EXT_SRC_' . $id . '_' . $i, 'alpha'));
+			$offsettz = trim(GETPOST('AGENDA_EXT_OFFSETTZ_' . $id . '_' . $i, 'alpha'));
+			$color = trim(GETPOST('AGENDA_EXT_COLOR_' . $id . '_' . $i, 'alpha'));
 			if ($color == '-1') {
 				$color = '';
 			}
-			$enabled = trim(GETPOST('AGENDA_EXT_ENABLED_'.$id.'_'.$i, 'alpha'));
-			$cachetime = trim(GETPOST('AGENDA_EXT_CACHE_'.$id.'_'.$i, 'alpha'));
+			$enabled = trim(GETPOST('AGENDA_EXT_ENABLED_' . $id . '_' . $i, 'alpha'));
+			$cachetime = trim(GETPOST('AGENDA_EXT_CACHE_' . $id . '_' . $i, 'alpha'));
 
 			if (!empty($src) && !dol_is_url($src)) {
 				setEventMessages($langs->trans("ErrorParamMustBeAnUrl"), null, 'errors');
@@ -109,12 +109,12 @@ if (empty($reshook)) {
 				break;
 			}
 
-			$tabparam['AGENDA_EXT_NAME_'.$id.'_'.$i] = $name;
-			$tabparam['AGENDA_EXT_SRC_'.$id.'_'.$i] = $src;
-			$tabparam['AGENDA_EXT_OFFSETTZ_'.$id.'_'.$i] = $offsettz;
-			$tabparam['AGENDA_EXT_COLOR_'.$id.'_'.$i] = $color;
-			$tabparam['AGENDA_EXT_ENABLED_'.$id.'_'.$i] = $enabled;
-			$tabparam['AGENDA_EXT_CACHE_'.$id.'_'.$i] = $cachetime;
+			$tabparam['AGENDA_EXT_NAME_' . $id . '_' . $i] = $name;
+			$tabparam['AGENDA_EXT_SRC_' . $id . '_' . $i] = $src;
+			$tabparam['AGENDA_EXT_OFFSETTZ_' . $id . '_' . $i] = $offsettz;
+			$tabparam['AGENDA_EXT_COLOR_' . $id . '_' . $i] = $color;
+			$tabparam['AGENDA_EXT_ENABLED_' . $id . '_' . $i] = $enabled;
+			$tabparam['AGENDA_EXT_CACHE_' . $id . '_' . $i] = $cachetime;
 
 			$i++;
 		}
@@ -152,9 +152,9 @@ $arrayofcss = array();
 llxHeader('', $langs->trans("UserSetup"), '', '', 0, 0, $arrayofjs, $arrayofcss);
 
 
-print '<form name="extsitesconfig" action="'.$_SERVER["PHP_SELF"].'" method="post">';
-print '<input type="hidden" name="id" value="'.$id.'">';
-print '<input type="hidden" name="token" value="'.newToken().'">';
+print '<form name="extsitesconfig" action="' . $_SERVER["PHP_SELF"] . '" method="post">';
+print '<input type="hidden" name="id" value="' . $id . '">';
+print '<input type="hidden" name="token" value="' . newToken() . '">';
 
 $head = user_prepare_head($object);
 
@@ -163,7 +163,7 @@ print dol_get_fiche_head($head, 'extsites', $langs->trans("User"), -1, 'user');
 $linkback = '';
 
 if ($user->rights->user->user->lire || $user->admin) {
-	$linkback = '<a href="'.DOL_URL_ROOT.'/user/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="' . DOL_URL_ROOT . '/user/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 }
 
 dol_banner_tab($object, 'id', $linkback, $user->rights->user->user->lire || $user->admin);
@@ -172,50 +172,50 @@ dol_banner_tab($object, 'id', $linkback, $user->rights->user->user->lire || $use
 print '<div class="underbanner clearboth"></div>';
 
 print '<br>';
-print '<span class="opacitymedium">'.$langs->trans("AgendaExtSitesDesc")."</span><br>\n";
+print '<span class="opacitymedium">' . $langs->trans("AgendaExtSitesDesc") . "</span><br>\n";
 print "<br>\n";
 
 print '<div class="div-table-responsive">';
 print '<table class="noborder centpercent">';
 
 print "<tr class=\"liste_titre\">";
-print "<td>".$langs->trans("Parameter")."</td>";
-print "<td>".$langs->trans("Name")."</td>";
-print "<td>".$langs->trans("ExtSiteUrlAgenda").'<div class="hideonsmartphone">'." (".$langs->trans("Example").': http://yoursite/agenda/agenda.ics)</div></td>';
-print '<td class="nowrap">'.$form->textwithpicto($langs->trans("FixTZ"), $langs->trans("FillFixTZOnlyIfRequired"), 1).'</td>';
-print '<td class="nowrap">'.$form->textwithpicto($langs->trans("TuiCalendarCacheTime"), $langs->trans("TuiCalendarCacheTimeOnlyIfRequired", 1800), 1).'</td>';
-print '<td class="right">'.$langs->trans("Color").'</td>';
+print "<td>" . $langs->trans("Parameter") . "</td>";
+print "<td>" . $langs->trans("Name") . "</td>";
+print "<td>" . $langs->trans("ExtSiteUrlAgenda") . '<div class="hideonsmartphone">' . " (" . $langs->trans("Example") . ': http://yoursite/agenda/agenda.ics)</div></td>';
+print '<td class="nowrap">' . $form->textwithpicto($langs->trans("FixTZ"), $langs->trans("FillFixTZOnlyIfRequired"), 1) . '</td>';
+print '<td class="nowrap">' . $form->textwithpicto($langs->trans("TuiCalendarCacheTime"), $langs->trans("TuiCalendarCacheTimeOnlyIfRequired", 1800), 1) . '</td>';
+print '<td class="right">' . $langs->trans("Color") . '</td>';
 print "</tr>";
 
 $i = 1;
 while ($i <= $MAXAGENDA) {
 	$key = $i;
-	$name = 'AGENDA_EXT_NAME_'.$id.'_'.$key;
-	$src = 'AGENDA_EXT_SRC_'.$id.'_'.$key;
-	$offsettz = 'AGENDA_EXT_OFFSETTZ_'.$id.'_'.$key;
-	$color = 'AGENDA_EXT_COLOR_'.$id.'_'.$key;
-	$cachetime = 'AGENDA_EXT_CACHE_'.$id.'_'.$key;
+	$name = 'AGENDA_EXT_NAME_' . $id . '_' . $key;
+	$src = 'AGENDA_EXT_SRC_' . $id . '_' . $key;
+	$offsettz = 'AGENDA_EXT_OFFSETTZ_' . $id . '_' . $key;
+	$color = 'AGENDA_EXT_COLOR_' . $id . '_' . $key;
+	$cachetime = 'AGENDA_EXT_CACHE_' . $id . '_' . $key;
 
 	print '<tr class="oddeven">';
 	// Nb
-	print '<td class="maxwidth50onsmartphone">'.$langs->trans("AgendaExtNb", $key)."</td>";
+	print '<td class="maxwidth50onsmartphone">' . $langs->trans("AgendaExtNb", $key) . "</td>";
 	// Name
-	$name_value = (GETPOST('AGENDA_EXT_NAME_'.$id.'_'.$key) ?GETPOST('AGENDA_EXT_NAME_'.$id.'_'.$key) : (empty($object->conf->$name) ? '' : $object->conf->$name));
-	print '<td><input type="text" class="flat hideifnotset minwidth100 maxwidth100onsmartphone" name="AGENDA_EXT_NAME_'.$id.'_'.$key.'" value="'.$name_value.'"></td>';
+	$name_value = (GETPOST('AGENDA_EXT_NAME_' . $id . '_' . $key) ? GETPOST('AGENDA_EXT_NAME_' . $id . '_' . $key) : (empty($object->conf->$name) ? '' : $object->conf->$name));
+	print '<td><input type="text" class="flat hideifnotset minwidth100 maxwidth100onsmartphone" name="AGENDA_EXT_NAME_' . $id . '_' . $key . '" value="' . $name_value . '"></td>';
 	// URL
-	$src_value = (GETPOST('AGENDA_EXT_SRC_'.$id.'_'.$key) ?GETPOST('AGENDA_EXT_SRC_'.$id.'_'.$key) : (empty($object->conf->$src) ? '' : $object->conf->$src));
-	print '<td><input type="url" class="flat hideifnotset" name="AGENDA_EXT_SRC_'.$id.'_'.$key.'" value="'.$src_value.'" size="110"></td>';
+	$src_value = (GETPOST('AGENDA_EXT_SRC_' . $id . '_' . $key) ? GETPOST('AGENDA_EXT_SRC_' . $id . '_' . $key) : (empty($object->conf->$src) ? '' : $object->conf->$src));
+	print '<td><input type="url" class="flat hideifnotset" name="AGENDA_EXT_SRC_' . $id . '_' . $key . '" value="' . $src_value . '" size="110"></td>';
 	// Offset TZ
-	$offsettz_value = (GETPOST('AGENDA_EXT_OFFSETTZ_'.$id.'_'.$key) ? GETPOST('AGENDA_EXT_OFFSETTZ_'.$id.'_'.$key) : (empty($object->conf->$offsettz) ? '' : $object->conf->$offsettz));
-	print '<td><input type="text" class="flat hideifnotset" name="AGENDA_EXT_OFFSETTZ_'.$id.'_'.$key.'" value="'.$offsettz_value.'" size="2"></td>';
+	$offsettz_value = (GETPOST('AGENDA_EXT_OFFSETTZ_' . $id . '_' . $key) ? GETPOST('AGENDA_EXT_OFFSETTZ_' . $id . '_' . $key) : (empty($object->conf->$offsettz) ? '' : $object->conf->$offsettz));
+	print '<td><input type="text" class="flat hideifnotset" name="AGENDA_EXT_OFFSETTZ_' . $id . '_' . $key . '" value="' . $offsettz_value . '" size="2"></td>';
 	// Cache time
-	$cachetime_value = (GETPOST('AGENDA_EXT_CACHE_'.$id.'_'.$key) ? GETPOST('AGENDA_EXT_CACHE_'.$id.'_'.$key) : ($object->conf->$cachetime ?? ''));
-	print '<td><input type="text" class="flat hideifnotset" name="AGENDA_EXT_CACHE_'.$id.'_'.$key.'" value="'.$cachetime_value.'" size="5"></td>';
+	$cachetime_value = (GETPOST('AGENDA_EXT_CACHE_' . $id . '_' . $key) ? GETPOST('AGENDA_EXT_CACHE_' . $id . '_' . $key) : ($object->conf->$cachetime ?? ''));
+	print '<td><input type="text" class="flat hideifnotset" name="AGENDA_EXT_CACHE_' . $id . '_' . $key . '" value="' . $cachetime_value . '" size="5"></td>';
 	// Color (Possible colors are limited by Google)
 	print '<td class="nowraponall right">';
 	//print $formadmin->selectColor($conf->global->$color, "google_agenda_color".$key, $colorlist);
-	$color_value = (GETPOST("AGENDA_EXT_COLOR_".$id.'_'.$key) ?GETPOST("AGENDA_EXT_COLOR_".$id.'_'.$key) : (empty($object->conf->$color) ? '' : $object->conf->$color));
-	print $formother->selectColor($color_value, "AGENDA_EXT_COLOR_".$id.'_'.$key, 'extsitesconfig', 1, '', 'hideifnotset');
+	$color_value = (GETPOST("AGENDA_EXT_COLOR_" . $id . '_' . $key) ? GETPOST("AGENDA_EXT_COLOR_" . $id . '_' . $key) : (empty($object->conf->$color) ? '' : $object->conf->$color));
+	print $formother->selectColor($color_value, "AGENDA_EXT_COLOR_" . $id . '_' . $key, 'extsitesconfig', 1, '', 'hideifnotset');
 	print '</td>';
 	print "</tr>";
 	$i++;
@@ -225,7 +225,7 @@ print '</table>';
 print '</div>';
 
 print '<div class="center">';
-print '<input type="submit" id="save" name="save" class="button hideifnotset button-save" value="'.$langs->trans("Save").'">';
+print '<input type="submit" id="save" name="save" class="button hideifnotset button-save" value="' . $langs->trans("Save") . '">';
 print "</div>";
 
 print dol_get_fiche_end();

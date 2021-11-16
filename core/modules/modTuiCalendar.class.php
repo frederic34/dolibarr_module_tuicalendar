@@ -26,11 +26,13 @@
  */
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
 
+// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 /**
  *  Description and activation class for module TuiCalendar
  */
 class modTuiCalendar extends DolibarrModules
 {
+	// phpcs:enable
 	/**
 	 * Constructor. Define names, constants, directories, boxes, permissions
 	 *
