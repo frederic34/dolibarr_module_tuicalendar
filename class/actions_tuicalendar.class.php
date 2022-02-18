@@ -296,22 +296,22 @@ class ActionsTuiCalendar
 				'https://uicdn.toast.com/tui.dom/v3.0.0/tui-dom.js',
 				'https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js',
 				'https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js',
-				'https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js',
+				//'https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js',
 				//'/tuicalendar/node_modules/tui-code-snippet/dist/tui-code-snippet.min.js',
 				//'/tuicalendar/node_modules/tui-dom/dist/tui-dom.min.js',
 				//'/tuicalendar/node_modules/tui-time-picker/dist/tui-time-picker.min.js',
 				//'/tuicalendar/node_modules/tui-date-picker/dist/tui-date-picker.min.js',
-				//'/tuicalendar/js/tui-calendar.min.js',
+				'/tuicalendar/js/tui-calendar.min.js',
 			);
 			$arrayofcss = array(
 				'/tuicalendar/css/bootstrap.min.css',
 				'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.css',
 				'/tuicalendar/css/icons.css',
 				'/tuicalendar/css/tuicalendar.css.php',
-				'https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css',
+				// 'https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css',
 				'https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css',
 				'https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css',
-				//'/tuicalendar/css/tui-calendar.min.css',
+				'/tuicalendar/css/tui-calendar.min.css',
 				//'/tuicalendar/node_modules/tui-time-picker/dist/tui-time-picker.css',
 				//'/tuicalendar/node_modules/tui-date-picker/dist/tui-date-picker.css',
 			);
@@ -706,136 +706,136 @@ class ActionsTuiCalendar
 			print '    <select class="actioncodeAutoComplete" multiple type="text" title="' . $langs->trans('ActionType') . '"></select>';
 			print '</span>';
 			print '    <span id="renderRange" class="render-range"></span>
-			</div>
-			<div id="createSchedule" class="modal" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="text-align:center;" role="document">
-					<div class="modal-content" >
-						<div class="modal-header">
-							<h5 class="modal-title">' . $langs->trans('NewAction') . '</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<form id="actionForm" name="action" role="form">
-						<div class="form-group">
-							<label for="type" class="col-sm-2 control-label">Type</label>
-							<div class="col-sm-10">
-							<select class="custom-select form-control" id="type">
-								<option value="1">Rendez-Vous</option>
-								<option value="2">Appel téléphonique</option>
-								<option value="3">Envoi fax</option>
-								<option value="4">Envoi email</option>
-								<option value="5">Intervention sur site</option>
-								<option value="6">Autre</option>
-							</select>
-							<div id="type" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			</div>';
+			// <div id="createSchedule" class="modal" tabindex="-1" role="dialog">
+			// 	<div class="modal-dialog" style="text-align:center;" role="document">
+			// 		<div class="modal-content" >
+			// 			<div class="modal-header">
+			// 				<h5 class="modal-title">' . $langs->trans('NewAction') . '</h5>
+			// 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			// 					<span aria-hidden="true">&times;</span>
+			// 				</button>
+			// 			</div>
+			// 			<form id="actionForm" name="action" role="form">
+			// 			<div class="form-group">
+			// 				<label for="type" class="col-sm-2 control-label">Type</label>
+			// 				<div class="col-sm-10">
+			// 				<select class="custom-select form-control" id="type">
+			// 					<option value="1">Rendez-Vous</option>
+			// 					<option value="2">Appel téléphonique</option>
+			// 					<option value="3">Envoi fax</option>
+			// 					<option value="4">Envoi email</option>
+			// 					<option value="5">Intervention sur site</option>
+			// 					<option value="6">Autre</option>
+			// 				</select>
+			// 				<div id="type" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="form-group">
-							<label for="title" class="col-sm-2 control-label">Libelle</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="title" placeholder="Libelle" required>
-								<div id="title" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			// 			<div class="form-group">
+			// 				<label for="title" class="col-sm-2 control-label">Libelle</label>
+			// 				<div class="col-sm-10">
+			// 					<input type="text" class="form-control" id="title" placeholder="Libelle" required>
+			// 					<div id="title" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="form-group">
-							<label for="startDate" class="col-sm-2 control-label">Start date</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="startDate" placeholder="Start date">
-								<div id="startpickerContainer" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			// 			<div class="form-group">
+			// 				<label for="startDate" class="col-sm-2 control-label">Start date</label>
+			// 				<div class="col-sm-10">
+			// 					<input type="text" class="form-control" id="startDate" placeholder="Start date">
+			// 					<div id="startpickerContainer" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="form-group">
-							<label for="endDate" class="col-sm-2 control-label">End date</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="endDate" placeholder="End date">
-								<div id="endpickerContainer" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			// 			<div class="form-group">
+			// 				<label for="endDate" class="col-sm-2 control-label">End date</label>
+			// 				<div class="col-sm-10">
+			// 					<input type="text" class="form-control" id="endDate" placeholder="End date">
+			// 					<div id="endpickerContainer" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="form-group">
-							<label for="etat" class="col-sm-2 control-label">État</label>
-							<div class="col-sm-10">
-							<select  class="custom-select form-control" id="etat" >
-								<option value="1">Non applicable</option>
-								<option value="2">A faire</option>
-								<option value="3">En cours</option>
-								<option value="4">Terminé</option>
-							</select>
-							<div id="etat" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			// 			<div class="form-group">
+			// 				<label for="etat" class="col-sm-2 control-label">État</label>
+			// 				<div class="col-sm-10">
+			// 				<select  class="custom-select form-control" id="etat" >
+			// 					<option value="1">Non applicable</option>
+			// 					<option value="2">A faire</option>
+			// 					<option value="3">En cours</option>
+			// 					<option value="4">Terminé</option>
+			// 				</select>
+			// 				<div id="etat" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="form-group">
-							<label for="userAssigned" class="col-sm-2 control-label">Événement assigné à</label>
-							<div class="col-sm-10">
-							<select  class="custom-select form-control" id="userAssigned">
-								<option value="1">ToDo</option>
-							</select>
-							<div id="userAssigned" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			// 			<div class="form-group">
+			// 				<label for="userAssigned" class="col-sm-2 control-label">Événement assigné à</label>
+			// 				<div class="col-sm-10">
+			// 				<select  class="custom-select form-control" id="userAssigned">
+			// 					<option value="1">ToDo</option>
+			// 				</select>
+			// 				<div id="userAssigned" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="form-group">
-							<label for="thirdPartyAssigned" class="col-sm-2 control-label">Tiers concerné</label>
-							<div class="col-sm-10">
-							<select  class="custom-select form-control" id="thirdPartyAssigned">
-								<option value="1">ToDo</option>
-							</select>
-							<div id="thirdPartyAssigned" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			// 			<div class="form-group">
+			// 				<label for="thirdPartyAssigned" class="col-sm-2 control-label">Tiers concerné</label>
+			// 				<div class="col-sm-10">
+			// 				<select  class="custom-select form-control" id="thirdPartyAssigned">
+			// 					<option value="1">ToDo</option>
+			// 				</select>
+			// 				<div id="thirdPartyAssigned" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="form-group">
-							<label for="contactAssigned" class="col-sm-2 control-label">Contact concerné</label>
-							<div class="col-sm-10">
-							<select  class="custom-select form-control" id="contactAssigned">
-								<option value="1">ToDo</option>
-							</select>
-							<div id="contactAssigned" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			// 			<div class="form-group">
+			// 				<label for="contactAssigned" class="col-sm-2 control-label">Contact concerné</label>
+			// 				<div class="col-sm-10">
+			// 				<select  class="custom-select form-control" id="contactAssigned">
+			// 					<option value="1">ToDo</option>
+			// 				</select>
+			// 				<div id="contactAssigned" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="form-group">
-							<label for="projectid" class="col-sm-2 control-label">' . $langs->trans("Project") . '</label>
-							<div class="col-sm-10">
-							<select  class="custom-select form-control" id="projectid">
-								<option value="1">ToDo</option>
-							</select>
-							<div id="projectid" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			// 			<div class="form-group">
+			// 				<label for="projectid" class="col-sm-2 control-label">' . $langs->trans("Project") . '</label>
+			// 				<div class="col-sm-10">
+			// 				<select  class="custom-select form-control" id="projectid">
+			// 					<option value="1">ToDo</option>
+			// 				</select>
+			// 				<div id="projectid" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="form-group">
-							<label for="taskid" class="col-sm-2 control-label">' . $langs->trans("Task") . '</label>
-							<div class="col-sm-10">
-							<select  class="custom-select form-control" id="taskid">
-								<option value="1">ToDo</option>
-							</select>
-							<div id="taskid" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			// 			<div class="form-group">
+			// 				<label for="taskid" class="col-sm-2 control-label">' . $langs->trans("Task") . '</label>
+			// 				<div class="col-sm-10">
+			// 				<select  class="custom-select form-control" id="taskid">
+			// 					<option value="1">ToDo</option>
+			// 				</select>
+			// 				<div id="taskid" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="form-group">
-							<label for="body" class="col-sm-2 control-label">Description</label>
-							<div class="col-sm-10">
-								<textarea class="form-control" id="body" placeholder="body"></textarea>
-								<div id="body" style="margin-top: 10px;"></div>
-							</div>
-						</div>
+			// 			<div class="form-group">
+			// 				<label for="body" class="col-sm-2 control-label">Description</label>
+			// 				<div class="col-sm-10">
+			// 					<textarea class="form-control" id="body" placeholder="body"></textarea>
+			// 					<div id="body" style="margin-top: 10px;"></div>
+			// 				</div>
+			// 			</div>
 
-						<div class="modal-footer">
-							<button id="buttonSubmitModal" type="submit" class="btn btn-primary">' . $langs->trans('Save') . '</button>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">' . $langs->trans('Cancel') . '</button>
-						</div>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div id="calendar" style="height: 800px;"></div>';
+			// 			<div class="modal-footer">
+			// 				<button id="buttonSubmitModal" type="submit" class="btn btn-primary">' . $langs->trans('Save') . '</button>
+			// 				<button type="button" class="btn btn-secondary" data-dismiss="modal">' . $langs->trans('Cancel') . '</button>
+			// 			</div>
+			// 			</form>
+			// 		</div>
+			// 	</div>
+			// </div>
+			print '<div id="calendar" style="height: 800px;"></div>';
 			// réactivation dropdown utilisateur
 			print "<script>
 				$( document ).ready(function() {
@@ -1145,7 +1145,7 @@ class ActionsTuiCalendar
 		(function(window, Calendar) {
 			//var Calendar = tui.Calendar;
 
-			var useCreationPopup = false;
+			var useCreationPopup = true;
 			var useDetailPopup = true;
 			var useNarrowWeekEnd = false;
 			var useStartDayOfWeek = 1;
@@ -1266,33 +1266,33 @@ class ActionsTuiCalendar
 					// });
 
 					// open modal
-					$('#createSchedule').modal('show');
-					console.log(event);
-					var start = new tui.DatePicker('#startpickerContainer', {
-						date: event.start._date,
-						input: {
-							element: '#startDate',
-							format: 'yyyy-MM-dd HH:mm'
-						},
-						timePicker: {
-						  layoutType: 'tab',
-						  inputType: 'spinbox'
-						}
-					});
-					var end = new tui.DatePicker('#endpickerContainer', {
-						date: event.end._date,
-						input: {
-							element: '#endDate',
-							format: 'yyyy-MM-dd HH:mm'
-						},
-						timePicker: {
-						  layoutType: 'tab',
-						  inputType: 'spinbox'
-						}
-					});
+					// $('#createSchedule').modal('show');
+					// console.log(event);
+					// var start = new tui.DatePicker('#startpickerContainer', {
+					// 	date: event.start._date,
+					// 	input: {
+					// 		element: '#startDate',
+					// 		format: 'yyyy-MM-dd HH:mm'
+					// 	},
+					// 	timePicker: {
+					// 	  layoutType: 'tab',
+					// 	  inputType: 'spinbox'
+					// 	}
+					// });
+					// var end = new tui.DatePicker('#endpickerContainer', {
+					// 	date: event.end._date,
+					// 	input: {
+					// 		element: '#endDate',
+					// 		format: 'yyyy-MM-dd HH:mm'
+					// 	},
+					// 	timePicker: {
+					// 	  layoutType: 'tab',
+					// 	  inputType: 'spinbox'
+					// 	}
+					// });
 
 					// clear guide element
-					event.guide.clearGuideElement();
+					// event.guide.clearGuideElement();
 				},
 				'beforeUpdateSchedule': function(event) {
 					console.log('beforeUpdateSchedule', event);
@@ -1369,59 +1369,59 @@ class ActionsTuiCalendar
 			});
 
 			// modal events
-			$('#createSchedule').on('show.bs.modal', function (e) {
-				console.log('modal opened');
-				console.log(e);
-				// possibilité ici d'initialiser des champs dans la modal
-			});
-			$('#createSchedule').on('hidden.bs.modal', function (e) {
-				console.log('modal was closed');
-				// effacer les champs
-				console.log(e);
-			});
+			// $('#createSchedule').on('show.bs.modal', function (e) {
+			// 	console.log('modal opened');
+			// 	console.log(e);
+			// 	// possibilité ici d'initialiser des champs dans la modal
+			// });
+			// $('#createSchedule').on('hidden.bs.modal', function (e) {
+			// 	console.log('modal was closed');
+			// 	// effacer les champs
+			// 	console.log(e);
+			// });
 
-			$('#actionForm').submit(function(e) {
-				// stop sending form default
-				e.preventDefault();
-				// Coding
-				console.log($('form#actionForm'));
-				console.log('create schedule');
-				var schedule = new ScheduleInfo();
+			// $('#actionForm').submit(function(e) {
+			// 	// stop sending form default
+			// 	e.preventDefault();
+			// 	// Coding
+			// 	console.log($('form#actionForm'));
+			// 	console.log('create schedule');
+			// 	var schedule = new ScheduleInfo();
 
-				//schedule.id = +new Date();
-				// dolibarr calendar id 1
-				// récupérer les infos du formulaire
-				schedule.calendarId = 1;
-				schedule.title = $('#title').val();
-				schedule.body =  $('#body').val();
-				schedule.isAllDay = false;
-				schedule.start = $('#startDate').val();
-				schedule.end = $('#endDate').val();
-				schedule.category =  'time';
-				console.log(schedule);
-				// save schedule
-				//cal.createSchedules([schedule]);
-				$.ajax({
-					url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
-					dataType: 'json',
-					//contentType: 'application/json',
-					type:'post',
-					data: {
-						event: JSON.stringify(schedule),
-					},
-					success: function(response, status) {
-						schedule.id = response.id;
-						//saveNewSchedule(schedule);
-					},
-					error: function(response, status, e) {
-						console.log('error submitting schedule');
-					}
-				});
-				//saveNewSchedule(schedule);
-				// closing modal
-				$('#createSchedule').modal('toggle'); //or  $('#createSchedule').modal('hide');
-				return false;
-			});
+			// 	//schedule.id = +new Date();
+			// 	// dolibarr calendar id 1
+			// 	// récupérer les infos du formulaire
+			// 	schedule.calendarId = 1;
+			// 	schedule.title = $('#title').val();
+			// 	schedule.body =  $('#body').val();
+			// 	schedule.isAllDay = false;
+			// 	schedule.start = $('#startDate').val();
+			// 	schedule.end = $('#endDate').val();
+			// 	schedule.category =  'time';
+			// 	console.log(schedule);
+			// 	// save schedule
+			// 	//cal.createSchedules([schedule]);
+			// 	$.ajax({
+			// 		url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
+			// 		dataType: 'json',
+			// 		//contentType: 'application/json',
+			// 		type:'post',
+			// 		data: {
+			// 			event: JSON.stringify(schedule),
+			// 		},
+			// 		success: function(response, status) {
+			// 			schedule.id = response.id;
+			// 			//saveNewSchedule(schedule);
+			// 		},
+			// 		error: function(response, status, e) {
+			// 			console.log('error submitting schedule');
+			// 		}
+			// 	});
+			// 	//saveNewSchedule(schedule);
+			// 	// closing modal
+			// 	$('#createSchedule').modal('toggle'); //or  $('#createSchedule').modal('hide');
+			// 	return false;
+			// });
 
 			/**
 			 * Get time template for time and all-day
