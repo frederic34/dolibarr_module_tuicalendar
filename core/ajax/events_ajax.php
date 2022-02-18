@@ -820,7 +820,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 					$ical = new ICal(false, array(
 						// Default value
 						'defaultSpan' => 2,
-						'defaultTimeZone' => 'UTC',
+						'defaultTimeZone' => 'Europe/Paris',
 						// Default value
 						'defaultWeekStart' => 'MO',
 						// Default value
@@ -838,6 +838,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 					//die($e);
 					return [];
 				}
+				dol_syslog('Ical : ' . $namecal . ' cachetime : ' .print_r($ical->events(), true), LOG_WARNING);
 				// on cache le fichier parsé
 				dol_filecache($cachedir, $filename, $ical);
 			} else {
