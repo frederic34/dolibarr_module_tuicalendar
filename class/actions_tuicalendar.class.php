@@ -1152,7 +1152,15 @@ class ActionsTuiCalendar
 			var datePicker, selectedCalendar;
 
 			var cal = new Calendar('#calendar', {
-				usageStatistics: false,
+				timezone: {
+					zones: [
+						{
+							timezoneName: 'Europe/Paris',
+							displayLabel: 'Paris',
+							tooltip: 'Paris'
+						}
+					],
+				},				usageStatistics: false,
 				defaultView: '" . $defaultview . "',
 				useCreationPopup: useCreationPopup,
 				useDetailPopup: useDetailPopup,
@@ -2275,11 +2283,12 @@ class ActionsTuiCalendar
 		//echo "action: " . $action;
 		// calendar
 		if (in_array($parameters['currentcontext'], ['agenda']) && basename($_SERVER['PHP_SELF']) == 'index.php') {
+			// $this->resprints = '
+			// <div class="vmenu lnb-new-schedule">
+			// 	<button id="btn-new-schedule" type="button" class="btn btn-default btn-block lnb-new-schedule-btn" data-toggle="modal">
+			// 	' . $langs->trans('AddAction') . '</button>
+			// </div>';
 			$this->resprints = '
-			<div class="vmenu lnb-new-schedule">
-				<button id="btn-new-schedule" type="button" class="btn btn-default btn-block lnb-new-schedule-btn" data-toggle="modal">
-				' . $langs->trans('AddAction') . '</button>
-			</div>
 			<div id="lnb-calendars" class="vmenu lnb-calendars">
 				<div>
 					<div class="lnb-calendars-item">

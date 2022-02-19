@@ -581,12 +581,21 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			$raw->location = !empty($event->location) ? $event->location : '';
 			$isallday = $event->fulldayevent ? true : false;
 
+			$tz = new \DateTimeZone('Europe/Paris');
 			$dtstart = new DateTime();
+			$dtstart->setTimezone($tz);
 			$dtstart->setTimestamp($event->datep);
-			$dtstart->setTimezone(new DateTimeZone('UTC'));
+			$offset_start = $dtstart->getOffset();
+			// on recalcule avec l'offset
+			$dtstart->setTimestamp($event->datep - $offset_start);
+
 			$dtend = new DateTime();
+			$dtend->setTimezone($tz);
 			$dtend->setTimestamp((empty($event->datef) ? $event->datep + 10 : $event->datef));
-			$dtend->setTimezone(new DateTimeZone('UTC'));
+			$offset_end = $dtend->getOffset();
+			// on recalcule avec l'offset
+			$dtend->setTimestamp((empty($event->datef) ? ($event->datep - $offset_start + 10) : ($event->datef - $offset_end)));
+
 			$assignedUsers = array();
 			foreach ($event->userassigned as $key => $value) {
 				if (!isset($CacheUser[$value['id']])) {
@@ -612,8 +621,8 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				'title' => $event->label,
 				// body : The schedule body text which is text/plain
 				'body' => $event->note_private,
-				'start' => $dtstart->format('Y-m-d H:i:sP'),
-				'end' => $dtend->format('Y-m-d H:i:sP'),
+				'start' => $dtstart->format(DATE_ATOM),
+				'end' => $dtend->format(DATE_ATOM),
 				// Le temps de trajet: Durée aller en minutes
 				'goingDuration' => 0,
 				// Le temps de trajet: Durée retour en minutes
@@ -793,7 +802,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 		require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 		// cette valeur peut se trouver dans le ical source, mais pas toujours
 		$cachetime = 7200;   // 7200 : 120mn
-		$cachedir = DOL_DATA_ROOT . '/agenda/temp';
+		$cachedir = DOL_DATA_ROOT . '/tuicalendar/temp';
 
 		foreach ($listofextcals as $extcal) {
 			$url = $extcal['src'];
@@ -838,7 +847,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 					//die($e);
 					return [];
 				}
-				dol_syslog('Ical : ' . $namecal . ' cachetime : ' .print_r($ical->events(), true), LOG_WARNING);
+				dol_syslog('Ical : ' . $namecal . ' cachetime : ' . print_r($ical->events(), true), LOG_WARNING);
 				// on cache le fichier parsé
 				dol_filecache($cachedir, $filename, $ical);
 			} else {
