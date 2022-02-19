@@ -581,12 +581,21 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			$raw->location = !empty($event->location) ? $event->location : '';
 			$isallday = $event->fulldayevent ? true : false;
 
+			$tz = new \DateTimeZone('Europe/Paris');
 			$dtstart = new DateTime();
+			$dtstart->setTimezone($tz);
 			$dtstart->setTimestamp($event->datep);
-			$dtstart->setTimezone(new DateTimeZone('UTC'));
+			$offset_start = $dtstart->getOffset();
+			// on recalcule avec l'offset
+			$dtstart->setTimestamp($event->datep - $offset_start);
+
 			$dtend = new DateTime();
+			$dtend->setTimezone($tz);
 			$dtend->setTimestamp((empty($event->datef) ? $event->datep + 10 : $event->datef));
-			$dtend->setTimezone(new DateTimeZone('UTC'));
+			$offset_end = $dtend->getOffset();
+			// on recalcule avec l'offset
+			$dtend->setTimestamp((empty($event->datef) ? ($event->datep - $offset_start + 10) : ($event->datef - $offset_end)));
+
 			$assignedUsers = array();
 			foreach ($event->userassigned as $key => $value) {
 				if (!isset($CacheUser[$value['id']])) {
@@ -612,16 +621,16 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				'title' => $event->label,
 				// body : The schedule body text which is text/plain
 				'body' => $event->note_private,
-				'start' => $dtstart->format('Y-m-d H:i:sP'),
-				'end' => $dtend->format('Y-m-d H:i:sP'),
+				'start' => $dtstart->format(DATE_ATOM),
+				'end' => $dtend->format(DATE_ATOM),
 				// Le temps de trajet: Durée aller en minutes
 				'goingDuration' => 0,
 				// Le temps de trajet: Durée retour en minutes
 				'comingDuration' => 0,
 				'isReadOnly' => $isreadonly,
 				'isAllDay' => $isallday,
-				// color : The schedule text color
-				//'color' => '#'.$obj->color,
+				// color : The schedule text color (black or white)
+				'color' => isDarkColor($obj->color) ? '#ffffff' : '#000000',
 				// bgColor : The schedule background color
 				'bgColor' => $event->color,
 				// borderColor : The schedule border color
@@ -793,7 +802,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 		require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 		// cette valeur peut se trouver dans le ical source, mais pas toujours
 		$cachetime = 7200;   // 7200 : 120mn
-		$cachedir = DOL_DATA_ROOT . '/agenda/temp';
+		$cachedir = DOL_DATA_ROOT . '/tuicalendar/temp';
 
 		foreach ($listofextcals as $extcal) {
 			$url = $extcal['src'];
@@ -838,7 +847,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 					//die($e);
 					return [];
 				}
-				dol_syslog('Ical : ' . $namecal . ' cachetime : ' .print_r($ical->events(), true), LOG_WARNING);
+				dol_syslog('Ical : ' . $namecal . ' cachetime : ' . print_r($ical->events(), true), LOG_WARNING);
 				// on cache le fichier parsé
 				dol_filecache($cachedir, $filename, $ical);
 			} else {
@@ -928,4 +937,91 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 		}
 	}
 	return $events;
+}
+
+/**
+ * function to check if a color is dark
+ * @param string $color color string
+ * @return bool
+ */
+function isDarkColor($color)
+{
+	global $conf;
+
+	$lightness_swap = empty($conf->global->TUICALENDAR_LIGTHNESS_SWAP) ? 150 : $conf->global->TUICALENDAR_LIGTHNESS_SWAP;
+
+	$rgb = HTMLToRGB($color);
+	$hsl = RGBToHSL($rgb);
+
+	return ($hsl['lightness'] < $lightness_swap) ? true : false;
+}
+
+/**
+ * function HTMLToRGB
+ *
+ * @param string $htmlCode html code
+ * @return int|float
+ */
+function HTMLToRGB($htmlCode)
+{
+	if ($htmlCode[0] == '#') {
+		$htmlCode = substr($htmlCode, 1);
+	}
+
+	if (strlen($htmlCode) == 3) {
+		$htmlCode = $htmlCode[0] . $htmlCode[0] . $htmlCode[1] . $htmlCode[1] . $htmlCode[2] . $htmlCode[2];
+	}
+
+	$r = hexdec($htmlCode[0] . $htmlCode[1]);
+	$g = hexdec($htmlCode[2] . $htmlCode[3]);
+	$b = hexdec($htmlCode[4] . $htmlCode[5]);
+
+	return $b + ($g << 0x8) + ($r << 0x10);
+}
+
+/**
+ * RGB to HSL
+ * @param string $RGB RGB color
+ * @return array
+ */
+function RGBToHSL($RGB)
+{
+	$r = 0xFF & ($RGB >> 0x10);
+	$g = 0xFF & ($RGB >> 0x8);
+	$b = 0xFF & $RGB;
+
+	$r = ((float) $r) / 255.0;
+	$g = ((float) $g) / 255.0;
+	$b = ((float) $b) / 255.0;
+
+	$maxC = max($r, $g, $b);
+	$minC = min($r, $g, $b);
+
+	$l = ($maxC + $minC) / 2.0;
+
+	if ($maxC == $minC) {
+		$s = 0;
+		$h = 0;
+	} else {
+		if ($l < .5) {
+			$s = ($maxC - $minC) / ($maxC + $minC);
+		} else {
+			$s = ($maxC - $minC) / (2.0 - $maxC - $minC);
+		}
+		if ($r == $maxC) {
+			$h = ($g - $b) / ($maxC - $minC);
+		}
+		if ($g == $maxC) {
+			$h = 2.0 + ($b - $r) / ($maxC - $minC);
+		}
+		if ($b == $maxC) {
+			$h = 4.0 + ($r - $g) / ($maxC - $minC);
+		}
+		$h = $h / 6.0;
+	}
+	$h = (int) round(255.0 * $h);
+	$s = (int) round(255.0 * $s);
+	$l = (int) round(255.0 * $l);
+
+	return array('hue' => $h, 'saturation' => $s, 'lightness' => $l);
 }
