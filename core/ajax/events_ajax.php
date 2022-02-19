@@ -717,7 +717,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				'isReadOnly' => true,
 				'isAllDay' => true,
 				// color : The schedule text color
-				'color' => $obj->color,
+				'color' => isDarkColor($obj->color) ? '#ffffff' : '#000000',
 				// bgColor : The schedule background color
 				'bgColor' => $obj->color,
 				// borderColor : The schedule border color
@@ -921,7 +921,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 						'isReadOnly' => true,
 						'isAllDay' => $fulldayevent,
 						// color : The schedule text color
-						'color' => '#fff',
+						'color' => isDarkColor($colorcal) ? '#ffffff' : '#000000',
 						// bgColor : The schedule background color
 						'bgColor' => '#' . $colorcal,
 						// borderColor : The schedule border color
