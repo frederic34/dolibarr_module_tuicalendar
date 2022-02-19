@@ -966,7 +966,7 @@ class ActionsTuiCalendar
 							schedule.recurrenceRule = '';
 							// busy or free
 							schedule.state = event.state || '';
-							schedule.color = event.color || mycalendar.color;
+							schedule.color = event.color || '#ffffff';
 							schedule.bgColor = event.bgColor || mycalendar.bgColor;
 							schedule.dragBgColor = event.dragBgColor || mycalendar.dragBgColor;
 							//schedule.borderColor = event.borderColor || mycalendar.borderColor;
