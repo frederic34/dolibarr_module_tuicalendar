@@ -66,11 +66,7 @@ switch ($action) {
 	case 'getdeletedevents':
 		$calendarId = GETPOST('calendarId', 'alpha');
 		$calendarName = GETPOST('calendarName', 'alpha');
-		$startDate = GETPOST('startDate', 'alpha');
-		$endDate = GETPOST('endDate', 'alpha');
-		$offset = (int) GETPOST('offset', 'int');
-		$onlylast = (int) GETPOST('onlylast', 'int');
-		//$arrayofevents = getDeletedEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $onlylast);
+		$arrayofevents = getDeletedEventsId($calendarId);
 		print json_encode($arrayofevents);
 		break;
 	case 'putevent':
@@ -348,6 +344,31 @@ switch ($action) {
 		break;
 }
 $db->close();
+
+/**
+ * get events.
+ *
+ * @param   string  $calendarId     calendar id
+ *
+ * @return array array of events
+ */
+function getDeletedEventsId($calendarId)
+{
+	global $db;
+	$events = [];
+	if ($calendarId != '1') {
+		return $events;
+	}
+	$sql = "SELECT fk_actioncomm FROM " . MAIN_DB_PREFIX . "actioncomm_deleted WHERE tms>" . (int) (time() - (2 * 60 * 60));
+	$resql = $db->query($sql);
+	while ($resql && $obj = $db->fetch_object($resql)) {
+		$events[] = [
+			'id' => (int) $obj->fk_actioncomm,
+			'calendarId' => $calendarId,
+		];
+	}
+	return $events;
+}
 
 /**
  * get events.
