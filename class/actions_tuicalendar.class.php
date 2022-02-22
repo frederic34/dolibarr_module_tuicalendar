@@ -939,6 +939,17 @@ class ActionsTuiCalendar
 				return JSON.parse(response);
 			}
 
+			async function generateDeletedList(calendar, renderStart, renderEnd) {
+				var startDate = new Date(renderStart._date);
+				var endDate = new Date(renderEnd._date);
+				var res = await fetch('" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getdeletedevents&calendarId=' + calendar.id + '&calendarName=' + calendar.name, {
+					headers: {\"Content-Type\": \"application/json; charset=utf-8\"}
+				});
+				var response = await res.text();
+				// ajouter un test si json invalide
+				return JSON.parse(response);
+			}
+
 			async function generateSchedule(viewName, renderStart, renderEnd) {
 				ScheduleList = [];
 				CalendarList.forEach(function(mycalendar) {
@@ -1063,13 +1074,22 @@ class ActionsTuiCalendar
 							}
 						});
 					});
+					generateDeletedList(calendar, cal.getDateRangeStart(), cal.getDateRangeEnd()).then(result => {
+						console.log(result);
+						result.forEach(function(event) {
+							console.log(event.id);
+							if (findSchedule(event.id, event.calendarId) !== false) {
+								// DELETE Schedule on screen
+								cal.deleteSchedule(event.id, event.calendarId, false);
+							}
+						});
+					});
 				}, calendar.refresh);
 				TimerList.push(timer);
 			}
 
 			function findCalendar(id) {
 				var found;
-
 				CalendarList.forEach(function(calendar) {
 					if (calendar.id === id) {
 						found = calendar;
@@ -1081,7 +1101,6 @@ class ActionsTuiCalendar
 
 			function findSchedule(id, calendarId) {
 				var found;
-
 				ScheduleList.forEach(function(schedule) {
 					///console.log(id, schedule);
 					if (schedule.id === id && schedule.calendarId === calendarId) {
