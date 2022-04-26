@@ -45,22 +45,34 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 $langs->loadLangs(["agenda", "other", "commercial", "companies"]);
 
 top_httphead('application/json', 1);
-//dol_syslog('posted events ajax GET '.print_r($_GET, true), LOG_NOTICE);
-//dol_syslog('posted events ajax POST '.print_r($_POST, true), LOG_NOTICE);
-//dol_syslog('posted events ajax REQUEST '.print_r($_REQUEST, true), LOG_NOTICE);
+// dol_syslog('posted events ajax GET '.print_r($_GET, true), LOG_WARNING);
+// dol_syslog('posted events ajax POST '.print_r($_POST, true), LOG_WARNING);
+// dol_syslog('posted events ajax REQUEST '.print_r($_REQUEST, true), LOG_WARNING);
 $action = GETPOSTISSET('action') ? GETPOST('action', 'aZ09') : 'getevents';
+$input = file_get_contents('php://input');
 switch ($action) {
 	case 'getconfig':
 		print json_encode([]);
 		break;
 	case 'getevents':
-		$calendarId = GETPOST('calendarId', 'alpha');
-		$calendarName = GETPOST('calendarName', 'alpha');
-		$startDate = GETPOST('startDate', 'alpha');
-		$endDate = GETPOST('endDate', 'alpha');
-		$offset = (int) GETPOST('offset', 'int');
-		$onlylast = (int) GETPOST('onlylast', 'int');
-		$arrayofevents = getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $onlylast);
+		try {
+			$parameters = json_decode($input);
+			dol_syslog(print_r($parameters, true), LOG_WARNING);
+		} catch (Exception $e) {
+			dol_syslog('json_decode error', LOG_WARNING);
+		}
+		$calendarId = $parameters->calendarId;
+		$calendarName = $parameters->calendarName;
+		$startDate = $parameters->startDate;
+		$endDate = $parameters->endDate;
+		$offset = (int) $parameters->offset;
+		$onlylast = (int) $parameters->onlylast;
+		$search_actioncode = $parameters->search_actioncode;
+		$search_userid = $parameters->search_user;
+		$search_socid = $parameters->search_socid;
+		$search_states = $parameters->search_states;
+		$search_all = $parameters->search_all;
+		$arrayofevents = getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $onlylast, $search_actioncode, $search_userid, $search_socid, $search_states, $search_all);
 		print json_encode($arrayofevents);
 		break;
 	case 'getdeletedevents':
@@ -72,24 +84,24 @@ switch ($action) {
 	case 'putevent':
 		if (GETPOSTISSET('schedule')) {
 			$updatedevent = json_decode(GETPOST('schedule', 'none'));
-			//var_dump($updatedevent);
 			$datestart = json_decode(GETPOST('start', 'none'));
 			$dateend = json_decode(GETPOST('end', 'none'));
 			$offset = json_decode(GETPOST('offset', 'none'));
-			// dol_syslog('updated events ajax REQUEST event ' . print_r($updatedevent, true), LOG_NOTICE);
-			// dol_syslog('updated events ajax REQUEST datestart '.print_r($datestart, true), LOG_NOTICE);
-			// dol_syslog('updated events ajax REQUEST dateend '.print_r($dateend, true), LOG_NOTICE);
-			// dol_syslog('updated events ajax REQUEST offset '.print_r($offset, true), LOG_NOTICE);
+			// dol_syslog('updated events ajax REQUEST event ' . print_r($updatedevent, true), LOG_WARNING);
+			// dol_syslog('updated events ajax REQUEST datestart '.print_r($datestart, true), LOG_WARNING);
+			// dol_syslog('updated events ajax REQUEST dateend '.print_r($dateend, true), LOG_WARNING);
+			// dol_syslog('updated events ajax REQUEST offset '.print_r(((int) $offset * 60), true), LOG_WARNING);
+			// dol_syslog('updated events ajax REQUEST start '.strtotime($datestart->_date), LOG_WARNING);
 			$action = new ActionComm($db);
 			$action->fetch($updatedevent->id);
 			$action->fetch_optionals();
 			$action->fetch_userassigned();
+			$action->fetchObjectLinked();
 			$action->oldcopy = clone $action;
 			$action->location = $updatedevent->location;
 			$action->fulldayevent = $updatedevent->isAllDay ? 1 : 0;
-			$action->datep = strtotime($datestart->_date);
-			// dol_syslog('updated events ajax REQUEST datep '.print_r($action->datep, true), LOG_NOTICE);
-			$action->datef = strtotime($dateend->_date);
+			$action->datep = strtotime($datestart->_date) - ((int) $offset * 60);
+			$action->datef = strtotime($dateend->_date) - ((int) $offset * 60);
 			$res = $action->update($user);
 			if ($res < 0) {
 				print json_encode([]);
@@ -97,14 +109,15 @@ switch ($action) {
 				dol_syslog('updated action errors ' . print_r($action->errors, true), LOG_ERR);
 			} else {
 				print json_encode(['id' => $res]);
-				//dol_syslog('updated action datep '.print_r($action->datep, true), LOG_NOTICE);
-				//dol_syslog('updated action datef '.print_r($action->datef, true), LOG_NOTICE);
+				// dol_syslog('updated action datep '.print_r($action->datep, true), LOG_WARNING);
+				// dol_syslog('updated action datef '.print_r($action->datef, true), LOG_WARNING);
 			}
 		}
 		break;
 	case 'postevent':
 		if (GETPOSTISSET('event')) {
 			$postevent = json_decode(GETPOST('event', 'none'));
+			$offset = json_decode(GETPOST('offset', 'none'));
 			dol_syslog('posted events ajax REQUEST ' . print_r($postevent, true), LOG_NOTICE);
 			$action = new ActionComm($db);
 			// a changer
@@ -115,8 +128,8 @@ switch ($action) {
 			$action->label = $postevent->title;
 			$action->location = $postevent->location;
 			$action->fulldayevent = $postevent->isAllDay ? 1 : 0;
-			$action->datep = strtotime($postevent->start);
-			$action->datef = strtotime($postevent->end);
+			$action->datep = strtotime($postevent->start->_date) - ((int) $offset * 60);
+			$action->datef = strtotime($postevent->end->_date) - ((int) $offset * 60);
 			$action->percentage = -1;
 			$res = $action->create($user);
 			if ($res <= 0) {
@@ -224,6 +237,7 @@ switch ($action) {
 				$label .= ' (' . $obj->name_alias . ')';
 			}
 			$response[] = array(
+				'id' => $obj->rowid,
 				'value' => $obj->rowid,
 				'text' => $label,
 			);
@@ -287,17 +301,77 @@ switch ($action) {
 		break;
 	case 'getdolusers':
 		$response = [];
+		$filterkey = GETPOST('q', 'alphanohtml');
+		$limit = 100;
+
 		if ($user->rights->agenda->allactions->read) {
-			// $html .= '<tr>';
-			// $html .= '<td class="nowrap" style="padding-bottom: 2px; padding-right: 4px;">';
-			// $html .= $langs->trans("ActionsToDoBy").' &nbsp; ';
-			// $html .= '</td><td style="padding-bottom: 2px; padding-right: 4px;">';
-			// $html .= $form->select_dolusers($filtert, 'search_filtert', 1, '', ! $canedit, '', '', 0, 0, 0, '', 0, '', 'maxwidth300');
-			// if (empty($conf->dol_optimize_smallscreen)) {
-			//     $html .= ' &nbsp; '.$langs->trans("or") . ' '.$langs->trans("ToUserOfGroup").' &nbsp; ';
-			// }
+			$sql = "SELECT DISTINCT u.rowid, u.lastname as lastname, u.firstname, u.statut, u.login, u.admin, u.entity";
+			if (!empty($conf->multicompany->enabled) && $conf->entity == 1 && $user->admin && !$user->entity) {
+				$sql .= ", e.label";
+			}
+			$sql .= " FROM " . MAIN_DB_PREFIX . "user as u";
+			if (!empty($conf->multicompany->enabled) && $conf->entity == 1 && $user->admin && !$user->entity) {
+				$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "entity as e ON e.rowid=u.entity";
+				if ($force_entity) {
+					$sql .= " WHERE u.entity IN (0," . $force_entity . ")";
+				} else {
+					$sql .= " WHERE u.entity IS NOT NULL";
+				}
+			} else {
+				if (!empty($conf->global->MULTICOMPANY_TRANSVERSE_MODE)) {
+					$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "usergroup_user as ug";
+					$sql .= " ON ug.fk_user = u.rowid";
+					$sql .= " WHERE ug.entity = " . $conf->entity;
+				} else {
+					$sql .= " WHERE u.entity IN (0," . $conf->entity . ")";
+				}
+			}
+			if (!empty($user->socid)) {
+				$sql .= " AND u.fk_soc = " . $user->socid;
+			}
+			if (!empty($conf->global->USER_HIDE_INACTIVE_IN_COMBOBOX) || $noactive) {
+				$sql .= " AND u.statut <> 0";
+			}
+			if (!empty($filterkey)) {
+				$sql .= natural_search(['u.firstname', 'u.lastname'], $db->escape($filterkey));
+			}
+			if (empty($conf->global->MAIN_FIRSTNAME_NAME_POSITION)) {
+				// MAIN_FIRSTNAME_NAME_POSITION is 0 means firstname+lastname
+				$sql .= " ORDER BY u.firstname ASC";
+			} else {
+				$sql .= " ORDER BY u.lastname ASC";
+			}
+			dol_syslog($sql, LOG_WARNING);
+			// Build output string
+			$resql = $db->query($sql);
+			while ($resql && $obj = $db->fetch_object($resql)) {
+				$label = $obj->firstname . ' ' . $obj->lastname;
+				$response[] = array(
+					'id' => $obj->rowid,
+					'value' => $obj->rowid,
+					'text' => $label,
+				);
+			}
+		}
+		print json_encode($response);
+		break;
+	case 'getdolgroups':
+		$response = [];
+		$filterkey = GETPOST('q', 'alphanohtml');
+		$limit = 100;
+
+		if ($user->rights->agenda->allactions->read) {
 			// $html .= $form->select_dolgroups($usergroupid, 'usergroup', 1, '', ! $canedit);
-			// $html .= '</td></tr>';
+			// Build output string
+			$resql = $db->query($sql);
+			while ($resql && $obj = $db->fetch_object($resql)) {
+				$label = $obj->ref . ' ' . $obj->title;
+				$response[] = [
+					'id' => $obj->rowid,
+					'value' => $obj->rowid,
+					'text' => $label,
+				];
+			}
 		}
 		print json_encode($response);
 		break;
@@ -339,6 +413,24 @@ switch ($action) {
 		// }
 		print json_encode($response);
 		break;
+	case 'getstates':
+		$preselectedstates = [];
+		$response = [];
+		$sql = "SELECT d.rowid as id, d.code_departement as code, d.nom as label, d.fk_region as region_id, r.nom as region, c.code as country_code, c.label as country, d.active";
+		$sql .= " FROM " . MAIN_DB_PREFIX . "c_departements as d, ";
+		$sql .= MAIN_DB_PREFIX . "c_regions as r, ";
+		$sql .= MAIN_DB_PREFIX . "c_country as c";
+		$sql .= " WHERE d.fk_region=r.code_region and r.fk_pays=c.rowid and r.active=1 and c.active=1 and fk_pays=1";
+		$sql .= " ORDER BY d.code_departement";
+
+		$resql = $db->query($sql);
+		while ($resql && $obj = $db->fetch_array($resql)) {
+			$obj['selected'] = in_array($obj['code'], $preselectedstates);
+			$obj['label'] = $obj['code'] . '-' . $langs->trans($obj['label']);
+			$response[] = $obj;
+		}
+		print json_encode($response);
+		break;
 	default:
 		print json_encode([]);
 		break;
@@ -359,7 +451,7 @@ function getDeletedEventsId($calendarId)
 	if ($calendarId != '1') {
 		return $events;
 	}
-	$sql = "SELECT fk_actioncomm FROM " . MAIN_DB_PREFIX . "actioncomm_deleted WHERE tms>" . (int) (time() - (2 * 60 * 60));
+	$sql = "SELECT fk_actioncomm FROM " . MAIN_DB_PREFIX . "actioncomm_deleted WHERE tms>'" . (int) (time() - (3 * 60 * 60)) . "'";
 	$resql = $db->query($sql);
 	while ($resql && $obj = $db->fetch_object($resql)) {
 		$events[] = [
@@ -379,10 +471,15 @@ function getDeletedEventsId($calendarId)
  * @param   string  $endDate        end date
  * @param   int     $offset         timezone offset
  * @param   bool    $onlylast       only last refreshed events
+ * @param   string  $search_actioncode actions code comma separated
+ * @param   int     $search_userid  user id to search
+ * @param   int     $socid          customer id
+ * @param   string  $search_states  comma separated list of states
+ * @param   string  $search_all     search everywhere
  *
  * @return array array of events
  */
-function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $onlylast)
+function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $onlylast, $search_actioncode, $search_userid, $socid, $search_states, $search_all)
 {
 	global $db, $conf, $langs, $user, $hookmanager;
 
@@ -424,43 +521,20 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 	// );
 	$hookmanager->initHooks(array('agenda'));
 
-	// $showbirthday = empty($conf->use_javascript_ajax) ? GETPOST("showbirthday", "int") : 1;
-
 	if ($calendarId == 1) {
 		$pid = GETPOST("projectid", "int", 3);
 		$status = GETPOST("status", 'int');
 		$type = GETPOST("type", 'alpha');
-		$state_id = GETPOST('state_id', 'int');
+
 		// $maxprint = (GETPOST("maxprint") ? GETPOST("maxprint") : $conf->global->AGENDA_MAX_EVENTS_DAY_VIEW);
-		// First try with GETPOST(array) (I don't know when it can be an array but why not)
-		$actioncode = GETPOST("actioncode", "array", 3) ? GETPOST("actioncode", "array", 3) : (GETPOST("actioncode") == '0' ? '0' : '');
-		if (empty($actioncode)) {
-			$actioncode = GETPOST("search_actioncode", "array", 3) ? GETPOST("search_actioncode", "array", 3) : (GETPOST("search_actioncode") == '0' ? '0' : '');
-		}
-		//If empty then try GETPOST(alpha) (this one works with comm/action/index.php
-		if (empty($actioncode)) {
-			$actioncode = GETPOST("actioncode", "alpha", 3) ? GETPOST("actioncode", "alpha", 3) : (GETPOST("actioncode", 'int') == '0' ? '0' : '');
-			if (empty($actioncode)) {
-				$actioncode = GETPOST("search_actioncode", "alpha", 3) ? GETPOST("search_actioncode", "alpha", 3) : (GETPOST("search_actioncode", 'int') == '0' ? '0' : '');
-			}
-			if (!empty($actioncode)) {
-				$actioncode = array($actioncode);
-			}
-		}
-		if (empty($actioncode)) {
-			$actioncode = [];
-		}
-		$filter = GETPOST("filter", 'alpha', 3);
-		$filtert = GETPOST("usertodo", "int", 3) ? GETPOST("usertodo", "int", 3) : GETPOST("filtert", "int", 3);
-		if (empty($filtert)) {
-			$filtert = GETPOST("search_filtert", "int", 3);
-		}
+		$actioncode = explode(',', $search_actioncode);
+
 		$usergroup = GETPOST("usergroup", "int", 3);
-		if (empty($filtert) && empty($conf->global->AGENDA_ALL_CALENDARS)) {
-			$filtert = $user->id;
+		if (empty($search_userid) && empty($conf->global->AGENDA_ALL_CALENDARS)) {
+			$search_userid = $user->id;
 		}
 		// $socid = (int) GETPOST("socid", "int");
-		$socid = 0;
+		// $socid = 0;
 		if ($user->socid) {
 			$socid = $user->socid;
 		}
@@ -481,7 +555,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . "actioncomm as a";
 		$sql .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'c_actioncomm as ca ON (a.fk_action = ca.id)';
 		$sql .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'user u ON (a.fk_user_action=u.rowid )';
-		if (!empty($conf->global->TUICALENDAR_FILTER_ON_STATE) && !empty($state_id)) {
+		if (!empty($search_states)) {
 			$sql .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'societe s ON (s.rowid = a.fk_soc)';
 			$sql .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'socpeople sp ON (sp.rowid = a.fk_contact)';
 		}
@@ -489,7 +563,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON a.fk_soc = sc.fk_soc";
 		}
 		// We must filter on assignement table
-		if ($filtert > 0 || $usergroup > 0) {
+		if ($search_userid > 0 || $usergroup > 0) {
 			$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "actioncomm_resources as ar ON (ar.fk_actioncomm = a.id)";
 		}
 		if ($usergroup > 0) {
@@ -517,11 +591,21 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 		if ($socid > 0) {
 			$sql .= ' AND a.fk_soc = ' . $socid;
 		}
-		if (!empty($conf->global->TUICALENDAR_FILTER_ON_STATE) && !empty($state_id)) {
-			$sql .= ' AND (s.fk_departement = ' . $state_id . ' OR sp.fk_departement = ' . $state_id . ')';
+		if (!empty($search_states)) {
+			$sql .= ' AND (s.fk_departement IN (' . $db->escape($search_states) . ') OR sp.fk_departement IN (' . $db->escape($search_states) . ')';
+			// on recherche les codes des départements...
+			$sqlcode = "SELECT d.rowid as id, d.code_departement as code";
+			$sqlcode .= " FROM " . MAIN_DB_PREFIX . "c_departements as d";
+			$sqlcode .= " WHERE d.rowid IN (" . $db->escape($search_states) . ")";
+			$resqlcode = $db->query($sqlcode);
+			while ($resqlcode && $objc = $db->fetch_object($resqlcode)) {
+				$sql .= ' OR s.zip LIKE "' . $objc->code . '%"';
+				$sql .= ' OR sp.zip LIKE "' . $objc->code . '%"';
+			}
+			$sql .= ')';
 		}
 		// We must filter on assignement table
-		if ($filtert > 0 || $usergroup > 0) {
+		if ($search_userid > 0 || $usergroup > 0) {
 			$sql .= " AND ar.element_type='user'";
 		}
 		//$sql .= " AND ((a.datep2 BETWEEN '".$db->idate($t_start-(60*60*24*7))."' AND '".$db->idate($t_end+(60*60*24*10))."')
@@ -550,18 +634,22 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			$sql .= " AND ((a.percent >= 0 AND a.percent < 100) OR (a.percent = -1 AND a.datep2 > '" . $db->idate($now) . "'))";
 		}
 		// We must filter on assignement table
-		if ($filtert > 0 || $usergroup > 0) {
+		if ($search_userid > 0 || $usergroup > 0) {
 			$sql .= " AND (";
-			if ($filtert > 0) {
-				$sql .= "ar.fk_element = " . $filtert;
+			if ($search_userid > 0) {
+				$sql .= "ar.fk_element = " . $search_userid;
 			}
 			if ($usergroup > 0) {
-				$sql .= ($filtert > 0 ? " OR " : "") . " ugu.fk_usergroup = " . $usergroup;
+				$sql .= ($search_userid > 0 ? " OR " : "") . " ugu.fk_usergroup = " . $usergroup;
 			}
 			$sql .= ")";
 		}
 		if ($onlylast) {
 			$sql .= " AND a.tms > '" . $db->idate($now - 180, 'gmt') . "'";
+		}
+		if ($search_all) {
+			// le champs de recherche Divers, ça se passe ici
+			$sql .= natural_search(['a.note', 'a.label', 'a.location'], $search_all);
 		}
 		// Sort on date
 		$sql .= ' ORDER BY datep';
@@ -612,7 +700,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 
 			$dtend = new DateTime();
 			$dtend->setTimezone($tz);
-			$dtend->setTimestamp((empty($event->datef) ? $event->datep + 10 : $event->datef));
+			$dtend->setTimestamp((empty($event->datef) ? ($event->datep - $offset_start + 10) : ($event->datef)));
 			$offset_end = $dtend->getOffset();
 			// on recalcule avec l'offset
 			$dtend->setTimestamp((empty($event->datef) ? ($event->datep - $offset_start + 10) : ($event->datef - $offset_end)));
