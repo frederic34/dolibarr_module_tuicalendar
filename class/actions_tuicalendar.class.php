@@ -138,7 +138,7 @@ class ActionsTuiCalendar
 
 		$error = 0; // Error counter
 		$langs->load('tuicalendar@tuicalendar');
-		//var_dump($parameters);
+		// var_dump($parameters);
 		/* print_r($parameters); print_r($object); echo "action: " . $action; */
 		if (in_array($parameters['currentcontext'], array('desactivated-agenda'))) {
 			if (empty($conf->use_javascript_ajax)) {
@@ -546,13 +546,21 @@ class ActionsTuiCalendar
 			$param .= '&year=' . $year . '&month=' . $month . ($day ? '&day=' . $day : '');
 			//print 'x'.$param;
 
-			$defaultview = 'month';
-			if ($action == 'show_month') {
-				$defaultview = 'month';
-			} elseif ($action == 'show_week') {
-				$defaultview = 'week';
-			} elseif ($action == 'show_day') {
-				$defaultview = 'day';
+			$defaultview = (empty($conf->global->AGENDA_DEFAULT_VIEW) ? 'show_month' : $conf->global->AGENDA_DEFAULT_VIEW);
+			$defaultview = (empty($user->conf->AGENDA_DEFAULT_VIEW) ? $defaultview : $user->conf->AGENDA_DEFAULT_VIEW);
+			// if (empty($mode) && !GETPOSTISSET('mode')) {
+			// 	$mode = $defaultview;
+			// }
+			// if ($mode == 'default') {	// When action is default, we want a calendar view and not the list
+			// 	$mode = (($defaultview != 'show_list') ? $defaultview : 'show_month');
+			// }
+			// $defaultview = 'month';
+			if ($action == 'show_month' || $defaultview == 'show_month') {
+				$viewmodedefault = 'month';
+			} elseif ($action == 'show_week' || $defaultview == 'show_week') {
+				$viewmodedefault = 'week';
+			} elseif ($action == 'show_day' || $defaultview == 'show_day') {
+				$viewmodedefault = 'day';
 			}
 
 			$paramnoaction = preg_replace('/action=[a-z_]+/', '', $param);
@@ -1093,7 +1101,7 @@ class ActionsTuiCalendar
 					],
 				},
 				usageStatistics: false,
-				defaultView: '" . $defaultview . "',
+				defaultView: '" . $viewmodedefault . "',
 				useCreationPopup: useCreationPopup,
 				useDetailPopup: useDetailPopup,
 				taskView: false,    // Can be also ['milestone', 'task']
