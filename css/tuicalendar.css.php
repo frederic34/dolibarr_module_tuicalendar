@@ -49,13 +49,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
 // Define css type
 header('Content-type: text/css');
-// Important: Following code is to cache this file to avoid page request by browser at each Dolibarr page access.
-// You can use CTRL+F5 to refresh your browser cache.
-if (empty($dolibarr_nocache)) {
-	header('Cache-Control: max-age=10800, public, must-revalidate');
-} else {
-	header('Cache-Control: no-cache');
-}
+header('Cache-Control: max-age=10800, public, must-revalidate');
 
 ?>
 .tooltip-inner {
@@ -235,7 +229,32 @@ if (empty($dolibarr_nocache)) {
   font-size: 0;
 }
 
+.search-clear {
+  padding: 0 8px;
+  display: inline-block;
+  line-height: 30px;
+  vertical-align: middle;
+}
+
+.search-all {
+  padding: 0px;
+  display: inline-block;
+  line-height: 30px;
+  vertical-align: middle;
+}
+.search-users {
+  padding: 0px;
+  display: inline-block;
+  line-height: 30px;
+  vertical-align: middle;
+}
 .search-customers {
+  padding: 0 8px;
+  display: inline-block;
+  line-height: 30px;
+  vertical-align: middle;
+}
+.search-states {
   padding: 0 8px;
   display: inline-block;
   line-height: 30px;
@@ -333,6 +352,10 @@ if (empty($dolibarr_nocache)) {
 
 .ic_view_day {
   background: url('../img/ic-view-day.png') no-repeat;
+}
+
+.ic-arrow-cancel {
+  background: url('../img/ic-arrow-cancel.png') no-repeat;
 }
 
 .ic-arrow-line-left {

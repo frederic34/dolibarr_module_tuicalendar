@@ -103,8 +103,8 @@ class InterfaceTuiCalendarTriggers extends DolibarrTriggers
 			$sql = 'INSERT INTO ' . MAIN_DB_PREFIX . 'actioncomm_deleted (fk_actioncomm) VALUES(' . $object->oldcopy->id . ')';
 			dol_syslog("tui calendar add deleted event: " . $sql, LOG_DEBUG);
 			$this->db->query($sql);
-			// delete one month old
-			$sql = 'DELETE FROM ' . MAIN_DB_PREFIX . 'actioncomm_deleted WHERE tms<"' . $this->db->idate(($now - (60 * 60 * 24 * 30))) . '"';
+			// delete one day old
+			$sql = 'DELETE FROM ' . MAIN_DB_PREFIX . 'actioncomm_deleted WHERE tms<"' . $this->db->idate(($now - (60 * 60 * 24))) . '"';
 			dol_syslog("tui calendar remoev old deleted event: " . $sql, LOG_DEBUG);
 			$this->db->query($sql);
 		}

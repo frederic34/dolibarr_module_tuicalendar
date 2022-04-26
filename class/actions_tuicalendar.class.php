@@ -279,8 +279,8 @@ class ActionsTuiCalendar
 	{
 		global $conf, $user, $langs;
 
-		$error = 0; // Error counter
 		$langs->load('tuicalendar@tuicalendar');
+		$langs->load("companies");
 		//var_dump($parameters);
 		/* print_r($parameters); print_r($object); echo "action: " . $action; */
 		if (in_array($parameters['currentcontext'], array('agenda'))) {
@@ -628,7 +628,12 @@ class ActionsTuiCalendar
 			//print load_fiche_titre($s, $link.' &nbsp; &nbsp; '.$nav, '', 0, 0, 'tablelistofcalendars');
 
 			// https://www.w3schools.com/howto/howto_js_dropdown.asp
-
+			$preselectedeventtypes = explode(',', $conf->global->AGENDA_DEFAULT_FILTER_TYPE);
+			$selecteds = [];
+			foreach ($preselectedeventtypes as $type) {
+				$selecteds[] = "'" . $type . "'";
+			}
+			$preselect = implode(',', $selecteds);
 			print '
 			<div id="menu">
 				<span class="dropdown">
@@ -685,156 +690,41 @@ class ActionsTuiCalendar
 					<button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">
 						<i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
 					</button>
+				</span>
+				<span id="search-all" class="search-all">
+					<input class="form-control searchAll" type="text" placeholder="' . $langs->trans('Divers') . '" autocomplete="off">
+				</span>
+				<span id="search-users" class="search-users">
+					<input class="form-control usersAutoComplete" type="text" placeholder="' . $langs->trans('User') . '" autocomplete="off">
+				</span>
+				<span id="clear-search-user" class="search-clear">
+					<button type="button" class="btn btn-default btn-sm search-clear" data-action="clear-search-user">
+						<i class="calendar-icon ic-arrow-cancel" data-action="clear-search-user"></i>
+					</button>
 				</span>';
+
 			if (!empty($conf->societe->enabled) && $user->rights->societe->lire) {
 				print '<span id="search-customers" class="search-customers">';
 				print '    <input class="form-control customersAutoComplete" type="text" placeholder="' . $langs->trans('ThirdParty') . '" autocomplete="off">';
-				print '    <input id="customer_id" name="customer_id" type="hidden">';
+				print '</span>';
+				print '<span id="search-states" class="search-states">';
+				print '    <select class="statesAutoComplete" multiple type="text" title="' . $langs->trans('StateShort') . '"></select>';
 				print '</span>';
 			}
 			if (!empty($conf->projet->enabled) && $user->rights->projet->lire) {
-				//require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
-				//$formproject=new FormProjets($db);
-				//print $formproject->select_projects($socid?$socid:-1, $pid, 'search_projectid', 0, 0, 1, 0, 0, 0, 0, '', 1, 0, 'maxwidth500');
 				print '<span id="search-projects" class="search-projects">';
 				print '    <input class="form-control projectsAutoComplete" type="text" placeholder="' . $langs->trans("Project") . '" autocomplete="off">';
 				print '    <input id="project_id" name="project_id" type="hidden">';
 				print '</span>';
 			}
-			// TODO récupérer les types d'évènements en ajax
-			print '<span id="search-actioncode" class="search-actioncode">';
-			print '    <select class="actioncodeAutoComplete" multiple type="text" title="' . $langs->trans('ActionType') . '"></select>';
-			print '</span>';
-			print '    <span id="renderRange" class="render-range"></span>
+			// select types events
+			print '
+				<span id="search-actioncode" class="search-actioncode">
+					<select class="actioncodeAutoComplete" multiple type="text" title="' . $langs->trans('ActionType') . '"></select>
+				</span>
+				<span id="renderRange" class="render-range"></span>
 			</div>';
-			// <div id="createSchedule" class="modal" tabindex="-1" role="dialog">
-			// 	<div class="modal-dialog" style="text-align:center;" role="document">
-			// 		<div class="modal-content" >
-			// 			<div class="modal-header">
-			// 				<h5 class="modal-title">' . $langs->trans('NewAction') . '</h5>
-			// 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			// 					<span aria-hidden="true">&times;</span>
-			// 				</button>
-			// 			</div>
-			// 			<form id="actionForm" name="action" role="form">
-			// 			<div class="form-group">
-			// 				<label for="type" class="col-sm-2 control-label">Type</label>
-			// 				<div class="col-sm-10">
-			// 				<select class="custom-select form-control" id="type">
-			// 					<option value="1">Rendez-Vous</option>
-			// 					<option value="2">Appel téléphonique</option>
-			// 					<option value="3">Envoi fax</option>
-			// 					<option value="4">Envoi email</option>
-			// 					<option value="5">Intervention sur site</option>
-			// 					<option value="6">Autre</option>
-			// 				</select>
-			// 				<div id="type" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="form-group">
-			// 				<label for="title" class="col-sm-2 control-label">Libelle</label>
-			// 				<div class="col-sm-10">
-			// 					<input type="text" class="form-control" id="title" placeholder="Libelle" required>
-			// 					<div id="title" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="form-group">
-			// 				<label for="startDate" class="col-sm-2 control-label">Start date</label>
-			// 				<div class="col-sm-10">
-			// 					<input type="text" class="form-control" id="startDate" placeholder="Start date">
-			// 					<div id="startpickerContainer" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="form-group">
-			// 				<label for="endDate" class="col-sm-2 control-label">End date</label>
-			// 				<div class="col-sm-10">
-			// 					<input type="text" class="form-control" id="endDate" placeholder="End date">
-			// 					<div id="endpickerContainer" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="form-group">
-			// 				<label for="etat" class="col-sm-2 control-label">État</label>
-			// 				<div class="col-sm-10">
-			// 				<select  class="custom-select form-control" id="etat" >
-			// 					<option value="1">Non applicable</option>
-			// 					<option value="2">A faire</option>
-			// 					<option value="3">En cours</option>
-			// 					<option value="4">Terminé</option>
-			// 				</select>
-			// 				<div id="etat" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="form-group">
-			// 				<label for="userAssigned" class="col-sm-2 control-label">Événement assigné à</label>
-			// 				<div class="col-sm-10">
-			// 				<select  class="custom-select form-control" id="userAssigned">
-			// 					<option value="1">ToDo</option>
-			// 				</select>
-			// 				<div id="userAssigned" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="form-group">
-			// 				<label for="thirdPartyAssigned" class="col-sm-2 control-label">Tiers concerné</label>
-			// 				<div class="col-sm-10">
-			// 				<select  class="custom-select form-control" id="thirdPartyAssigned">
-			// 					<option value="1">ToDo</option>
-			// 				</select>
-			// 				<div id="thirdPartyAssigned" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="form-group">
-			// 				<label for="contactAssigned" class="col-sm-2 control-label">Contact concerné</label>
-			// 				<div class="col-sm-10">
-			// 				<select  class="custom-select form-control" id="contactAssigned">
-			// 					<option value="1">ToDo</option>
-			// 				</select>
-			// 				<div id="contactAssigned" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="form-group">
-			// 				<label for="projectid" class="col-sm-2 control-label">' . $langs->trans("Project") . '</label>
-			// 				<div class="col-sm-10">
-			// 				<select  class="custom-select form-control" id="projectid">
-			// 					<option value="1">ToDo</option>
-			// 				</select>
-			// 				<div id="projectid" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="form-group">
-			// 				<label for="taskid" class="col-sm-2 control-label">' . $langs->trans("Task") . '</label>
-			// 				<div class="col-sm-10">
-			// 				<select  class="custom-select form-control" id="taskid">
-			// 					<option value="1">ToDo</option>
-			// 				</select>
-			// 				<div id="taskid" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="form-group">
-			// 				<label for="body" class="col-sm-2 control-label">Description</label>
-			// 				<div class="col-sm-10">
-			// 					<textarea class="form-control" id="body" placeholder="body"></textarea>
-			// 					<div id="body" style="margin-top: 10px;"></div>
-			// 				</div>
-			// 			</div>
-
-			// 			<div class="modal-footer">
-			// 				<button id="buttonSubmitModal" type="submit" class="btn btn-primary">' . $langs->trans('Save') . '</button>
-			// 				<button type="button" class="btn btn-secondary" data-dismiss="modal">' . $langs->trans('Cancel') . '</button>
-			// 			</div>
-			// 			</form>
-			// 		</div>
-			// 	</div>
-			// </div>
+			// CALENDAR
 			print '<div id="calendar" style="height: 800px;"></div>';
 			// réactivation dropdown utilisateur
 			print "<script>
@@ -861,6 +751,11 @@ class ActionsTuiCalendar
 			var ScheduleList = [];
 			var TimerList = [];
 			var CalendarList = [];
+			var actioncommCodesSelected = [" . $preselect . "]
+			var searchAll = ''
+			var userId = ''
+			var customerId = ''
+			var statesSelectedId = []
 			var projectId = '" . GETPOST("projectid", "int", 3) . "';
 
 			var SCHEDULE_CATEGORY = [
@@ -913,28 +808,53 @@ class ActionsTuiCalendar
 			}
 
 			// (async () => {
-			//     const rawResponse = await fetch('" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=test', {
-			//         method: 'POST',
-			//         headers: {
-			//             'Accept': 'application/json',
-			//             'Content-Type': 'application/json'
-			//         },
-			//         body: JSON.stringify({a: 1, b: 'Textual content'})
-			//     });
-			//     const content = await rawResponse.json();
+			// 	const rawResponse = await fetch('" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=test', {
+			// 		method: 'POST',
+			// 		headers: {
+			// 			'Accept': 'application/json',
+			// 			'Content-Type': 'application/json'
+			// 		},
+			// 		body: JSON.stringify({a: 1, b: 'Textual content'})
+			// 	});
+			// 	const content = await rawResponse.json();
 
-			//     console.log('test await');
-			//     console.log(content);
+			// 	console.log('test await');
+			// 	console.log(content);
 			// })();
 
 			async function generateScheduleList(calendar, renderStart, renderEnd, onlylast) {
-				var startDate = new Date(renderStart._date);
-				var endDate = new Date(renderEnd._date);
-				var offset = new Date();
-				var res = await fetch('" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getevents&calendarId=' + calendar.id + '&calendarName=' + calendar.name + '&startDate=' + startDate.toISOString().split('T')[0] + '&endDate=' + endDate.toISOString().split('T')[0] + '&offset=' + offset.getTimezoneOffset() + '&onlylast=' + onlylast, {
-					headers: {\"Content-Type\": \"application/json; charset=utf-8\"}
+				let startDate = new Date(renderStart._date)
+				let endDate = new Date(renderEnd._date)
+				let offset = new Date()
+				statesSelected = []
+				$('.statesAutoComplete :selected').each(function(i, value) {
+					statesSelected[i] = value.id
+				})
+				$('.actioncodeAutoComplete :selected').each(function(i, value) {
+					actioncommCodesSelected[i] = value.id
+				})
+				let options = {
+					calendarId: calendar.id,
+					calendarName: calendar.name,
+					startDate: startDate.toISOString().split('T')[0],
+					endDate: endDate.toISOString().split('T')[0],
+					offset: offset.getTimezoneOffset(),
+					onlylast: onlylast,
+					search_user: userId,
+					search_all: searchAll,
+					search_socid: customerId,
+					search_states: statesSelected.join(','),
+					search_actioncode: actioncommCodesSelected.join(',')
+				}
+				console.log(options)
+				let res = await fetch('" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getevents', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json; charset=utf-8'
+					},
+					body: JSON.stringify(options)
 				});
-				var response = await res.text();
+				let response = await res.text();
 				// ajouter un test si json invalide
 				return JSON.parse(response);
 			}
@@ -956,62 +876,36 @@ class ActionsTuiCalendar
 					generateScheduleList(mycalendar, renderStart, renderEnd, 0).then(result => {
 						//console.log(result)
 						result.forEach(function(event) {
-							//console.log(mycalendar);
-							//console.log(event);
-							var schedule = new ScheduleInfo();
+							// console.log(event)
+							var schedule = new ScheduleInfo()
 
-							schedule.id = event.id;
-							schedule.calendarId = event.calendarId;
-							schedule.title = event.title;
-							schedule.body = event.body;
-							schedule.attendees = '';
-							schedule.start = event.start;
-							schedule.end = event.end;
-							schedule.isAllDay = event.isAllDay;
-							schedule.goingDuration = event.goingDuration;
-							schedule.comingDuration = event.comingDuration;
-							schedule.isReadOnly = event.isReadOnly;
-							schedule.isPrivate = false;
-							schedule.isVisible = true;
-							schedule.category = 'time';
-							schedule.recurrenceRule = '';
+							schedule.id = event.id
+							schedule.calendarId = event.calendarId
+							schedule.title = event.title
+							schedule.body = event.body
+							schedule.attendees = ''
+							schedule.start = event.start
+							schedule.end = event.end
+							schedule.isAllDay = event.isAllDay
+							schedule.goingDuration = event.goingDuration
+							schedule.comingDuration = event.comingDuration
+							schedule.isReadOnly = event.isReadOnly
+							schedule.isPrivate = false
+							schedule.isVisible = true
+							schedule.category = 'time'
+							schedule.recurrenceRule = ''
 							// busy or free
-							schedule.state = event.state || '';
-							schedule.color = event.color || '#ffffff';
-							schedule.bgColor = event.bgColor || mycalendar.bgColor;
-							schedule.dragBgColor = event.dragBgColor || mycalendar.dragBgColor;
-							//schedule.borderColor = event.borderColor || mycalendar.borderColor;
-							schedule.borderColor = mycalendar.borderColor;
-							schedule.location = event.location;
-							schedule.raw.location = event.raw.location;
-							schedule.attendees = event.attendees;
-							//console.log(schedule);
-							ScheduleList.push(schedule);
-							// var schedule = {
-							//     id: event.id,
-							//     title: 'Workout for 2019-09-05',
-							//     isAllDay: false,
-							//     start: '2019-09-05T11:30:00+09:00',
-							//     end: '2019-09-05T12:00:00+09:00',
-							//     goingDuration: 30,
-							//     comingDuration: 30,
-							//     isVisible: true,
-							//     color: '#ffffff',
-							//     bgColor: '#69BB2D',
-							//     dragBgColor: '#69BB2D',
-							//     borderColor: '#69BB2D',
-							//     calendarId: 'logged-workout',
-							//     category: 'time',
-							//     dueDateClass: '',
-							//     customStyle: 'cursor: default;',
-							//     isPending: false,
-							//     isFocused: false,
-							//     isReadOnly: true,
-							//     isPrivate: false,
-							//     location: '',
-							//     attendees: '', recurrenceRule: '',
-							//     state: ''
-							// };
+							schedule.state = event.state || ''
+							schedule.color = event.color || '#ffffff'
+							schedule.bgColor = event.bgColor || mycalendar.bgColor
+							schedule.dragBgColor = event.dragBgColor || mycalendar.dragBgColor
+							//schedule.borderColor = event.borderColor || mycalendar.borderColor
+							schedule.borderColor = mycalendar.borderColor
+							schedule.location = event.location
+							schedule.raw.location = event.raw.location
+							schedule.attendees = event.attendees
+							// console.log(schedule)
+							ScheduleList.push(schedule)
 						});
 						cal.clear();
 						cal.createSchedules(ScheduleList);
@@ -1020,28 +914,42 @@ class ActionsTuiCalendar
 			};
 
 			function CalendarInfo() {
-				this.id = null;
-				this.name = null;
-				this.checked = true;
-				this.color = null;
-				this.bgColor = null;
-				this.borderColor = null;
-				this.dragBgColor = null;
+				this.id = null
+				this.name = null
+				this.checked = true
+				this.color = null
+				this.bgColor = null
+				this.borderColor = null
+				this.dragBgColor = null
+				this.needToBeReloaded = false
 			}
 
 			function addCalendar(calendar) {
-				CalendarList.push(calendar);
+				CalendarList.push(calendar)
 				var timer = setInterval(function() {
-					// on ne récupère que les récents evt
-					generateScheduleList(calendar, cal.getDateRangeStart(), cal.getDateRangeEnd(), 1).then(result => {
-						//console.log(result);
+					// on ne récupère que les récents evt sauf si on doit recharger
+					if (calendar.needToBeReloaded) {
+						ScheduleList.forEach(function(schedule) {
+							idToDelete = findSchedule(schedule.id, schedule.calendarId)
+							if (schedule.calendarId == 1 && idToDelete !== false) {
+								// DELETE Schedule on screen
+								// console.log('deleting : ' + schedule.id)
+								cal.deleteSchedule(schedule.id, schedule.calendarId, false);
+								// il faut aussi le retirer de la liste
+								ScheduleList = ScheduleList.filter(function(value, index, arr) {
+									return index != idToDelete
+								});
+							}
+						});
+					}
+					generateScheduleList(calendar, cal.getDateRangeStart(), cal.getDateRangeEnd(), (calendar.needToBeReloaded ? 0 : 1)).then(result => {
+						//console.log(result)
 						result.forEach(function(event) {
 							// on retire les tooltips pour pas qu'ils restent bloqués
 							$('.classfortooltip, .classforcustomtooltip').tooltip('hide');
-							//console.log(mycalendar);
-							console.log(event);
 							if (findSchedule(event.id, event.calendarId) !== false) {
 								// UPDATE Schedule on screen
+								// console.log('updating : ' + event.id)
 								cal.updateSchedule(event.id, event.calendarId, {
 									title: event.title,
 									start: event.start,
@@ -1052,6 +960,7 @@ class ActionsTuiCalendar
 								});
 							} else {
 								// CREATE Schedule on screen
+								// console.log('adding : ' + event.id)
 								var schedule = new ScheduleInfo();
 								schedule.id = event.id;
 								schedule.calendarId = event.calendarId;
@@ -1062,10 +971,10 @@ class ActionsTuiCalendar
 								schedule.start = event.start;
 								schedule.end = event.end;
 								schedule.isAllDay = event.isAllDay;
-								schedule.color = event.color,
-								schedule.bgColor = event.bgColor,
-								schedule.dragBgColor = event.dragBgColor,
-								schedule.borderColor = event.borderColor,
+								schedule.color = event.color || '#ffffff',
+								schedule.bgColor = event.bgColor || calendar.bgColor,
+								schedule.dragBgColor = event.dragBgColor || calendar.dragBgColor,
+								schedule.borderColor = calendar.borderColor,
 								schedule.category = 'time';
 								schedule.location = event.location;
 								schedule.attendees = event.attendees;
@@ -1074,10 +983,10 @@ class ActionsTuiCalendar
 							}
 						});
 					});
+					calendar.needToBeReloaded = false
 					generateDeletedList(calendar, cal.getDateRangeStart(), cal.getDateRangeEnd()).then(result => {
-						console.log(result);
+						//console.log(result);
 						result.forEach(function(event) {
-							console.log(event.id);
 							if (findSchedule(event.id, event.calendarId) !== false) {
 								// DELETE Schedule on screen
 								cal.deleteSchedule(event.id, event.calendarId, false);
@@ -1090,6 +999,7 @@ class ActionsTuiCalendar
 
 			function findCalendar(id) {
 				var found;
+
 				CalendarList.forEach(function(calendar) {
 					if (calendar.id === id) {
 						found = calendar;
@@ -1100,15 +1010,16 @@ class ActionsTuiCalendar
 			}
 
 			function findSchedule(id, calendarId) {
-				var found;
-				ScheduleList.forEach(function(schedule) {
-					///console.log(id, schedule);
+				var idfound
+
+				ScheduleList.forEach(function(schedule, key) {
+					///console.log(id, schedule)
 					if (schedule.id === id && schedule.calendarId === calendarId) {
-						found = schedule;
+						idfound = key
 					}
 				});
 
-				return found || false;
+				return idfound || false;
 			}
 
 			function hexToRGBA(hex) {
@@ -1146,7 +1057,8 @@ class ActionsTuiCalendar
 				calendar.dragBgColor = '#00a9ff';
 				calendar.borderColor = '#00a9ff';
 				calendar.refresh = 60000;
-				addCalendar(calendar);";
+				addCalendar(calendar);
+				";
 			foreach ($listofextcals as $key => $value) {
 				print "calendar = new CalendarInfo();\n";
 				print "id += 1;\n";
@@ -1164,7 +1076,7 @@ class ActionsTuiCalendar
 		(function(window, Calendar) {
 			//var Calendar = tui.Calendar;
 
-			var useCreationPopup = true;
+			var useCreationPopup = false;
 			var useDetailPopup = true;
 			var useNarrowWeekEnd = false;
 			var useStartDayOfWeek = 1;
@@ -1179,7 +1091,8 @@ class ActionsTuiCalendar
 							tooltip: 'Paris'
 						}
 					],
-				},				usageStatistics: false,
+				},
+				usageStatistics: false,
 				defaultView: '" . $defaultview . "',
 				useCreationPopup: useCreationPopup,
 				useDetailPopup: useDetailPopup,
@@ -1275,81 +1188,64 @@ class ActionsTuiCalendar
 				},
 				'beforeCreateSchedule': function(event) {
 					console.log('beforeCreateSchedule', event);
+					// var offset = new Date();
 					// $.ajax({
-					//     url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
-					//     dataType: 'json',
-					//     //contentType: 'application/json',
-					//     type:'post',
-					//     data: {
-					//         event: JSON.stringify(event),
-					//     },
-					//     success: function(response, status) {
-					//         event.id = response.id;
-					//         saveNewSchedule(event);
-					//     },
-					//     error: function(response, status, e) {
-					//         console.log('error beforeCreateSchedule');
-					//     }
-					// });
-
-					// open modal
-					// $('#createSchedule').modal('show');
-					// console.log(event);
-					// var start = new tui.DatePicker('#startpickerContainer', {
-					// 	date: event.start._date,
-					// 	input: {
-					// 		element: '#startDate',
-					// 		format: 'yyyy-MM-dd HH:mm'
+					// 	url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
+					// 	dataType: 'json',
+					// 	//contentType: 'application/json',
+					//  	type:'post',
+					// 	data: {
+					// 		event: JSON.stringify(event),
+					// 		offset: offset.getTimezoneOffset()
 					// 	},
-					// 	timePicker: {
-					// 	  layoutType: 'tab',
-					// 	  inputType: 'spinbox'
-					// 	}
-					// });
-					// var end = new tui.DatePicker('#endpickerContainer', {
-					// 	date: event.end._date,
-					// 	input: {
-					// 		element: '#endDate',
-					// 		format: 'yyyy-MM-dd HH:mm'
+					//  	success: function(response, status) {
+					// 		event.id = response.id;
+					// 		saveNewSchedule(event);
 					// 	},
-					// 	timePicker: {
-					// 	  layoutType: 'tab',
-					// 	  inputType: 'spinbox'
+					// 	error: function(response, status, e) {
+					// 		console.log('error beforeCreateSchedule');
 					// 	}
 					// });
 
 					// clear guide element
-					// event.guide.clearGuideElement();
+					event.guide.clearGuideElement();
+					startDate = new Date(event.start._date);
+					endDate = new Date(event.end._date);
+					$(location).prop('href', '" . dol_buildpath('comm/action/card.php', 2) . "?action=create&aphour=' + startDate.getHours() + '&apmin=' + startDate.getMinutes() + '&apyear=' + startDate.getFullYear() + '&apmonth=' + (startDate.getMonth() + 1) + '&apday=' + startDate.getDate() + '&p2hour=' +endDate.getHours() + '&p2min=' + endDate.getMinutes() + '&p2year=' + endDate.getFullYear() + '&p2month=' + (endDate.getMonth() + 1) + '&p2day=' + endDate.getDate());
 				},
 				'beforeUpdateSchedule': function(event) {
 					console.log('beforeUpdateSchedule', event);
-					var schedule = event.schedule;
-					var startTime = event.start;
-					var endTime = event.end;
-					var offset = new Date();
-					$.ajax({
-						url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=putevent',
-						dataType: 'json',
-						//contentType: 'application/json',
-						type:'post',
-						data: {
-							schedule: JSON.stringify(schedule),
-							start: JSON.stringify(startTime),
-							end: JSON.stringify(endTime),
-							offset: offset.getTimezoneOffset()
-						},
-						success: function(response, status) {
-							console.log('success');
-						},
-						error: function(response, status, e) {
-							console.log('error');
-						}
-					});
-					$('.classfortooltip, .classforcustomtooltip').tooltip('hide');
-					cal.updateSchedule(schedule.id, schedule.calendarId, {
-						start: startTime,
-						end: endTime
-					});
+					if (event.schedule.calendarId == 1 && event.triggerEventName == 'click') {
+						$(location).prop('href', '" . dol_buildpath('comm/action/card.php', 2) . "?id=' + event.schedule.id);
+					} else {
+						var schedule = event.schedule;
+						var startTime = event.start;
+						var endTime = event.end;
+						var offset = new Date();
+						$.ajax({
+							url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=putevent',
+							dataType: 'json',
+							//contentType: 'application/json',
+							type:'post',
+							data: {
+								schedule: JSON.stringify(schedule),
+								start: JSON.stringify(startTime),
+								end: JSON.stringify(endTime),
+								offset: offset.getTimezoneOffset()
+							},
+							success: function(response, status) {
+								console.log('success');
+							},
+							error: function(response, status, e) {
+								console.log('error');
+							}
+						});
+						$('.classfortooltip, .classforcustomtooltip').tooltip('hide');
+						cal.updateSchedule(schedule.id, schedule.calendarId, {
+							start: startTime,
+							end: endTime
+						});
+					}
 				},
 				'beforeDeleteSchedule': function(event) {
 					console.log('beforeDeleteSchedule', event);
@@ -1395,61 +1291,6 @@ class ActionsTuiCalendar
 				}
 			});
 
-			// modal events
-			// $('#createSchedule').on('show.bs.modal', function (e) {
-			// 	console.log('modal opened');
-			// 	console.log(e);
-			// 	// possibilité ici d'initialiser des champs dans la modal
-			// });
-			// $('#createSchedule').on('hidden.bs.modal', function (e) {
-			// 	console.log('modal was closed');
-			// 	// effacer les champs
-			// 	console.log(e);
-			// });
-
-			// $('#actionForm').submit(function(e) {
-			// 	// stop sending form default
-			// 	e.preventDefault();
-			// 	// Coding
-			// 	console.log($('form#actionForm'));
-			// 	console.log('create schedule');
-			// 	var schedule = new ScheduleInfo();
-
-			// 	//schedule.id = +new Date();
-			// 	// dolibarr calendar id 1
-			// 	// récupérer les infos du formulaire
-			// 	schedule.calendarId = 1;
-			// 	schedule.title = $('#title').val();
-			// 	schedule.body =  $('#body').val();
-			// 	schedule.isAllDay = false;
-			// 	schedule.start = $('#startDate').val();
-			// 	schedule.end = $('#endDate').val();
-			// 	schedule.category =  'time';
-			// 	console.log(schedule);
-			// 	// save schedule
-			// 	//cal.createSchedules([schedule]);
-			// 	$.ajax({
-			// 		url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=postevent',
-			// 		dataType: 'json',
-			// 		//contentType: 'application/json',
-			// 		type:'post',
-			// 		data: {
-			// 			event: JSON.stringify(schedule),
-			// 		},
-			// 		success: function(response, status) {
-			// 			schedule.id = response.id;
-			// 			//saveNewSchedule(schedule);
-			// 		},
-			// 		error: function(response, status, e) {
-			// 			console.log('error submitting schedule');
-			// 		}
-			// 	});
-			// 	//saveNewSchedule(schedule);
-			// 	// closing modal
-			// 	$('#createSchedule').modal('toggle'); //or  $('#createSchedule').modal('hide');
-			// 	return false;
-			// });
-
 			/**
 			 * Get time template for time and all-day
 			 * @param {Schedule} schedule - schedule
@@ -1472,10 +1313,10 @@ class ActionsTuiCalendar
 					} else if (schedule.recurrenceRule) {
 						html.push('<span class=\"calendar-font-icon ic-repeat-b\"></span>');
 					}
-					html.push(' ' + schedule.title);
 					if (schedule.attendees.length && (viewName == 'day' || viewName == 'week')) {
-						html.push('<br><span> ' + (schedule.attendees || []).join(' ') + '</span>');
+						html.push('<span> ' + (schedule.attendees || []).join(' ') + '</span>');
 					}
+					html.push(' ' + schedule.title);
 					if (schedule.location && (viewName == 'day' || viewName == 'week')) {
 						html.push('<br><span class=\"calendar-font-icon ic-location-b\"> ' + schedule.location + '</span>');
 					}
@@ -1631,32 +1472,6 @@ class ActionsTuiCalendar
 						start: start,
 						end: end
 					});
-				} else {
-					// open modal
-					$('#createSchedule').modal('show');
-					console.log(event);
-					var start = new tui.DatePicker('#startpickerContainer', {
-						date: event.start._date,
-						input: {
-							element: '#startDate',
-							format: 'yyyy-MM-dd HH:mm'
-						},
-						timePicker: {
-						  layoutType: 'tab',
-						  inputType: 'spinbox'
-						}
-					});
-					var end = new tui.DatePicker('#endpickerContainer', {
-						date: event.end._date,
-						input: {
-							element: '#endDate',
-							format: 'yyyy-MM-dd HH:mm'
-						},
-						timePicker: {
-						  layoutType: 'tab',
-						  inputType: 'spinbox'
-						}
-					});
 				}
 			}
 
@@ -1693,7 +1508,6 @@ class ActionsTuiCalendar
 
 				refreshScheduleVisibility();
 			}
-
 
 			function onChangeCalendars(e) {
 				var calendarId = e.target.value;
@@ -1805,26 +1619,6 @@ class ActionsTuiCalendar
 			function setSchedules() {
 				//ScheduleList = [];
 				cal.clear();
-				// ScheduleList.push(
-				//     {
-				//         id: 489275, title: 'Workout for 2019-04-05', isAllDay: false, start: '2019-09-01T11:30:00+09:00', end: '2019-09-01T12:00:00+09:00',
-				//         goingDuration: 30, comingDuration: 30, color: '#ffffff', isVisible: true, bgColor: '#69BB2D', dragBgColor: '#69BB2D', borderColor: '#69BB2D',
-				//         calendarId: '2', category: 'time', dueDateClass: '', customStyle: 'cursor: default;', isPending: false, isFocused: false,
-				//         isReadOnly: true, isPrivate: false, location: '', attendees: '', recurrenceRule: '',
-				//         state: ''
-				//     }
-				// );
-				// ScheduleList.push(
-				//     {
-				//         id: 18075, title: 'completed with blocks', isAllDay: false, start: '2019-09-17T09:00:00+09:00', end: '2019-09-17T10:00:00+09:00',
-				//         color: '#ffffff', isVisible: true, bgColor: '#54B8CC', dragBgColor: '#54B8CC', borderColor: '#54B8CC', calendarId: '1', category: 'time',
-				//         dueDateClass: '', customStyle: '', isPending: false, isFocused: false, isReadOnly: false, isPrivate: false, location: '', attendees: '',
-				//         recurrenceRule: '', state: ''
-				//     }
-				// );
-				//console.log(ScheduleList);
-				//cal.createSchedules(ScheduleList);
-				//refreshScheduleVisibility();
 				generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd()).then(result => {
 					//console.log(result);
 					console.log(ScheduleList);
@@ -1839,56 +1633,132 @@ class ActionsTuiCalendar
 				$('#lnb-calendars').on('change', onChangeCalendars);
 
 				$('#btn-save-schedule').on('click', onNewSchedule);
-				$('#btn-new-schedule').on('click', createNewSchedule);
+				// $('#btn-new-schedule').on('click', createNewSchedule);
 
 				$('#dropdownMenu-calendars-list').on('click', onChangeNewScheduleCalendar);
-				// https://bootstrap-autocomplete.readthedocs.io/en/latest/\n";
+				// https://bootstrap-autocomplete.readthedocs.io/en/latest/
+
+				$('.usersAutoComplete').autoComplete({
+					resolverSettings: {
+						url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getdolusers'
+					},
+					minLength: 3
+				})
+				$('.search-all').on('keyup change', function(e) {
+					// do stuff!
+					searchAll = $('.searchAll').val()
+					console.log(searchAll)
+					CalendarList.forEach(function (calendar) {
+						if (calendar.id == 1) {
+							calendar.needToBeReloaded = true
+						}
+					})
+				})
+				$('#clear-search-user').on('click', function () {
+					console.log('clear userid')
+					userId = ''
+					$('.usersAutoComplete').val('')
+					// reset calendarId 1
+					CalendarList.forEach(function (calendar) {
+						if (calendar.id == 1) {
+							calendar.needToBeReloaded = true
+						}
+					})
+				});
+				$('.usersAutoComplete').on('autocomplete.select', function (evt, item) {
+					console.log(item)
+					userId = item.id
+					// reset calendarId 1
+					CalendarList.forEach(function (calendar) {
+						if (calendar.id == 1) {
+							calendar.needToBeReloaded = true
+						}
+					})
+				})
+				";
+
 			if (!empty($conf->societe->enabled) && $user->rights->societe->lire) {
-				print "$('.customersAutoComplete').autoComplete({";
-				print "    resolverSettings: {";
-				print "        url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getcustomers'";
-				print "    },";
-				print "    minLength: 2";
-				print "});";
-				print "$('.customersAutoComplete').on('autocomplete.select', function (evt, item) {
-						   $('#customer_id').val(item.value);
-					   });";
+				print "$('.customersAutoComplete').autoComplete({
+							resolverSettings: {
+								url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getcustomers'
+							},
+							minLength: 3
+						})
+						$('.customersAutoComplete').on('autocomplete.select', function (evt, item) {
+							console.log(item)
+							customerId = item.id
+							// reset calendarId 1
+							CalendarList.forEach(function (calendar) {
+								if (calendar.id == 1) {
+									calendar.needToBeReloaded = true
+								}
+							})
+						})
+						";
 			}
 			if (!empty($conf->projet->enabled) && $user->rights->projet->lire) {
-				print "$('.projectsAutoComplete').autoComplete({";
-				print "    resolverSettings: {";
-				print "        url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getprojects'";
-				print "    },";
-				print "    minLength: 2";
-				print "});";
-				print "$('.projectsAutoComplete').on('autocomplete.select', function (evt, item) {
-						   $('#project_id').val(item.value);
-					   });";
+				print "$('.projectsAutoComplete').autoComplete({
+							resolverSettings: {
+								url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getprojects'
+							},
+							minLength: 3
+						})
+						$('.projectsAutoComplete').on('autocomplete.select', function (evt, item) {
+							$('#project_id').val(item.value);
+						})
+						";
 			}
-			print "$.ajax({
+			print "
+			$.ajax({
 				type: 'GET',
 				url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=gettypeactions',
 				data: {},
 				success: function (response) {
-					// $('.actioncodeAutoComplete').selectpicker({
-					//     //style: 'btn-primary',
-					//     //size: 2
-					// });
 					$('.actioncodeAutoComplete').html = '';
 					$.each(response, function(index, value) {
-						$('.actioncodeAutoComplete').append('<option id=\"' + value.id + '\">' + value.label + '</option>');
+						$('.actioncodeAutoComplete').append('<option id=\"' + value.code + '\" ' + (value.selected ? 'selected':'') + '>' + value.label + '</option>')
 					});
 					$('.actioncodeAutoComplete').selectpicker('refresh');
 				},
 				error: function () {
-					//console.log('There was an error!');
+					//console.log('There was an error!')
 				}
-			});";
-			print "$('.actioncodeAutoComplete').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {";
-			print "    // do something...\n";
-			print "    console.log(clickedIndex, isSelected, previousValue);";
-			print "});";
-			print "    window.addEventListener('resize', resizeThrottled);
+			});
+			$.ajax({
+				type: 'GET',
+				url: '" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getstates',
+				data: {},
+				success: function (response) {
+					$('.statesAutoComplete').html = '';
+					$.each(response, function(index, value) {
+						$('.statesAutoComplete').append('<option id=\"' + value.id + '\" ' + (value.selected ? 'selected':'') + '>' + value.label + '</option>')
+					});
+					$('.statesAutoComplete').selectpicker('refresh');
+				},
+				error: function () {
+					//console.log('There was an error!')
+				}
+			});
+			$('.statesAutoComplete').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+				// reset calendarId 1
+				CalendarList.forEach(function (calendar) {
+					if (calendar.id == 1) {
+						calendar.needToBeReloaded = true
+					}
+				})
+				//console.log(CalendarList, this.selectedOptions, clickedIndex, isSelected, previousValue)
+			})
+			$('.actioncodeAutoComplete').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+				// reset calendarId 1
+				actioncommCodesSelected = []
+				CalendarList.forEach(function (calendar) {
+					if (calendar.id == 1) {
+						calendar.needToBeReloaded = true
+					}
+				})
+				//console.log(CalendarList, this.selectedOptions, clickedIndex, isSelected, previousValue)
+			})
+			window.addEventListener('resize', resizeThrottled);
 			}
 
 			function getDataAction(target) {
