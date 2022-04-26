@@ -939,6 +939,17 @@ class ActionsTuiCalendar
 				return JSON.parse(response);
 			}
 
+			async function generateDeletedList(calendar, renderStart, renderEnd) {
+				var startDate = new Date(renderStart._date);
+				var endDate = new Date(renderEnd._date);
+				var res = await fetch('" . dol_buildpath('tuicalendar/core/ajax/events_ajax.php', 1) . "?action=getdeletedevents&calendarId=' + calendar.id + '&calendarName=' + calendar.name, {
+					headers: {\"Content-Type\": \"application/json; charset=utf-8\"}
+				});
+				var response = await res.text();
+				// ajouter un test si json invalide
+				return JSON.parse(response);
+			}
+
 			async function generateSchedule(viewName, renderStart, renderEnd) {
 				ScheduleList = [];
 				CalendarList.forEach(function(mycalendar) {
@@ -966,7 +977,7 @@ class ActionsTuiCalendar
 							schedule.recurrenceRule = '';
 							// busy or free
 							schedule.state = event.state || '';
-							schedule.color = event.color || mycalendar.color;
+							schedule.color = event.color || '#ffffff';
 							schedule.bgColor = event.bgColor || mycalendar.bgColor;
 							schedule.dragBgColor = event.dragBgColor || mycalendar.dragBgColor;
 							//schedule.borderColor = event.borderColor || mycalendar.borderColor;
@@ -1063,13 +1074,22 @@ class ActionsTuiCalendar
 							}
 						});
 					});
+					generateDeletedList(calendar, cal.getDateRangeStart(), cal.getDateRangeEnd()).then(result => {
+						console.log(result);
+						result.forEach(function(event) {
+							console.log(event.id);
+							if (findSchedule(event.id, event.calendarId) !== false) {
+								// DELETE Schedule on screen
+								cal.deleteSchedule(event.id, event.calendarId, false);
+							}
+						});
+					});
 				}, calendar.refresh);
 				TimerList.push(timer);
 			}
 
 			function findCalendar(id) {
 				var found;
-
 				CalendarList.forEach(function(calendar) {
 					if (calendar.id === id) {
 						found = calendar;
@@ -1081,7 +1101,6 @@ class ActionsTuiCalendar
 
 			function findSchedule(id, calendarId) {
 				var found;
-
 				ScheduleList.forEach(function(schedule) {
 					///console.log(id, schedule);
 					if (schedule.id === id && schedule.calendarId === calendarId) {
@@ -1152,7 +1171,15 @@ class ActionsTuiCalendar
 			var datePicker, selectedCalendar;
 
 			var cal = new Calendar('#calendar', {
-				usageStatistics: false,
+				timezone: {
+					zones: [
+						{
+							timezoneName: 'Europe/Paris',
+							displayLabel: 'Paris',
+							tooltip: 'Paris'
+						}
+					],
+				},				usageStatistics: false,
 				defaultView: '" . $defaultview . "',
 				useCreationPopup: useCreationPopup,
 				useDetailPopup: useDetailPopup,
@@ -2275,11 +2302,12 @@ class ActionsTuiCalendar
 		//echo "action: " . $action;
 		// calendar
 		if (in_array($parameters['currentcontext'], ['agenda']) && basename($_SERVER['PHP_SELF']) == 'index.php') {
+			// $this->resprints = '
+			// <div class="vmenu lnb-new-schedule">
+			// 	<button id="btn-new-schedule" type="button" class="btn btn-default btn-block lnb-new-schedule-btn" data-toggle="modal">
+			// 	' . $langs->trans('AddAction') . '</button>
+			// </div>';
 			$this->resprints = '
-			<div class="vmenu lnb-new-schedule">
-				<button id="btn-new-schedule" type="button" class="btn btn-default btn-block lnb-new-schedule-btn" data-toggle="modal">
-				' . $langs->trans('AddAction') . '</button>
-			</div>
 			<div id="lnb-calendars" class="vmenu lnb-calendars">
 				<div>
 					<div class="lnb-calendars-item">

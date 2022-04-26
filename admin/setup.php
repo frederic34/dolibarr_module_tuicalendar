@@ -43,10 +43,10 @@ $action = GETPOST('action', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 
 $arrayofparameters = [
-	// 'TUICALENDAR_MYPARAM1' => [
-	// 	'css' => 'minwidth500',
-	// 	'enabled' => 1,
-	// ],
+	'TUICALENDAR_LIGTHNESS_SWAP' => [
+		'css' => 'minwidth500',
+		'enabled' => 1,
+	],
 ];
 
 // Paramètres ON/OFF TUICALENDAR_ est rajouté au paramètre
@@ -159,9 +159,6 @@ if ($action == 'edit') {
 	} else {
 		print '<br>' . $langs->trans("NothingToSetup");
 	}
-	print '<div class="tabsAction">';
-	print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?action=edit">' . $langs->trans("Modify") . '</a>';
-	print '</div>';
 
 	print '<table class="noborder" width="100%">';
 	print '<tr class="liste_titre">';
