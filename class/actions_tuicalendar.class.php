@@ -631,7 +631,7 @@ class ActionsTuiCalendar
 			$preselectedeventtypes = explode(',', $conf->global->AGENDA_DEFAULT_FILTER_TYPE);
 			$selecteds = [];
 			foreach ($preselectedeventtypes as $type) {
-				$selecteds[] = "'".$type."'";
+				$selecteds[] = "'" . $type . "'";
 			}
 			$preselect = implode(',', $selecteds);
 			print '
@@ -751,7 +751,7 @@ class ActionsTuiCalendar
 			var ScheduleList = [];
 			var TimerList = [];
 			var CalendarList = [];
-			var actioncommCodesSelected = [".$preselect."]
+			var actioncommCodesSelected = [" . $preselect . "]
 			var searchAll = ''
 			var userId = ''
 			var customerId = ''
@@ -1211,12 +1211,12 @@ class ActionsTuiCalendar
 					event.guide.clearGuideElement();
 					startDate = new Date(event.start._date);
 					endDate = new Date(event.end._date);
-					$(location).prop('href', '".dol_buildpath('comm/action/card.php', 2)."?action=create&aphour=' + startDate.getHours() + '&apmin=' + startDate.getMinutes() + '&apyear=' + startDate.getFullYear() + '&apmonth=' + (startDate.getMonth() + 1) + '&apday=' + startDate.getDate() + '&p2hour=' +endDate.getHours() + '&p2min=' + endDate.getMinutes() + '&p2year=' + endDate.getFullYear() + '&p2month=' + (endDate.getMonth() + 1) + '&p2day=' + endDate.getDate());
+					$(location).prop('href', '" . dol_buildpath('comm/action/card.php', 2) . "?action=create&aphour=' + startDate.getHours() + '&apmin=' + startDate.getMinutes() + '&apyear=' + startDate.getFullYear() + '&apmonth=' + (startDate.getMonth() + 1) + '&apday=' + startDate.getDate() + '&p2hour=' +endDate.getHours() + '&p2min=' + endDate.getMinutes() + '&p2year=' + endDate.getFullYear() + '&p2month=' + (endDate.getMonth() + 1) + '&p2day=' + endDate.getDate());
 				},
 				'beforeUpdateSchedule': function(event) {
 					console.log('beforeUpdateSchedule', event);
 					if (event.schedule.calendarId == 1 && event.triggerEventName == 'click') {
-						$(location).prop('href', '".dol_buildpath('comm/action/card.php', 2)."?id=' + event.schedule.id);
+						$(location).prop('href', '" . dol_buildpath('comm/action/card.php', 2) . "?id=' + event.schedule.id);
 					} else {
 						var schedule = event.schedule;
 						var startTime = event.start;
