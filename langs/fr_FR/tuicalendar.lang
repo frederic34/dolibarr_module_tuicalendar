@@ -29,6 +29,7 @@ TuiCalendarSetup = Configuration du module TuiCalendar
 TuiCalendarSettings = Réglages
 TuiCalendarSetupPage = Page de configuration du module TuiCalendar
 TuiCalendarDontShowAutoEvents=Ne pas afficher les évènements insérés automatiquement
+TUICALENDAR_LIGTHNESS_SWAP=Valeur pour passer le texte de l'évènement du noir au blanc (défaut 150)
 
 #
 # Page À propos

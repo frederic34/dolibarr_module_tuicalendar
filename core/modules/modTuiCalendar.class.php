@@ -40,7 +40,7 @@ class modTuiCalendar extends DolibarrModules
 	 */
 	public function __construct($db)
 	{
-		global $langs,$conf;
+		global $langs, $conf;
 		$this->db = $db;
 
 		// Id for module (must be unique).
@@ -65,7 +65,7 @@ class modTuiCalendar extends DolibarrModules
 		$this->editor_name = '<strong>Net Logic</strong>';
 		$this->editor_url = 'https://netlogic.fr';
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
-		$this->version = '1.1';
+		$this->version = '1.1.0';
 		// Url to the file with your last numberversion of this module
 		//$this->url_last_version = 'http://www.example.com/versionmodule.txt';
 
@@ -103,12 +103,12 @@ class modTuiCalendar extends DolibarrModules
 			),
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
 			'hooks' => array(
-				   'data' => array(
-					   'actioncard',
-					   'agenda',
-					   'leftblock',
-				   ),
-				   'entity' => '0',
+				'data' => array(
+					'actioncard',
+					'agenda',
+					'leftblock',
+				),
+				'entity' => '0',
 			),
 			// Set this to 1 if features of module are opened to external users
 			'moduleforexternal' => 0,
@@ -131,9 +131,9 @@ class modTuiCalendar extends DolibarrModules
 		$this->conflictwith = array('modfullcalendar');
 		$this->langfiles = array("tuicalendar@tuicalendar");
 		// Minimum version of PHP required by module
-		$this->phpmin = array(7,0);
+		$this->phpmin = array(7, 0);
 		// Minimum version of Dolibarr required by module
-		$this->need_dolibarr_version = array(10,0);
+		$this->need_dolibarr_version = array(10, 0);
 		// Warning to show when we activate module. array('always'='text') or array('FR'='textfr','ES'='textes'...)
 		$this->warnings_activation = array();
 		// Warning to show when we activate an external module. array('always'='text') or array('FR'='textfr','ES'='textes'...)
@@ -158,7 +158,7 @@ class modTuiCalendar extends DolibarrModules
 			'fr_FR:ParentCompany'=>'Maison mère ou revendeur'
 		)*/
 
-		if (! isset($conf->tuicalendar) || ! isset($conf->tuicalendar->enabled)) {
+		if (!isset($conf->tuicalendar) || !isset($conf->tuicalendar->enabled)) {
 			$conf->tuicalendar = new stdClass();
 			$conf->tuicalendar->enabled = 0;
 		}
@@ -207,29 +207,6 @@ class modTuiCalendar extends DolibarrModules
 
 		// Dictionaries
 		$this->dictionaries = array();
-		/* Example:
-		$this->dictionaries=array(
-			'langs'=>'mylangfile@tuicalendar',
-			// List of tables we want to see into dictonnary editor
-			'tabname'=>array(MAIN_DB_PREFIX."table1",MAIN_DB_PREFIX."table2",MAIN_DB_PREFIX."table3"),
-			// Label of tables
-			'tablib'=>array("Table1","Table2","Table3"),
-			// Request to select fields
-			'tabsql'=>array('SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'table1 as f','SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'table2 as f','SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'table3 as f'),
-			// Sort order
-			'tabsqlsort'=>array("label ASC","label ASC","label ASC"),
-			// List of fields (result of select to show dictionary)
-			'tabfield'=>array("code,label","code,label","code,label"),
-			// List of fields (list of fields to edit a record)
-			'tabfieldvalue'=>array("code,label","code,label","code,label"),
-			// List of fields (list of fields for insert)
-			'tabfieldinsert'=>array("code,label","code,label","code,label"),
-			// Name of columns with primary key (try to always name it 'rowid')
-			'tabrowid'=>array("rowid","rowid","rowid"),
-			// Condition to show each dictionary
-			'tabcond'=>array($conf->tuicalendar->enabled,$conf->tuicalendar->enabled,$conf->tuicalendar->enabled)
-		);
-		*/
 
 		// Boxes/Widgets
 		// Add here list of php file(s) stored in tuicalendar/core/boxes that contains a class to show a widget.
@@ -294,55 +271,6 @@ class modTuiCalendar extends DolibarrModules
 
 		// Main menu entries to add
 		$this->menu = array();
-		// $r=0;
-		// // Add here entries to declare new menus
-		// $this->menu[$r++] = array(
-		//     // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-		//     'fk_menu'=>'',
-		//     // This is a Top menu entry
-		//     'type'=>'top',
-		//     'titre'=>'TuiCalendar',
-		//     'mainmenu'=>'tuicalendar',
-		//     'leftmenu'=>'',
-		//     'url'=>'/tuicalendar/tuicalendarindex.php',
-		//     'langs'=>'tuicalendar@tuicalendar',        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-		//     'position'=>1000+$r,
-		//     'enabled'=>'$conf->tuicalendar->enabled',  // Define condition to show or hide menu entry. Use '$conf->tuicalendar->enabled' if entry must be visible if module is enabled.
-		//     'perms'=>'1',                              // Use 'perms'=>'$user->rights->tuicalendar->level1->level2' if you want your menu with a permission rules
-		//     'target'=>'',
-		//      // 0=Menu for internal users, 1=external users, 2=both
-		//     'user'=>2,
-		// );
-		// $this->menu[$r++] = array(
-		//     'fk_menu'=>'fk_mainmenu=tuicalendar',        // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-		//     'type'=>'left',                              // This is a Left menu entry
-		//     'titre'=>'List MyObject',
-		//     'mainmenu'=>'tuicalendar',
-		//     'leftmenu'=>'tuicalendar_myobject_list',
-		//     'url'=>'/tuicalendar/myobject_list.php',
-		//     'langs'=>'tuicalendar@tuicalendar',          // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-		//     'position'=>1000+$r,
-		//     'enabled'=>'$conf->tuicalendar->enabled',  // Define condition to show or hide menu entry. Use '$conf->tuicalendar->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-		//     'perms'=>'1',                    // Use 'perms'=>'$user->rights->tuicalendar->level1->level2' if you want your menu with a permission rules
-		//     'target'=>'',
-		//     // 0=Menu for internal users, 1=external users, 2=both
-		//     'user'=>2,
-		// );
-		// $this->menu[$r++] = array(
-		//     'fk_menu'=>'fk_mainmenu=tuicalendar,fk_leftmenu=tuicalendar',        // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-		//     'type'=>'left',  // This is a Left menu entry
-		//     'titre'=>'New MyObject',
-		//     'mainmenu'=>'tuicalendar',
-		//     'leftmenu'=>'tuicalendar_myobject_new',
-		//     'url'=>'/tuicalendar/myobject_page.php?action=create',
-		//     'langs'=>'tuicalendar@tuicalendar',
-		//     'position'=>1000+$r,
-		//     'enabled'=>'$conf->tuicalendar->enabled',
-		//     'perms'=>'1',
-		//     'target'=>'',
-		//     // 0=Menu for internal users, 1=external users, 2=both
-		//     'user'=>2,
-		// );
 	}
 
 	/**
