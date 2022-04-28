@@ -487,7 +487,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 	$now = dol_now('gmt');
 	$date = new DateTime();
 	$timeZone = $date->getTimezone();
-	$servertz = $timeZone->getName();;
+	$servertz = $timeZone->getName();
 
 	// $events = array(
 	//     'events' => array(
