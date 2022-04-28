@@ -485,7 +485,9 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 
 	$events = [];
 	$now = dol_now('gmt');
-	$tz = ini_get('date.timezone');
+	$date = new DateTime();
+	$timeZone = $date->getTimezone();
+	$servertz = $timeZone->getName();;
 
 	// $events = array(
 	//     'events' => array(
@@ -690,7 +692,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			$raw->location = !empty($event->location) ? $event->location : '';
 			$isallday = $event->fulldayevent ? true : false;
 
-			$tz = new \DateTimeZone('Europe/Paris');
+			$tz = new \DateTimeZone($servertz);
 			$dtstart = new DateTime();
 			$dtstart->setTimezone($tz);
 			$dtstart->setTimestamp($event->datep);
@@ -739,7 +741,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				'isReadOnly' => $isreadonly,
 				'isAllDay' => $isallday,
 				// color : The schedule text color (black or white)
-				'color' => isDarkColor($obj->color) ? '#ffffff' : '#000000',
+				'color' => ($obj->color != '' && isDarkColor($obj->color)) ? '#ffffff' : '#000000',
 				// bgColor : The schedule background color
 				'bgColor' => $event->color,
 				// borderColor : The schedule border color
@@ -818,6 +820,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				'title' => $langs->trans("Birthday") . ' ' . dolGetFirstLastname($obj->firstname, $obj->lastname),
 				// body : The schedule body text which is text/plain
 				'body' => '',
+				// A CORRIGER !!! TODO
 				'start' => dol_print_date($datep, "%Y-%m-%dT%H:%M:%S") . '+04:00',
 				'end' => dol_print_date($datep, "%Y-%m-%dT%H:%M:%S") . '+04:00',
 				'goingDuration' => 0,
@@ -1057,6 +1060,9 @@ function isDarkColor($color)
 {
 	global $conf;
 
+	if (empty($color)) {
+		return false;
+	}
 	$lightness_swap = empty($conf->global->TUICALENDAR_LIGTHNESS_SWAP) ? 150 : $conf->global->TUICALENDAR_LIGTHNESS_SWAP;
 
 	$rgb = HTMLToRGB($color);

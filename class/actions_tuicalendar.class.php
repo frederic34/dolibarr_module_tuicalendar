@@ -992,15 +992,18 @@ class ActionsTuiCalendar
 						});
 					});
 					calendar.needToBeReloaded = false
-					generateDeletedList(calendar, cal.getDateRangeStart(), cal.getDateRangeEnd()).then(result => {
-						//console.log(result);
-						result.forEach(function(event) {
-							if (findSchedule(event.id, event.calendarId) !== false) {
-								// DELETE Schedule on screen
-								cal.deleteSchedule(event.id, event.calendarId, false);
-							}
+					if (calendar.id == '1') {
+						// console.log('debug')
+						generateDeletedList(calendar, cal.getDateRangeStart(), cal.getDateRangeEnd()).then(result => {
+							//console.log(result);
+							result.forEach(function(event) {
+								if (findSchedule(event.id, event.calendarId) !== false) {
+									// DELETE Schedule on screen
+									cal.deleteSchedule(event.id, event.calendarId, false);
+								}
+							});
 						});
-					});
+					}
 				}, calendar.refresh);
 				TimerList.push(timer);
 			}

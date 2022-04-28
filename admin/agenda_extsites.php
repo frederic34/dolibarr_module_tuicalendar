@@ -184,16 +184,16 @@ print "</tr>";
 // Nb of agenda
 
 print '<tr class="oddeven">';
-print "<td>" . $langs->trans("ExtSitesNbOfAgenda") . "</td>";
+print '<td>' . $langs->trans("ExtSitesNbOfAgenda") . '</td>';
 print '<td class="center">';
 print '<input class="flat hideifnotset" type="text" size="2" id="AGENDA_EXT_NB" name="AGENDA_EXT_NB" value="' . ($conf->global->AGENDA_EXT_NB ?? 5) . '">';
-print "</td>";
-print "</tr>";
+print '</td>';
+print '</tr>';
 
 print "</table>";
 print "<br>";
 
-print "<table class=\"noborder\" width=\"100%\">";
+print '<table class="noborder" width="100%">';
 
 print "<tr class=\"liste_titre\">";
 print "<td>" . $langs->trans("Parameter") . "</td>";
