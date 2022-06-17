@@ -939,7 +939,7 @@ class ActionsTuiCalendar
 					if (calendar.needToBeReloaded) {
 						ScheduleList.forEach(function(schedule) {
 							idToDelete = findSchedule(schedule.id, schedule.calendarId)
-							if (schedule.calendarId == 1 && idToDelete !== false) {
+							if (schedule.calendarId == '1' && idToDelete !== false) {
 								// DELETE Schedule on screen
 								// console.log('deleting : ' + schedule.id)
 								cal.deleteSchedule(schedule.id, schedule.calendarId, false);
@@ -992,15 +992,18 @@ class ActionsTuiCalendar
 						});
 					});
 					calendar.needToBeReloaded = false
-					generateDeletedList(calendar, cal.getDateRangeStart(), cal.getDateRangeEnd()).then(result => {
-						//console.log(result);
-						result.forEach(function(event) {
-							if (findSchedule(event.id, event.calendarId) !== false) {
-								// DELETE Schedule on screen
-								cal.deleteSchedule(event.id, event.calendarId, false);
-							}
+					if (calendar.id == '1') {
+						// console.log('debug')
+						generateDeletedList(calendar, cal.getDateRangeStart(), cal.getDateRangeEnd()).then(result => {
+							//console.log(result);
+							result.forEach(function(event) {
+								if (findSchedule(event.id, event.calendarId) !== false) {
+									// DELETE Schedule on screen
+									cal.deleteSchedule(event.id, event.calendarId, false);
+								}
+							});
 						});
-					});
+					}
 				}, calendar.refresh);
 				TimerList.push(timer);
 			}
@@ -1324,7 +1327,7 @@ class ActionsTuiCalendar
 					if (schedule.attendees.length && (viewName == 'day' || viewName == 'week')) {
 						html.push('<span> ' + (schedule.attendees || []).join(' ') + '</span>');
 					}
-					html.push(' ' + schedule.title);
+					html.push(' ' + schedule.title + ' : ' + schedule.id + '-' + schedule.calendarId);
 					if (schedule.location && (viewName == 'day' || viewName == 'week')) {
 						html.push('<br><span class=\"calendar-font-icon ic-location-b\"> ' + schedule.location + '</span>');
 					}
@@ -1750,7 +1753,7 @@ class ActionsTuiCalendar
 			$('.statesAutoComplete').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
 				// reset calendarId 1
 				CalendarList.forEach(function (calendar) {
-					if (calendar.id == 1) {
+					if (calendar.id == '1') {
 						calendar.needToBeReloaded = true
 					}
 				})
@@ -1760,7 +1763,7 @@ class ActionsTuiCalendar
 				// reset calendarId 1
 				actioncommCodesSelected = []
 				CalendarList.forEach(function (calendar) {
-					if (calendar.id == 1) {
+					if (calendar.id == '1') {
 						calendar.needToBeReloaded = true
 					}
 				})

@@ -83,10 +83,23 @@ switch ($action) {
 		break;
 	case 'putevent':
 		if (GETPOSTISSET('schedule')) {
+			$date = new DateTime();
+			$timeZone = $date->getTimezone();
+			$servertz = $timeZone->getName();
 			$updatedevent = json_decode(GETPOST('schedule', 'none'));
 			$datestart = json_decode(GETPOST('start', 'none'));
 			$dateend = json_decode(GETPOST('end', 'none'));
 			$offset = json_decode(GETPOST('offset', 'none'));
+			$offset_start = 0;
+			$date_start = \DateTime::createFromFormat('Y-m-d\TH:i:s.v\Z', $datestart->_date, $timeZone);
+			if ($date_start !== false) {
+				$offset_start = $timeZone->getOffset($date_start);
+			}
+			$offset_end = 0;
+			$date_end = \DateTime::createFromFormat('Y-m-d\TH:i:s.v\Z', $dateend->_date, $timeZone);
+			if ($date_end !== false) {
+				$offset_end = $timeZone->getOffset($date_end);
+			}
 			// dol_syslog('updated events ajax REQUEST event ' . print_r($updatedevent, true), LOG_WARNING);
 			// dol_syslog('updated events ajax REQUEST datestart '.print_r($datestart, true), LOG_WARNING);
 			// dol_syslog('updated events ajax REQUEST dateend '.print_r($dateend, true), LOG_WARNING);
@@ -485,7 +498,9 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 
 	$events = [];
 	$now = dol_now('gmt');
-	$tz = ini_get('date.timezone');
+	$date = new DateTime();
+	$timeZone = $date->getTimezone();
+	$servertz = $timeZone->getName();
 
 	// $events = array(
 	//     'events' => array(
@@ -521,7 +536,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 	// );
 	$hookmanager->initHooks(array('agenda'));
 
-	if ($calendarId == 1) {
+	if ($calendarId == '1') {
 		$pid = GETPOST("projectid", "int", 3);
 		$status = GETPOST("status", 'int');
 		$type = GETPOST("type", 'alpha');
@@ -690,7 +705,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			$raw->location = !empty($event->location) ? $event->location : '';
 			$isallday = $event->fulldayevent ? true : false;
 
-			$tz = new \DateTimeZone('Europe/Paris');
+			$tz = new \DateTimeZone($servertz);
 			$dtstart = new DateTime();
 			$dtstart->setTimezone($tz);
 			$dtstart->setTimestamp($event->datep);
@@ -739,7 +754,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				'isReadOnly' => $isreadonly,
 				'isAllDay' => $isallday,
 				// color : The schedule text color (black or white)
-				'color' => isDarkColor($obj->color) ? '#ffffff' : '#000000',
+				'color' => ($obj->color != '' && isDarkColor($obj->color)) ? '#ffffff' : '#000000',
 				// bgColor : The schedule background color
 				'bgColor' => $event->color,
 				// borderColor : The schedule border color
@@ -759,7 +774,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 	}
 
 	// Complete $eventarray with birthdates
-	if ($calendarId == 2) {
+	if ($calendarId == '2') {
 		// Add events in array
 		$sql = 'SELECT sp.rowid, sp.lastname, sp.firstname, sp.birthday';
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . 'socpeople as sp';
@@ -818,6 +833,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				'title' => $langs->trans("Birthday") . ' ' . dolGetFirstLastname($obj->firstname, $obj->lastname),
 				// body : The schedule body text which is text/plain
 				'body' => '',
+				// A CORRIGER !!! TODO
 				'start' => dol_print_date($datep, "%Y-%m-%dT%H:%M:%S") . '+04:00',
 				'end' => dol_print_date($datep, "%Y-%m-%dT%H:%M:%S") . '+04:00',
 				'goingDuration' => 0,
@@ -1057,6 +1073,9 @@ function isDarkColor($color)
 {
 	global $conf;
 
+	if (empty($color)) {
+		return false;
+	}
 	$lightness_swap = empty($conf->global->TUICALENDAR_LIGTHNESS_SWAP) ? 150 : $conf->global->TUICALENDAR_LIGTHNESS_SWAP;
 
 	$rgb = HTMLToRGB($color);

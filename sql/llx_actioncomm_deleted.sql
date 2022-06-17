@@ -1,4 +1,4 @@
--- Copyright (C) 2019-2021  Frédéric FRANCE <frederic.france@netlogic.fr>
+-- Copyright (C) 2019-2022  Frédéric FRANCE <frederic.france@netlogic.fr>
 --
 -- This program is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
 -- along with this program. If not, see http://www.gnu.org/licenses/.
 
 
-CREATE TABLE IF NOT EXISTS llx_actioncomm_deleted(
+CREATE TABLE llx_actioncomm_deleted(
     rowid INTEGER AUTO_INCREMENT PRIMARY KEY,
     tms TIMESTAMP  on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fk_actioncomm INTEGER NOT NULL

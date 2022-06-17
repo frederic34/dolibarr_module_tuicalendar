@@ -51,3 +51,35 @@ MyPageName = My page name
 #
 MyWidget = My widget
 MyWidgetDescription = My widget description
+
+
+// START - Lines generated via autotranslator.php tool (2022-06-17 13:40:35).
+// Reference language: fr_FR -> en_US
+TuiCalendarSettings=Settings
+TuiCalendarDontShowAutoEvents=Do not display automatically inserted events
+TUICALENDAR_LIGTHNESS_SWAP=Value to change the event text from black to white (default 150)
+TuiCalendarUser=User
+TuiCalendarViewAgenda=Diary
+TuiCalendarFree=Available
+TuiCalendarBusy=Busy
+TuiCalendarUpdate=Update
+TuiCalendarEdit=Edit
+TuiCalendarDelete=To delete
+TuiCalendarSave=To register
+TuiCalendarSubject=Topic
+TuiCalendarLocation=Location :
+TuiCalendarBody=Contents :
+TuiCalendarAllDay=Daytime
+TuiCalendarDaily=Day
+TuiCalendarWeekly=Week
+TuiCalendar2weeks=2 weeks
+TuiCalendar3weeks=Three weeks
+TuiCalendarMonthly=Month
+TuiCalendarShowweekends=See weekends
+TuiCalendarStartWeekOnMonday=The week starts on Monday
+TuiCalendarNarrowerThanWeekdays=Reduce width of weekends
+TuiCalendarViewAll=All
+TuiCalendarBirthdayEvents=Birthdays
+TuiCalendarExtSites=External Calendars
+TuiCalendarCacheTime=Cache Duration (sec)
+TuiCalendarCacheTimeOnlyIfRequired=Specify source caching time in seconds, default %s seconds if empty.

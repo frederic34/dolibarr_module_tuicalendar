@@ -1,0 +1,45 @@
+/*
+ * Language code: de_DE
+ * Generation date 2022-06-17 13:41:30
+ */
+
+
+// START - Lines generated via autotranslator.php tool (2022-06-17 13:41:30).
+// Reference language: fr_FR -> de_DE
+ModuleTuiCalendarName=TuiKalender
+ModuleTuiCalendarDesc=Beschreibung von TuiCalendar
+TuiCalendarSetup=Konfigurieren des TuiCalendar-Moduls
+TuiCalendarSettings=Einstellungen
+TuiCalendarSetupPage=Konfigurationsseite des TuiCalendar-Moduls
+TuiCalendarDontShowAutoEvents=Automatisch eingefügte Ereignisse nicht anzeigen
+TUICALENDAR_LIGTHNESS_SWAP=Wert zum Ändern des Ereignistextes von schwarz auf weiß (Standard 150)
+About=Um
+TuiCalendarAbout=Über TuiCalendar
+TuiCalendarAboutPage=Seite über TuiCalendar
+MyWidget=Mein Widget
+MyWidgetDescription=Beschreibung meines Widgets
+TuiCalendarUser=Benutzer
+TuiCalendarViewAgenda=Tagebuch
+TuiCalendarFree=Verfügbar
+TuiCalendarBusy=Belebt
+TuiCalendarUpdate=Aktualisieren
+TuiCalendarEdit=Bearbeiten
+TuiCalendarDelete=Löschen
+TuiCalendarSave=Zur Anmeldung
+TuiCalendarSubject=Thema
+TuiCalendarLocation=Ort :
+TuiCalendarBody=Inhalt :
+TuiCalendarAllDay=Tageszeit
+TuiCalendarDaily=Tag
+TuiCalendarWeekly=Woche
+TuiCalendar2weeks=2 Wochen
+TuiCalendar3weeks=Drei Wochen
+TuiCalendarMonthly=Monat
+TuiCalendarShowweekends=Siehe Wochenenden
+TuiCalendarStartWeekOnMonday=Die Woche beginnt am Montag
+TuiCalendarNarrowerThanWeekdays=Reduzieren Sie die Breite der Wochenenden
+TuiCalendarViewAll=Alle
+TuiCalendarBirthdayEvents=Geburtstage
+TuiCalendarExtSites=Externe Kalender
+TuiCalendarCacheTime=Cache-Dauer (Sek.)
+TuiCalendarCacheTimeOnlyIfRequired=Geben Sie die Quell-Caching-Zeit in Sekunden an, standardmäßige %s-Sekunden, wenn leer.
