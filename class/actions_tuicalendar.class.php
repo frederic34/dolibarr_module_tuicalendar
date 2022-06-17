@@ -939,7 +939,7 @@ class ActionsTuiCalendar
 					if (calendar.needToBeReloaded) {
 						ScheduleList.forEach(function(schedule) {
 							idToDelete = findSchedule(schedule.id, schedule.calendarId)
-							if (schedule.calendarId == 1 && idToDelete !== false) {
+							if (schedule.calendarId == '1' && idToDelete !== false) {
 								// DELETE Schedule on screen
 								// console.log('deleting : ' + schedule.id)
 								cal.deleteSchedule(schedule.id, schedule.calendarId, false);
@@ -1327,7 +1327,7 @@ class ActionsTuiCalendar
 					if (schedule.attendees.length && (viewName == 'day' || viewName == 'week')) {
 						html.push('<span> ' + (schedule.attendees || []).join(' ') + '</span>');
 					}
-					html.push(' ' + schedule.title);
+					html.push(' ' + schedule.title + ' : ' + schedule.id + '-' + schedule.calendarId);
 					if (schedule.location && (viewName == 'day' || viewName == 'week')) {
 						html.push('<br><span class=\"calendar-font-icon ic-location-b\"> ' + schedule.location + '</span>');
 					}
@@ -1753,7 +1753,7 @@ class ActionsTuiCalendar
 			$('.statesAutoComplete').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
 				// reset calendarId 1
 				CalendarList.forEach(function (calendar) {
-					if (calendar.id == 1) {
+					if (calendar.id == '1') {
 						calendar.needToBeReloaded = true
 					}
 				})
@@ -1763,7 +1763,7 @@ class ActionsTuiCalendar
 				// reset calendarId 1
 				actioncommCodesSelected = []
 				CalendarList.forEach(function (calendar) {
-					if (calendar.id == 1) {
+					if (calendar.id == '1') {
 						calendar.needToBeReloaded = true
 					}
 				})

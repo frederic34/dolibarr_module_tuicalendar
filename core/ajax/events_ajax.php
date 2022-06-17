@@ -83,10 +83,23 @@ switch ($action) {
 		break;
 	case 'putevent':
 		if (GETPOSTISSET('schedule')) {
+			$date = new DateTime();
+			$timeZone = $date->getTimezone();
+			$servertz = $timeZone->getName();
 			$updatedevent = json_decode(GETPOST('schedule', 'none'));
 			$datestart = json_decode(GETPOST('start', 'none'));
 			$dateend = json_decode(GETPOST('end', 'none'));
 			$offset = json_decode(GETPOST('offset', 'none'));
+			$offset_start = 0;
+			$date_start = \DateTime::createFromFormat('Y-m-d\TH:i:s.v\Z', $datestart->_date, $timeZone);
+			if ($date_start !== false) {
+				$offset_start = $timeZone->getOffset($date_start);
+			}
+			$offset_end = 0;
+			$date_end = \DateTime::createFromFormat('Y-m-d\TH:i:s.v\Z', $dateend->_date, $timeZone);
+			if ($date_end !== false) {
+				$offset_end = $timeZone->getOffset($date_end);
+			}
 			// dol_syslog('updated events ajax REQUEST event ' . print_r($updatedevent, true), LOG_WARNING);
 			// dol_syslog('updated events ajax REQUEST datestart '.print_r($datestart, true), LOG_WARNING);
 			// dol_syslog('updated events ajax REQUEST dateend '.print_r($dateend, true), LOG_WARNING);
@@ -523,7 +536,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 	// );
 	$hookmanager->initHooks(array('agenda'));
 
-	if ($calendarId == 1) {
+	if ($calendarId == '1') {
 		$pid = GETPOST("projectid", "int", 3);
 		$status = GETPOST("status", 'int');
 		$type = GETPOST("type", 'alpha');
@@ -761,7 +774,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 	}
 
 	// Complete $eventarray with birthdates
-	if ($calendarId == 2) {
+	if ($calendarId == '2') {
 		// Add events in array
 		$sql = 'SELECT sp.rowid, sp.lastname, sp.firstname, sp.birthday';
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . 'socpeople as sp';

@@ -1,0 +1,45 @@
+/*
+ * Language code: es_ES
+ * Generation date 2022-06-17 13:40:51
+ */
+
+
+// START - Lines generated via autotranslator.php tool (2022-06-17 13:40:51).
+// Reference language: fr_FR -> es_ES
+ModuleTuiCalendarName=TuiCalendario
+ModuleTuiCalendarDesc=Descripción de TuiCalendar
+TuiCalendarSetup=Configuración del módulo TuiCalendar
+TuiCalendarSettings=Ajustes
+TuiCalendarSetupPage=Página de configuración del módulo TuiCalendar
+TuiCalendarDontShowAutoEvents=No mostrar eventos insertados automáticamente
+TUICALENDAR_LIGTHNESS_SWAP=Valor para cambiar el texto del evento de negro a blanco (predeterminado 150)
+About=A proposito
+TuiCalendarAbout=Acerca de TuiCalendar
+TuiCalendarAboutPage=Página sobre TuiCalendar
+MyWidget=Mi widget
+MyWidgetDescription=Descripción de mi widget
+TuiCalendarUser=Usuario
+TuiCalendarViewAgenda=Diario
+TuiCalendarFree=Disponible
+TuiCalendarBusy=Ocupado
+TuiCalendarUpdate=Poner al día
+TuiCalendarEdit=Editar
+TuiCalendarDelete=Borrar
+TuiCalendarSave=para registrarse
+TuiCalendarSubject=Tema
+TuiCalendarLocation=Ubicación :
+TuiCalendarBody=Contenidos:
+TuiCalendarAllDay=Tiempo de día
+TuiCalendarDaily=Día
+TuiCalendarWeekly=Semana
+TuiCalendar2weeks=2 semanas
+TuiCalendar3weeks=3 semanas
+TuiCalendarMonthly=Mes
+TuiCalendarShowweekends=Ver fines de semana
+TuiCalendarStartWeekOnMonday=la semana empieza el lunes
+TuiCalendarNarrowerThanWeekdays=Reducir el ancho de los fines de semana
+TuiCalendarViewAll=Todos
+TuiCalendarBirthdayEvents=cumpleaños
+TuiCalendarExtSites=Calendarios externos
+TuiCalendarCacheTime=Duración de caché (seg)
+TuiCalendarCacheTimeOnlyIfRequired=Especifique el tiempo de almacenamiento en caché de origen en segundos, %s segundos predeterminados si está vacío.
