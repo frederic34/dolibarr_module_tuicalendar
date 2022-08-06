@@ -37,7 +37,7 @@ class AutoTranslator
 	private $outputpagecode = 'UTF-8';
 	private $apikey;
 
-	const DIR_SEPARATOR = '/';
+	public const DIR_SEPARATOR = '/';
 
 
 	/**
