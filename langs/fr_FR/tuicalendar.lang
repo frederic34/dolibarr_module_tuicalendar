@@ -69,3 +69,5 @@ TuiCalendarBirthdayEvents=Anniversaires
 TuiCalendarExtSites=Calendriers Externes
 TuiCalendarCacheTime=Durée du cache (sec)
 TuiCalendarCacheTimeOnlyIfRequired=Indiquez le temps en secondes de mise en cache de la source, par défaut %s secondes si vide.
+MAIN_ENABLE_AJAX_TOOLTIP=Activer les tooltips ajax (nécéssite une version de Dolibar >= 18)
+CHECKLASTVERSION_EXTERNALMODULE=Forcer la vérification des versions des modules externes (déconseillé, cette option peux avoir été actvée par un autre module)

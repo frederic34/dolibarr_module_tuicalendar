@@ -43,6 +43,10 @@ function tuicalendarAdminPrepareHead()
 	$head[$h][1] = $langs->trans("ExtSites");
 	$head[$h][2] = 'extsites';
 	$h++;
+	$head[$h][0] = dol_buildpath("/tuicalendar/admin/changelog.php", 1);
+	$head[$h][1] = $langs->trans("Changelog");
+	$head[$h][2] = 'changelog';
+	$h++;
 	$head[$h][0] = dol_buildpath("/tuicalendar/admin/about.php", 1);
 	$head[$h][1] = $langs->trans("About");
 	$head[$h][2] = 'about';
