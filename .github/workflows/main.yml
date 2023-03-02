@@ -23,7 +23,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
          fetch-depth: '0'
       - name: Setup PHP
@@ -40,20 +40,10 @@ jobs:
         run: echo ${{ steps.setup-php.outputs.php-version }}
       - name: Run PHPCS
         run: phpcs -q --report=checkstyle --standard=codesniffer/ruleset.xml --extensions=php --ignore=*/lib/ics-parser/*,*/tx/*,*/vendor/* . | cs2pr --graceful-warnings
-      - name: Run Paralell Lint
+      - name: Run Parallel Lint
         run: parallel-lint --exclude vendor/ .
       - name: Run VarDump Check
         run: var-dump-check --extensions php --tracy --exclude vendor/ .
-      - name: Run autotranslator
-        run: |
-          php ./.tx/autotranslator.php fr_FR it_IT ${{ secrets.GOOGLE_API_TRANSLATE }}
-          php ./.tx/autotranslator.php fr_FR en_US ${{ secrets.GOOGLE_API_TRANSLATE }}
-          php ./.tx/autotranslator.php fr_FR es_ES ${{ secrets.GOOGLE_API_TRANSLATE }}
-          php ./.tx/autotranslator.php fr_FR de_DE ${{ secrets.GOOGLE_API_TRANSLATE }}
-      #- name: Run changelog
-      #  run: npx lerna-changelog --from=v0.0.0 > ChangeLog.md
-      #  env:
-      #    GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
       - name: Bump version and push tag
         uses: Net-Logic/github-dolibarr-action@main
         env:
@@ -64,15 +54,8 @@ jobs:
           CLASSNAME: Tuicalendar
           RELEASE_BRANCHES: main
           DEFAULT_BUMP: none
-          INITIAL_VERSION: tuicalendar-0.1.0
+          INITIAL_VERSION: v0.0.0
+          VERBOSE: true
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Bump version #none
-
-      - name: Zip Folder
-        run: rsync -arv --exclude='.git/' --exclude='.github/' --exclude='.gitignore' --exclude='.tx/' . ./release
-
-      - name: Switch to Release Folder
-        run: |
-          cd release
-          ls -la
