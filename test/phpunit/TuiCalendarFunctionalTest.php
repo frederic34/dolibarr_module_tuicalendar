@@ -60,13 +60,13 @@ class TuiCalendarFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 	private static $module_id = 500000; // TODO: autodetect?
 
 	/** @var array Browsers to test with */
-	public static $browsers = array(
-		array(
+	public static $browsers = [
+		[
 			'browser' => 'Google Chrome on Linux',
 			'browserName' => 'chrome',
 			'sessionStrategy' => 'shared',
-			'desiredCapabilities' => array()
-		),
+			'desiredCapabilities' => []
+		],
 		// Geckodriver does not keep the session at the moment?!
 		// XPath selectors also don't seem to work
 		//        array(
@@ -77,7 +77,7 @@ class TuiCalendarFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 		//                'marionette' => true
 		//            )
 		//        )
-	);
+	];
 
 	/**
 	 * Helper function to select links by href

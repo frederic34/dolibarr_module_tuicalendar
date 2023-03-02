@@ -31,7 +31,7 @@ include 'config.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 
 // Load translation files required by the page
-$langs->loadLangs(array("tuicalendar@tuicalendar"));
+$langs->loadLangs(["tuicalendar@tuicalendar"]);
 
 $action = GETPOST('action', 'alpha');
 

@@ -78,7 +78,7 @@ class InterfaceTuiCalendarTriggers extends DolibarrTriggers
 
 		// For example : COMPANY_CREATE => public function companyCreate($action, $object, User $user, Translate $langs, Conf $conf)
 		$methodName = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($action)))));
-		$callback = array($this, $methodName);
+		$callback = [$this, $methodName];
 		if (is_callable($callback)) {
 			dol_syslog("Trigger '" . $this->name . "' for action '$action' launched by " . __FILE__ . ". id=" . $object->id, LOG_INFO);
 			return call_user_func($callback, $action, $object, $user, $langs, $conf);

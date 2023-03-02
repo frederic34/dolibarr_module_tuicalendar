@@ -31,7 +31,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once '../lib/tuicalendar.lib.php';
 
 // Translations
-$langs->loadLangs(array("errors", "admin", "tuicalendar@tuicalendar"));
+$langs->loadLangs(["errors", "admin", "tuicalendar@tuicalendar"]);
 
 // Access control
 if (!$user->admin) {
