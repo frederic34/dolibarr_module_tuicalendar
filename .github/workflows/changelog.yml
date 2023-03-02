@@ -53,7 +53,7 @@ jobs:
           REPO_OWNER: frederic34
           RELEASE_BRANCH: main
           MODULE: tuicalendar
-          CLASSNAME: Tuicalendar
+          CLASSNAME: TuiCalendar
           RELEASE_BRANCHES: main
           DEFAULT_BUMP: none
           INITIAL_VERSION: v0.0.0
