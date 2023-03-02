@@ -36,9 +36,9 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 
 // Load translation files required by page
-$langs->loadLangs(array('agenda', 'admin', 'other', 'tuicalendar@tuicalendar'));
+$langs->loadLangs(['agenda', 'admin', 'other', 'tuicalendar@tuicalendar']);
 
-$def = array();
+$def = [];
 $actiontest = GETPOST('test', 'alpha');
 $actionsave = GETPOST('save', 'alpha');
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'useragenda'; // To manage different context of search
@@ -46,7 +46,7 @@ $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'us
 $MAXAGENDA = $conf->global->AGENDA_EXT_NB ?? 5;
 
 // List of available colors
-$colorlist = array('BECEDD', 'DDBECE', 'BFDDBE', 'F598B4', 'F68654', 'CBF654', 'A4A4A5');
+$colorlist = ['BECEDD', 'DDBECE', 'BFDDBE', 'F598B4', 'F68654', 'CBF654', 'A4A4A5'];
 
 // Security check
 $id = GETPOST('id', 'int');
@@ -69,13 +69,13 @@ if (($object->id != $user->id) && (!$user->rights->user->user->lire)) {
 }
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-$hookmanager->initHooks(array('usercard', 'useragenda', 'globalcard'));
+$hookmanager->initHooks(['usercard', 'useragenda', 'globalcard']);
 
 /*
  * Actions
  */
 
-$parameters = array('id' => $socid);
+$parameters = ['id' => $socid];
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
 	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -87,7 +87,7 @@ if (empty($reshook)) {
 
 		$errorsaved = 0;
 		$error = 0;
-		$tabparam = array();
+		$tabparam = [];
 
 		// Save agendas
 		$i = 1;
@@ -146,8 +146,8 @@ $form = new Form($db);
 $formadmin = new FormAdmin($db);
 $formother = new FormOther($db);
 
-$arrayofjs = array();
-$arrayofcss = array();
+$arrayofjs = [];
+$arrayofcss = [];
 
 llxHeader('', $langs->trans("UserSetup"), '', '', 0, 0, $arrayofjs, $arrayofcss);
 
