@@ -62,7 +62,7 @@ class modTuiCalendar extends DolibarrModules
 		$this->description = "TuiCalendarDescription";
 		// Used only if file README.md and README-LL.md not found.
 		$this->descriptionlong = "TuiCalendar description (Long)";
-		$this->editor_name = '<strong>Net Logic</strong>';
+		$this->editor_name = 'Net Logic';
 		$this->editor_url = 'https://netlogic.fr';
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
 		$this->version = '1.1.0';
@@ -108,7 +108,7 @@ class modTuiCalendar extends DolibarrModules
 					'agenda',
 					'leftblock',
 				),
-				'entity' => '0',
+				'entity' => $conf->entity,
 			),
 			// Set this to 1 if features of module are opened to external users
 			'moduleforexternal' => 0,
