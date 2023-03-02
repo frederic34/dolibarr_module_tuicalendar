@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2004-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
- * Copyright (C) 2019-2021  Frédéric FRANCE         <frederic.france@netlogic.fr>
+ * Copyright (C) 2019-2023  Frédéric FRANCE         <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,10 +49,21 @@ $arrayofparameters = [
 	],
 ];
 
-// Paramètres ON/OFF TUICALENDAR_ est rajouté au paramètre
+// Paramètres ON/OFF est rajouté au paramètre
 $modules = array(
-	'DONT_SHOW_AUTO_EVENTS' => 'TuiCalendarDontShowAutoEvents',
+	'TUICALENDAR_DONT_SHOW_AUTO_EVENTS' => 'TuiCalendarDontShowAutoEvents',
+	// tweak dolibarr
+	'CHECKLASTVERSION_EXTERNALMODULE' => 'CHECKLASTVERSION_EXTERNALMODULE',
 );
+if ((int) DOL_VERSION > 17) {
+	// tweak dolibarr
+	$modules = array_merge(
+		$modules,
+		[
+			'MAIN_ENABLE_AJAX_TOOLTIP' => 'MAIN_ENABLE_AJAX_TOOLTIP',
+		]
+	);
+}
 
 
 
@@ -62,10 +73,10 @@ $modules = array(
 
 foreach ($modules as $const => $desc) {
 	if ($action == 'activate_' . strtolower($const)) {
-		dolibarr_set_const($db, "TUICALENDAR_" . $const, "1", 'chaine', 0, '', $conf->entity);
+		dolibarr_set_const($db, $const, "1", 'chaine', 0, '', $conf->entity);
 	}
 	if ($action == 'disable_' . strtolower($const)) {
-		dolibarr_del_const($db, "TUICALENDAR_" . $const, $conf->entity);
+		dolibarr_del_const($db, $const, $conf->entity);
 		//header("Location: ".$_SERVER["PHP_SELF"]);
 		//exit;
 	}
@@ -169,18 +180,17 @@ if ($action == 'edit') {
 	print '<td align="center" width="100">' . $langs->trans("Action") . '</td>';
 	print "</tr>\n";
 	// Modules
-	foreach ($modules as $const => $desc) {
+	foreach ($modules as $constant => $desc) {
 		print '<tr class="oddeven">';
 		print '<td>' . $langs->trans($desc) . '</td>';
 		print '<td align="center" width="100">';
-		$constante = 'TUICALENDAR_' . $const;
-		$value = $conf->global->$constante ?? 0;
+		$value = $conf->global->$constant ?? 0;
 		if ($value == 0) {
-			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=activate_' . strtolower($const) . '&amp;token=' . $_SESSION['newtoken'] . '">';
+			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=activate_' . strtolower($constant) . '&amp;token=' . $_SESSION['newtoken'] . '">';
 			print img_picto($langs->trans("Disabled"), 'switch_off');
 			print '</a>';
 		} elseif ($value == 1) {
-			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=disable_' . strtolower($const) . '&amp;token=' . $_SESSION['newtoken'] . '">';
+			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=disable_' . strtolower($constant) . '&amp;token=' . $_SESSION['newtoken'] . '">';
 			print img_picto($langs->trans("Enabled"), 'switch_on');
 			print '</a>';
 		}

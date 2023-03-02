@@ -1,5 +1,5 @@
 <?php
-/* Copyright © 2019-2021  Frédéric FRANCE   <frederic.france@netlogic.fr>
+/* Copyright © 2019-2023  Frédéric FRANCE   <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -216,7 +216,7 @@ class ActionsTuiCalendar
 
 			$head = calendars_prepare_head($paramnoaction);
 
-			dol_fiche_head($head, 'cardperuser', $langs->trans('Agenda'), 0, 'action');
+			print dol_get_fiche_head($head, 'cardperuser', $langs->trans('Agenda'), 0, 'action');
 			print '<div id="gantt" style="height: 800px;"></div>';
 			print "<script>
 			var tasks = [
@@ -254,7 +254,7 @@ class ActionsTuiCalendar
 			});
 			</script>";
 
-			dol_fiche_end();
+			print dol_get_fiche_end();
 			// End of page
 			llxFooter();
 			$this->db->close();
@@ -281,8 +281,7 @@ class ActionsTuiCalendar
 
 		$langs->load('tuicalendar@tuicalendar');
 		$langs->load("companies");
-		//var_dump($parameters);
-		/* print_r($parameters); print_r($object); echo "action: " . $action; */
+
 		if (in_array($parameters['currentcontext'], array('agenda'))) {
 			if (empty($conf->use_javascript_ajax)) {
 				return 0;
@@ -711,7 +710,7 @@ class ActionsTuiCalendar
 					</button>
 				</span>';
 
-			if (!empty($conf->societe->enabled) && $user->rights->societe->lire) {
+			if (!empty($conf->societe->enabled) && !empty($user->rights->societe->lire)) {
 				print '<span id="search-customers" class="search-customers">';
 				print '    <input class="form-control customersAutoComplete" type="text" placeholder="' . $langs->trans('ThirdParty') . '" autocomplete="off">';
 				print '</span>';
@@ -719,7 +718,7 @@ class ActionsTuiCalendar
 				print '    <select class="statesAutoComplete" multiple type="text" title="' . $langs->trans('StateShort') . '"></select>';
 				print '</span>';
 			}
-			if (!empty($conf->projet->enabled) && $user->rights->projet->lire) {
+			if (!empty($conf->projet->enabled) && !empty($user->rights->projet->lire)) {
 				print '<span id="search-projects" class="search-projects">';
 				print '    <input class="form-control projectsAutoComplete" type="text" placeholder="' . $langs->trans("Project") . '" autocomplete="off">';
 				print '    <input id="project_id" name="project_id" type="hidden">';
@@ -1805,7 +1804,7 @@ class ActionsTuiCalendar
 
 		</script>";
 
-			dol_fiche_end();
+			print dol_get_fiche_end();
 			// End of page
 			llxFooter();
 			$this->db->close();
