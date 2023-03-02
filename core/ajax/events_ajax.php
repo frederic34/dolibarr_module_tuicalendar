@@ -152,7 +152,7 @@ switch ($action) {
 			} else {
 				//dol_syslog('created action datep '.print_r($action->datep, true), LOG_NOTICE);
 				//dol_syslog('created action datef '.print_r($action->datef, true), LOG_NOTICE);
-				print json_encode(array('id' => $res));
+				print json_encode(['id' => $res]);
 			}
 		}
 		break;
@@ -249,11 +249,11 @@ switch ($action) {
 			if (!empty($obj->name_alias)) {
 				$label .= ' (' . $obj->name_alias . ')';
 			}
-			$response[] = array(
+			$response[] = [
 				'id' => $obj->rowid,
 				'value' => $obj->rowid,
 				'text' => $label,
-			);
+			];
 		}
 		print json_encode($response);
 		break;
@@ -296,7 +296,7 @@ switch ($action) {
 				}
 			}
 			if (!empty($filterkey)) {
-				$sql .= natural_search(array('p.title', 'p.ref'), $filterkey);
+				$sql .= natural_search(['p.title', 'p.ref'], $filterkey);
 			}
 			$sql .= " ORDER BY p.ref ASC";
 			$sql .= $db->plimit($limit, 0);
@@ -304,10 +304,10 @@ switch ($action) {
 			$resql = $db->query($sql);
 			while ($resql && $obj = $db->fetch_object($resql)) {
 				$label = $obj->ref . ' ' . $obj->title;
-				$response[] = array(
+				$response[] = [
 					'value' => $obj->rowid,
 					'text' => $label,
-				);
+				];
 			}
 		}
 		print json_encode($response);
@@ -359,11 +359,11 @@ switch ($action) {
 			$resql = $db->query($sql);
 			while ($resql && $obj = $db->fetch_object($resql)) {
 				$label = $obj->firstname . ' ' . $obj->lastname;
-				$response[] = array(
+				$response[] = [
 					'id' => $obj->rowid,
 					'value' => $obj->rowid,
 					'text' => $label,
-				);
+				];
 			}
 		}
 		print json_encode($response);
@@ -534,7 +534,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 	//     ),
 	//     'errors' => [],
 	// );
-	$hookmanager->initHooks(array('agenda'));
+	$hookmanager->initHooks(['agenda']);
 
 	if ($calendarId == '1') {
 		$pid = GETPOST("projectid", "int", 3);
@@ -720,7 +720,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			// on recalcule avec l'offset
 			$dtend->setTimestamp((empty($event->datef) ? ($event->datep - $offset_start + 10) : ($event->datef - $offset_end)));
 
-			$assignedUsers = array();
+			$assignedUsers = [];
 			foreach ($event->userassigned as $key => $value) {
 				if (!isset($CacheUser[$value['id']])) {
 					$CacheUser[$value['id']] = new User($db);
@@ -736,7 +736,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				$isreadonly = true;
 			}
 
-			$events[] = array(
+			$events[] = [
 				// id : The unique schedule id depends on calendar id
 				'id' => (int) $event->id,
 				// calendarId : The unique calendar id
@@ -769,7 +769,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				'location' => $event->location,
 				// raw : The user data
 				'raw' => $raw,
-			);
+			];
 		}
 	}
 
@@ -824,7 +824,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 			// } while ($loop);
 			$raw = new stdClass();
 			$raw->location = !empty($event->location) ? $event->location : '';
-			$events[] = array(
+			$events[] = [
 				// id : The unique schedule id depends on calendar id
 				'id' => 'birthday_' . (string) $obj->rowid,
 				// calendarId : The unique calendar id
@@ -851,7 +851,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				'dueDateClass' => '',
 				// raw : The user data
 				'raw' => $raw,
-			);
+			];
 		}
 	}
 	$listofextcals = [];
@@ -872,7 +872,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 					// Note: $conf->global->buggedfile can be empty
 					// or 'uselocalandtznodaylight' or 'uselocalandtzdaylight'
 					if ($calendarName == $conf->global->$name) {
-						$listofextcals[] = array(
+						$listofextcals[] = [
 							'cachename' => 'global',
 							'cachetime' => $conf->global->$cachetime ?? -1,
 							'number' => md5($conf->global->$name),
@@ -881,7 +881,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 							'offsettz' => empty($conf->global->$offsettz) ? 0 : $conf->global->$offsettz,
 							'color' => $conf->global->$color,
 							//'buggedfile' => (isset($conf->global->buggedfile) ? $conf->global->buggedfile : 0),
-						);
+						];
 					}
 				}
 			}
@@ -901,7 +901,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				if (!empty($user->conf->$source) && !empty($user->conf->$name)) {
 					// Note: $conf->global->buggedfile can be empty or 'uselocalandtznodaylight' or 'uselocalandtzdaylight'
 					if ($calendarName == $user->conf->$name) {
-						$listofextcals[] = array(
+						$listofextcals[] = [
 							'cachename' => 'private',
 							'cachetime' => $user->conf->$cachetime ?? -1,
 							'number' => md5($user->conf->$name),
@@ -910,7 +910,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 							'offsettz' => empty($user->conf->$offsettz) ? 0 : $user->conf->$offsettz,
 							'color' => $user->conf->$color,
 							//'buggedfile' => (isset($user->conf->buggedfile) ? $user->conf->buggedfile : 0),
-						);
+						];
 					}
 				}
 			}
@@ -951,7 +951,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 				//$ical = new ICal();
 				//$ical->parse($url);
 				try {
-					$ical = new ICal(false, array(
+					$ical = new ICal(false, [
 						// Default value
 						'defaultSpan' => 2,
 						'defaultTimeZone' => 'Europe/Paris',
@@ -965,7 +965,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 						'filterDaysBefore' => null,
 						// Default value
 						'skipRecurrence' => false,
-					));
+					]);
 					// $ical->initFile(DOL_DATA_ROOT . '/agenda/temp/ICal.ics');
 					$ical->initUrl($url);
 				} catch (\Exception $e) {
@@ -1025,7 +1025,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 					$dtend->setTimestamp($date_end_in_calendar);
 					$dtend->setTimezone(new DateTimeZone($ical->defaultTimeZone));
 
-					$events[] = array(
+					$events[] = [
 						// id : The unique schedule id depends on calendar id
 						'id' => $icalevent->uid,
 						// calendarId : The unique calendar id
@@ -1056,7 +1056,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 						'location' => $icalevent->location,
 						// raw : The user data
 						'raw' => new stdClass(),
-					);
+					];
 				}
 			}
 		}
@@ -1151,5 +1151,5 @@ function RGBToHSL($RGB)
 	$s = (int) round(255.0 * $s);
 	$l = (int) round(255.0 * $l);
 
-	return array('hue' => $h, 'saturation' => $s, 'lightness' => $l);
+	return ['hue' => $h, 'saturation' => $s, 'lightness' => $l];
 }

@@ -50,11 +50,11 @@ $arrayofparameters = [
 ];
 
 // Paramètres ON/OFF est rajouté au paramètre
-$modules = array(
+$modules = [
 	'TUICALENDAR_DONT_SHOW_AUTO_EVENTS' => 'TuiCalendarDontShowAutoEvents',
 	// tweak dolibarr
 	'CHECKLASTVERSION_EXTERNALMODULE' => 'CHECKLASTVERSION_EXTERNALMODULE',
-);
+];
 if ((int) DOL_VERSION > 17) {
 	// tweak dolibarr
 	$modules = array_merge(

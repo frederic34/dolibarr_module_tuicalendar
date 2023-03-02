@@ -41,12 +41,12 @@ class ActionsTuiCalendar
 	/**
 	 * @var array Errors
 	 */
-	public $errors = array();
+	public $errors = [];
 
 	/**
 	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
 	 */
-	public $results = array();
+	public $results = [];
 
 	/**
 	 * @var string String displayed by executeHook() immediately after return
@@ -96,7 +96,7 @@ class ActionsTuiCalendar
 		$error = 0; // Error counter
 		//var_dump($parameters);
 		/* print_r($parameters); print_r($object); echo "action: " . $action; */
-		if (in_array($parameters['currentcontext'], array('actioncard', 'somecontext2'))) {
+		if (in_array($parameters['currentcontext'], ['actioncard', 'somecontext2'])) {
 			// do something only for the context 'somecontext1' or 'somecontext2'
 			// Do what you want here...
 			// You can for example call global vars like $fieldstosearchall to overwrite them, or update database depending on $action and $_POST values.
@@ -104,7 +104,7 @@ class ActionsTuiCalendar
 			//setEventMessage('action card');
 			return 0;
 		}
-		if (in_array($parameters['currentcontext'], array('agenda', 'somecontext2'))) {
+		if (in_array($parameters['currentcontext'], ['agenda', 'somecontext2'])) {
 			// do something only for the context 'somecontext1' or 'somecontext2'
 			// Do what you want here...
 			// You can for example call global vars like $fieldstosearchall to overwrite them, or update database depending on $action and $_POST values.
@@ -114,7 +114,7 @@ class ActionsTuiCalendar
 		}
 
 		if (!$error) {
-			$this->results = array('myreturn' => 999);
+			$this->results = ['myreturn' => 999];
 			$this->resprints = 'A text to show';
 			return 0; // or return 1 to replace standard code
 		} else {
@@ -140,18 +140,18 @@ class ActionsTuiCalendar
 		$langs->load('tuicalendar@tuicalendar');
 		// var_dump($parameters);
 		/* print_r($parameters); print_r($object); echo "action: " . $action; */
-		if (in_array($parameters['currentcontext'], array('desactivated-agenda'))) {
+		if (in_array($parameters['currentcontext'], ['desactivated-agenda'])) {
 			if (empty($conf->use_javascript_ajax)) {
 				return 0;
 			}
-			$arrayofjs = array(
+			$arrayofjs = [
 				'/tuicalendar/node_modules/frappe-gantt/dist/frappe-gantt.js',
-			);
-			$arrayofcss = array(
+			];
+			$arrayofcss = [
 				'/tuicalendar/node_modules/frappe-gantt/dist/frappe-gantt.css',
 				'/tuicalendar/css/icons.css',
 				'/tuicalendar/css/tuicalendar.css.php',
-			);
+			];
 			$socid = $parameters['socid'];
 			$canedit = $parameters['canedit'];
 			$status = $parameters['status'];
@@ -282,11 +282,11 @@ class ActionsTuiCalendar
 		$langs->load('tuicalendar@tuicalendar');
 		$langs->load("companies");
 
-		if (in_array($parameters['currentcontext'], array('agenda'))) {
+		if (in_array($parameters['currentcontext'], ['agenda'])) {
 			if (empty($conf->use_javascript_ajax)) {
 				return 0;
 			}
-			$arrayofjs = array(
+			$arrayofjs = [
 				'/tuicalendar/js/moment.min.js',
 				'/tuicalendar/js/bootstrap.min.js',
 				'https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.2.2/dist/latest/bootstrap-autocomplete.min.js',
@@ -301,8 +301,8 @@ class ActionsTuiCalendar
 				//'/tuicalendar/node_modules/tui-time-picker/dist/tui-time-picker.min.js',
 				//'/tuicalendar/node_modules/tui-date-picker/dist/tui-date-picker.min.js',
 				'/tuicalendar/js/tui-calendar.min.js',
-			);
-			$arrayofcss = array(
+			];
+			$arrayofcss = [
 				'/tuicalendar/css/bootstrap.min.css',
 				'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.css',
 				'/tuicalendar/css/icons.css',
@@ -313,7 +313,7 @@ class ActionsTuiCalendar
 				'/tuicalendar/css/tui-calendar.min.css',
 				//'/tuicalendar/node_modules/tui-time-picker/dist/tui-time-picker.css',
 				//'/tuicalendar/node_modules/tui-date-picker/dist/tui-date-picker.css',
-			);
+			];
 			llxHeader('', $langs->trans("Agenda"), '', '', 0, 0, $arrayofjs, $arrayofcss);
 
 			// $form = new Form($this->db);
@@ -342,7 +342,7 @@ class ActionsTuiCalendar
 			$usergroup = $parameters['usergroup'];
 			$resourceid = $parameters['resourceid'];
 
-			$listofextcals = array();
+			$listofextcals = [];
 			$MAXAGENDA = $conf->global->AGENDA_EXT_NB ?? 6;
 
 			// Define list of external calendars (global admin setup)
@@ -358,13 +358,13 @@ class ActionsTuiCalendar
 					if (!empty($conf->global->$source) && !empty($conf->global->$name)) {
 						// Note: $conf->global->buggedfile can be empty
 						// or 'uselocalandtznodaylight' or 'uselocalandtzdaylight'
-						$listofextcals[] = array(
+						$listofextcals[] = [
 							'src' => $conf->global->$source,
 							'name' => $conf->global->$name,
 							'offsettz' => (!empty($conf->global->$offsettz) ? $conf->global->$offsettz : 0),
 							'color' => $conf->global->$color,
 							'buggedfile' => (isset($conf->global->buggedfile) ? $conf->global->buggedfile : 0),
-						);
+						];
 					}
 				}
 			}
@@ -381,13 +381,13 @@ class ActionsTuiCalendar
 					$buggedfile = 'AGENDA_EXT_BUGGEDFILE_' . $user->id . '_' . $i;
 					if (!empty($user->conf->$source) && !empty($user->conf->$name)) {
 						// Note: $conf->global->buggedfile can be empty or 'uselocalandtznodaylight' or 'uselocalandtzdaylight'
-						$listofextcals[] = array(
+						$listofextcals[] = [
 							'src' => $user->conf->$source,
 							'name' => $user->conf->$name,
 							'offsettz' => (!empty($user->conf->$offsettz) ? $user->conf->$offsettz : 0),
 							'color' => $user->conf->$color,
 							'buggedfile' => (isset($user->conf->buggedfile) ? $user->conf->buggedfile : 0),
-						);
+						];
 					}
 				}
 			}
@@ -1839,7 +1839,7 @@ class ActionsTuiCalendar
 	 * @param   int             $resourceid     Preselected value of resource for filter on resource
 	 * @return  string                          html
 	 */
-	private function getPrintActionsFilter($form, $canedit, $status, $year, $month, $day, $showbirthday, $filtera, $filtert, $filterd, $pid, $socid, $action, $showextcals = array(), $actioncode = '', $usergroupid = '', $excludetype = '', $resourceid = 0)
+	private function getPrintActionsFilter($form, $canedit, $status, $year, $month, $day, $showbirthday, $filtera, $filtert, $filterd, $pid, $socid, $action, $showextcals = [], $actioncode = '', $usergroupid = '', $excludetype = '', $resourceid = 0)
 	{
 		global $conf, $user, $langs, $db, $hookmanager;
 		global $begin_h, $end_h, $begin_d, $end_d;
@@ -2203,7 +2203,7 @@ class ActionsTuiCalendar
 			</div>';
 		}
 		// per user calendar
-		if (in_array($parameters['currentcontext'], array('agenda')) && basename($_SERVER['PHP_SELF']) == 'per_user.php') {
+		if (in_array($parameters['currentcontext'], ['agenda']) && basename($_SERVER['PHP_SELF']) == 'per_user.php') {
 			// nothing for the moment
 		}
 		if (!$error) {

@@ -39,16 +39,16 @@ if (!$user->admin) {
 }
 
 // Load translation files required by the page
-$langs->loadLangs(array('agenda', 'admin', 'other', 'tuicalendar@tuicalendar'));
+$langs->loadLangs(['agenda', 'admin', 'other', 'tuicalendar@tuicalendar']);
 
-$def = array();
+$def = [];
 $actiontest = GETPOST('test', 'alpha');
 $actionsave = GETPOST('save', 'alpha');
 
 $MAXAGENDA = $conf->global->AGENDA_EXT_NB ?? 5;
 
 // List of available colors
-$colorlist = array('BECEDD', 'DDBECE', 'BFDDBE', 'F598B4', 'F68654', 'CBF654', 'A4A4A5');
+$colorlist = ['BECEDD', 'DDBECE', 'BFDDBE', 'F598B4', 'F68654', 'CBF654', 'A4A4A5'];
 
 
 /*
@@ -170,7 +170,7 @@ print '<tr class="oddeven">';
 print "<td>" . $langs->trans("ExtSitesEnableThisTool") . "</td>";
 print '<td class="center">';
 if ($conf->use_javascript_ajax) {
-	print ajax_constantonoff('AGENDA_DISABLE_EXT', array('enabled' => array(0 => '.hideifnotset')), null, 1);
+	print ajax_constantonoff('AGENDA_DISABLE_EXT', ['enabled' => [0 => '.hideifnotset']], null, 1);
 } else {
 	if (empty($conf->global->AGENDA_DISABLE_EXT)) {
 		print '<a href="' . $_SERVER['PHP_SELF'] . '?save=1&AGENDA_DISABLE_EXT=1">' . img_picto($langs->trans("Enabled"), 'on') . '</a>';

@@ -76,7 +76,7 @@ class modTuiCalendar extends DolibarrModules
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
 		$this->picto = 'action';
 		// Define some features supported by module (triggers, login, substitutions, menus, css, etc...)
-		$this->module_parts = array(
+		$this->module_parts = [
 			// Set this to 1 if module has its own trigger directory (core/triggers)
 			'triggers' => 1,
 			// Set this to 1 if module has its own login method file (core/login)
@@ -94,50 +94,50 @@ class modTuiCalendar extends DolibarrModules
 			// Set this to 1 if module has its own theme directory (theme)
 			'theme' => 0,
 			// Set this to relative path of css file if module has its own css file
-			'css' => array(
+			'css' => [
 				//    '/tuicalendar/css/tuicalendar.css.php',
-			),
+			],
 			// Set this to relative path of js file if module must load a js on all pages
-			'js' => array(
+			'js' => [
 				//   '/tuicalendar/js/tuicalendar.js.php',
-			),
+			],
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
-			'hooks' => array(
-				'data' => array(
+			'hooks' => [
+				'data' => [
 					'actioncard',
 					'agenda',
 					'leftblock',
-				),
+				],
 				'entity' => $conf->entity,
-			),
+			],
 			// Set this to 1 if features of module are opened to external users
 			'moduleforexternal' => 0,
-		);
+		];
 		// Data directories to create when module is enabled.
 		// Example: this->dirs = array("/tuicalendar/temp","/tuicalendar/subdir");
-		$this->dirs = array("/tuicalendar/temp");
+		$this->dirs = ["/tuicalendar/temp"];
 		// Config pages. Put here list of php page, stored into tuicalendar/admin directory, to use to setup module.
-		$this->config_page_url = array("setup.php@tuicalendar");
+		$this->config_page_url = ["setup.php@tuicalendar"];
 		// Dependencies
 		// A condition to hide module
 		$this->hidden = false;
 		// List of module class names as string that must be enabled if this module is enabled. Example: array('always1'=>'modModuleToEnable1','always2'=>'modModuleToEnable2', 'FR1'=>'modModuleToEnableFR'...)
-		$this->depends = array(
+		$this->depends = [
 			'always1' => 'modPrune',
-		);
+		];
 		// List of module class names as string to disable if this one is disabled. Example: array('modModuleToDisable1', ...)
-		$this->requiredby = array();
+		$this->requiredby = [];
 		// List of module class names as string this module is in conflict with. Example: array('modModuleToDisable1', ...)
-		$this->conflictwith = array('modfullcalendar');
-		$this->langfiles = array("tuicalendar@tuicalendar");
+		$this->conflictwith = ['modfullcalendar'];
+		$this->langfiles = ["tuicalendar@tuicalendar"];
 		// Minimum version of PHP required by module
-		$this->phpmin = array(7, 0);
+		$this->phpmin = [7, 0];
 		// Minimum version of Dolibarr required by module
-		$this->need_dolibarr_version = array(10, 0);
+		$this->need_dolibarr_version = [10, 0];
 		// Warning to show when we activate module. array('always'='text') or array('FR'='textfr','ES'='textes'...)
-		$this->warnings_activation = array();
+		$this->warnings_activation = [];
 		// Warning to show when we activate an external module. array('always'='text') or array('FR'='textfr','ES'='textes'...)
-		$this->warnings_activation_ext = array();
+		$this->warnings_activation_ext = [];
 		//$this->automatic_activation = array('FR'=>'TuiCalendarWasAutomaticallyActivatedBecauseOfYourCountryChoice');
 		// If true, can't be disabled
 		//$this->always_enabled = true;
@@ -148,9 +148,9 @@ class modTuiCalendar extends DolibarrModules
 		//    1 => array('TUICALENDAR_MYNEWCONST1', 'chaine', 'myvalue', 'This is a constant to add', 1),
 		//    2 => array('TUICALENDAR_MYNEWCONST2', 'chaine', 'myvalue', 'This is another constant to add', 0, 'current', 1)
 		// );
-		$this->const = array(
+		$this->const = [
 			// 1 => array('TUICALENDAR_MYCONSTANT', 'chaine', 'avalue', 'This is a constant to add', 1, 'allentities', 1)
-		);
+		];
 
 		// Some keys to add into the overwriting translation tables
 		/*$this->overwrite_translation = array(
@@ -164,25 +164,25 @@ class modTuiCalendar extends DolibarrModules
 		}
 
 		// Array to add new pages in new tabs
-		$this->tabs = array();
-		$this->tabs[] = array(
+		$this->tabs = [];
+		$this->tabs[] = [
 			'data' => 'agenda:-cardmonth:NU:$conf->tuicalendar->enabled'
-		);
-		$this->tabs[] = array(
+		];
+		$this->tabs[] = [
 			'data' => 'agenda:-cardweek:NU:$conf->tuicalendar->enabled'
-		);
-		$this->tabs[] = array(
+		];
+		$this->tabs[] = [
 			'data' => 'agenda:-cardday:NU:$conf->tuicalendar->enabled'
-		);
-		$this->tabs[] = array(
+		];
+		$this->tabs[] = [
 			'data' => 'agenda:+tuicalendar:TuiCalendarViewAgenda:tuicalendar@tuicalendar:$user->rights->agenda->myactions->read:/comm/action/index.php',
-		);
-		$this->tabs[] = array(
+		];
+		$this->tabs[] = [
 			'data' => 'user:-extsites:NU:$conf->tuicalendar->enabled'
-		);
-		$this->tabs[] = array(
+		];
+		$this->tabs[] = [
 			'data' => 'user:+extsites:TuiCalendarExtSites:tuicalendar@tuicalendar:$user->rights->agenda->myactions->read:/tuicalendar/tabs/agenda_extsites.php?id=__ID__',
-		);
+		];
 		//
 		// Where objecttype can be
 		// 'categories_x'     to add a tab in category view (replace 'x' by type of category (0=product, 1=supplier, 2=customer, 3=member)
@@ -206,22 +206,22 @@ class modTuiCalendar extends DolibarrModules
 		// 'user'             to add a tab in user view
 
 		// Dictionaries
-		$this->dictionaries = array();
+		$this->dictionaries = [];
 
 		// Boxes/Widgets
 		// Add here list of php file(s) stored in tuicalendar/core/boxes that contains a class to show a widget.
-		$this->boxes = array(
+		$this->boxes = [
 			//  0 => array(
 			//      'file' => 'tuicalendarwidget1.php@tuicalendar',
 			//      'note' => 'Widget provided by TuiCalendar',
 			//      'enabledbydefaulton' => 'Home',
 			//  ),
 			//  ...
-		);
+		];
 
 		// Cronjobs (List of cron jobs entries to add when module is enabled)
 		// unit_frequency must be 60 for minute, 3600 for hour, 86400 for day, 604800 for week
-		$this->cronjobs = array(
+		$this->cronjobs = [
 			//  0 => array(
 			//      'label' => 'MyJob label',
 			//      'jobtype' => 'method',
@@ -236,14 +236,14 @@ class modTuiCalendar extends DolibarrModules
 			//      'test' => '$conf->tuicalendar->enabled',
 			//      'priority' => 50,
 			//  ),
-		);
+		];
 		// Example: $this->cronjobs=array(
 		//    0=>array('label'=>'My label', 'jobtype'=>'method', 'class'=>'/dir/class/file.class.php', 'objectname'=>'MyClass', 'method'=>'myMethod', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>2, 'unitfrequency'=>3600, 'status'=>0, 'test'=>'$conf->tuicalendar->enabled', 'priority'=>50),
 		//    1=>array('label'=>'My label', 'jobtype'=>'command', 'command'=>'', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>1, 'unitfrequency'=>3600*24, 'status'=>0, 'test'=>'$conf->tuicalendar->enabled', 'priority'=>50)
 		// );
 
 		// Permissions provided by this module
-		$this->rights = array();
+		$this->rights = [];
 		$r = 0;
 		// Add here entries to declare new permissions
 		// Permission id (must not be already used)
@@ -270,7 +270,7 @@ class modTuiCalendar extends DolibarrModules
 		$r++;
 
 		// Main menu entries to add
-		$this->menu = array();
+		$this->menu = [];
 	}
 
 	/**
@@ -299,7 +299,7 @@ class modTuiCalendar extends DolibarrModules
 		//$result4=$extrafields->addExtraField('myattr4', "New Attr 4 label", 'select',  1,  3, 'thirdparty',   0, 1, '', array('options'=>array('code1'=>'Val1','code2'=>'Val2','code3'=>'Val3')), 1,'', 0, 0, '', '', 'tuicalendar@tuicalendar', '$conf->tuicalendar->enabled');
 		//$result5=$extrafields->addExtraField('myattr5', "New Attr 5 label", 'text',    1, 10, 'user',         0, 0, '', '', 1, '', 0, 0, '', '', 'tuicalendar@tuicalendar', '$conf->tuicalendar->enabled');
 
-		$sql = array();
+		$sql = [];
 		return $this->_init($sql, $options);
 	}
 
@@ -313,7 +313,7 @@ class modTuiCalendar extends DolibarrModules
 	 */
 	public function remove($options = '')
 	{
-		$sql = array();
+		$sql = [];
 		return $this->_remove($sql, $options);
 	}
 }
