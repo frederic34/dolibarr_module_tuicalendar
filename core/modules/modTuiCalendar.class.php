@@ -108,7 +108,7 @@ class modTuiCalendar extends DolibarrModules
 					'agenda',
 					'leftblock',
 				),
-				'entity' => '0',
+				'entity' => $conf->entity,
 			),
 			// Set this to 1 if features of module are opened to external users
 			'moduleforexternal' => 0,
