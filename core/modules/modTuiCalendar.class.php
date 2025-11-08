@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2004-2018  Laurent Destailleur     <eldy@users.sourceforge.net>
- * Copyright (C) 2019-2022  Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2019-2022  Frédéric France         <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,8 +62,8 @@ class modTuiCalendar extends DolibarrModules
 		$this->description = "TuiCalendarDescription";
 		// Used only if file README.md and README-LL.md not found.
 		$this->descriptionlong = "TuiCalendar description (Long)";
-		$this->editor_name = 'Net Logic';
-		$this->editor_url = 'https://netlogic.fr';
+		$this->editor_name = 'frederic34';
+		// $this->editor_url = 'https://free.fr';
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
 		$this->version = '1.1.0';
 		// Url to the file with your last numberversion of this module
