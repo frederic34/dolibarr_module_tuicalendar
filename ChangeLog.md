@@ -1,5 +1,5 @@
 
-## Unreleased (2025-11-08)
+## Unreleased (2025-11-11)
 
 #### :rocket: Enhancement
 * [#60](https://github.com/frederic34/dolibarr_module_tuicalendar/pull/60) add translator ([@frederic34](https://github.com/frederic34))
