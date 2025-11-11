@@ -386,7 +386,7 @@ class ActionsTuiCalendar
 							'name' => $user->conf->$name,
 							'offsettz' => (!empty($user->conf->$offsettz) ? $user->conf->$offsettz : 0),
 							'color' => $user->conf->$color,
-							'buggedfile' => (isset($user->conf->buggedfile) ? $user->conf->buggedfile : 0),
+							'buggedfile' => (isset($user->conf->$buggedfile) ? $user->conf->$buggedfile : 0),
 						];
 					}
 				}
