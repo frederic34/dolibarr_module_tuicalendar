@@ -880,7 +880,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 							'name' => $conf->global->$name,
 							'offsettz' => empty($conf->global->$offsettz) ? 0 : $conf->global->$offsettz,
 							'color' => $conf->global->$color,
-							//'buggedfile' => (isset($conf->global->buggedfile) ? $conf->global->buggedfile : 0),
+							//'buggedfile' => (isset($conf->global->$buggedfile) ? $conf->global->$buggedfile : 0),
 						];
 					}
 				}
@@ -909,7 +909,7 @@ function getEvents($calendarId, $calendarName, $startDate, $endDate, $offset, $o
 							'name' => $user->conf->$name,
 							'offsettz' => empty($user->conf->$offsettz) ? 0 : $user->conf->$offsettz,
 							'color' => $user->conf->$color,
-							//'buggedfile' => (isset($user->conf->buggedfile) ? $user->conf->buggedfile : 0),
+							//'buggedfile' => (isset($user->conf->$buggedfile) ? $user->conf->$buggedfile : 0),
 						];
 					}
 				}
