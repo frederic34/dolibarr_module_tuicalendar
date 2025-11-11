@@ -932,7 +932,7 @@ class ActionsTuiCalendar
 			}
 
 			function addCalendar(calendar) {
-				CalendarList.push(calendar)
+				CalendarList.push(calendar);
 				var timer = setInterval(function() {
 					// on ne récupère que les récents evt sauf si on doit recharger
 					if (calendar.needToBeReloaded) {
